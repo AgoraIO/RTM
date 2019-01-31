@@ -1,0 +1,593 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340F21F02E0F00D6217B /* CoreTelephony.framework */; };
+		A706341121F02E2C00D6217B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340B21F02DE500D6217B /* SystemConfiguration.framework */; };
+		A706341221F02E3C00D6217B /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340921F02DD700D6217B /* libresolv.tbd */; };
+		A706341321F02E4A00D6217B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340721F02DC800D6217B /* libc++.tbd */; };
+		A706342121F047A600D6217B /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342021F047A600D6217B /* AgoraRtm.swift */; };
+		A706342421F04E3B00D6217B /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342321F04E3B00D6217B /* PeerViewController.swift */; };
+		A706342621F04E4A00D6217B /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342521F04E4A00D6217B /* ChannelViewController.swift */; };
+		A706342821F050EC00D6217B /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342721F050EC00D6217B /* ChatViewController.swift */; };
+		A706343A21F0818100D6217B /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706343921F0818100D6217B /* MessageCell.swift */; };
+		A7F23AA42202B4BA003C46FB /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F23AA32202B4BA003C46FB /* AppDelegate.swift */; };
+		A7F23AA82202B4BC003C46FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7F23AA72202B4BC003C46FB /* Assets.xcassets */; };
+		A7F23AAB2202B4BC003C46FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7F23AA92202B4BC003C46FB /* Main.storyboard */; };
+		A7F23AB32202BA7D003C46FB /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F23AB22202BA7D003C46FB /* TypeAlias.swift */; };
+		A7F23AB42202BA7D003C46FB /* TypeAlias.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F23AB22202BA7D003C46FB /* TypeAlias.swift */; };
+		A7F23ABC2202BC09003C46FB /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */; };
+		A7F23ABD2202BCE3003C46FB /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342021F047A600D6217B /* AgoraRtm.swift */; };
+		A7F23ABF2202BD6F003C46FB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23ABE2202BD6F003C46FB /* libc++.tbd */; };
+		A7F23AC12202BD7B003C46FB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23AC02202BD7B003C46FB /* libresolv.tbd */; };
+		A7F23AC32202BD8B003C46FB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23AC22202BD8B003C46FB /* SystemConfiguration.framework */; };
+		A7F23AC52202BD99003C46FB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23AC42202BD99003C46FB /* CoreTelephony.framework */; };
+		A7F23AC72202BDA2003C46FB /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23AC62202BDA2003C46FB /* AgoraRtmKit.framework */; };
+		A7F23AC82202BDB3003C46FB /* AppId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DE121F02709005ACFD9 /* AppId.swift */; };
+		A7F23ACB2202C933003C46FB /* CoreWLAN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23ACA2202C933003C46FB /* CoreWLAN.framework */; };
+		A7FD7DC921EF61E1005ACFD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */; };
+		A7FD7DD021EF61E3005ACFD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */; };
+		A7FD7DD321EF61E3005ACFD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DD121EF61E3005ACFD9 /* LaunchScreen.storyboard */; };
+		A7FD7DDB21F025EB005ACFD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */; };
+		A7FD7DDE21F0262F005ACFD9 /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */; };
+		A7FD7DE021F02651005ACFD9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */; };
+		A7FD7DE221F02709005ACFD9 /* AppId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DE121F02709005ACFD9 /* AppId.swift */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A706340721F02DC800D6217B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		A706340921F02DD700D6217B /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		A706340B21F02DE500D6217B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A706340D21F02DFA00D6217B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		A706340F21F02E0F00D6217B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		A706342021F047A600D6217B /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
+		A706342321F04E3B00D6217B /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
+		A706342521F04E4A00D6217B /* ChannelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
+		A706342721F050EC00D6217B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
+		A706343921F0818100D6217B /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
+		A7F23AA12202B4B9003C46FB /* Agora-Rtm-Tutorial-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-Rtm-Tutorial-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F23AA32202B4BA003C46FB /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A7F23AA72202B4BC003C46FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A7F23AAA2202B4BC003C46FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
+		A7F23AAC2202B4BC003C46FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7F23AB22202BA7D003C46FB /* TypeAlias.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TypeAlias.swift; sourceTree = "<group>"; };
+		A7F23ABE2202BD6F003C46FB /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
+		A7F23AC02202BD7B003C46FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
+		A7F23AC22202BD8B003C46FB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		A7F23AC42202BD99003C46FB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
+		A7F23AC62202BDA2003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial-Mac/AgoraRtmKit.framework"; sourceTree = "<group>"; };
+		A7F23ACA2202C933003C46FB /* CoreWLAN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreWLAN.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreWLAN.framework; sourceTree = DEVELOPER_DIR; };
+		A7F23ACC2202C9AD003C46FB /* Agora-Rtm-Tutorial-Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Agora-Rtm-Tutorial-Mac.entitlements"; sourceTree = "<group>"; };
+		A7FD7DC521EF61E1005ACFD9 /* Agora-Rtm-Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-Rtm-Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
+		A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A7FD7DD221EF61E3005ACFD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A7FD7DD421EF61E3005ACFD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
+		A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		A7FD7DE121F02709005ACFD9 /* AppId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppId.swift; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A7F23A9E2202B4B9003C46FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7F23ACB2202C933003C46FB /* CoreWLAN.framework in Frameworks */,
+				A7F23AC72202BDA2003C46FB /* AgoraRtmKit.framework in Frameworks */,
+				A7F23AC52202BD99003C46FB /* CoreTelephony.framework in Frameworks */,
+				A7F23AC32202BD8B003C46FB /* SystemConfiguration.framework in Frameworks */,
+				A7F23AC12202BD7B003C46FB /* libresolv.tbd in Frameworks */,
+				A7F23ABF2202BD6F003C46FB /* libc++.tbd in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7FD7DC221EF61E1005ACFD9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A706341321F02E4A00D6217B /* libc++.tbd in Frameworks */,
+				A706341221F02E3C00D6217B /* libresolv.tbd in Frameworks */,
+				A706341121F02E2C00D6217B /* SystemConfiguration.framework in Frameworks */,
+				A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */,
+				A7FD7DDE21F0262F005ACFD9 /* AgoraRtmKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A706344B21F6EC2000D6217B /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */,
+				A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */,
+				A7FD7DD121EF61E3005ACFD9 /* LaunchScreen.storyboard */,
+				A7FD7DD421EF61E3005ACFD9 /* Info.plist */,
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
+		A7F23AA22202B4BA003C46FB /* Agora-Rtm-Tutorial-Mac */ = {
+			isa = PBXGroup;
+			children = (
+				A7F23AA92202B4BC003C46FB /* Main.storyboard */,
+				A7F23AC92202BEA2003C46FB /* Support Files */,
+			);
+			path = "Agora-Rtm-Tutorial-Mac";
+			sourceTree = "<group>";
+		};
+		A7F23AC92202BEA2003C46FB /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7F23AA32202B4BA003C46FB /* AppDelegate.swift */,
+				A7F23AA72202B4BC003C46FB /* Assets.xcassets */,
+				A7F23AAC2202B4BC003C46FB /* Info.plist */,
+				A7F23ACC2202C9AD003C46FB /* Agora-Rtm-Tutorial-Mac.entitlements */,
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
+		A7FD7DBC21EF61E1005ACFD9 = {
+			isa = PBXGroup;
+			children = (
+				A7FD7DC721EF61E1005ACFD9 /* Agora-Rtm-Tutorial */,
+				A7F23AA22202B4BA003C46FB /* Agora-Rtm-Tutorial-Mac */,
+				A7FD7DC621EF61E1005ACFD9 /* Products */,
+				A7FD7DDC21F0262C005ACFD9 /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A7FD7DC621EF61E1005ACFD9 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A7FD7DC521EF61E1005ACFD9 /* Agora-Rtm-Tutorial.app */,
+				A7F23AA12202B4B9003C46FB /* Agora-Rtm-Tutorial-Mac.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A7FD7DC721EF61E1005ACFD9 /* Agora-Rtm-Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				A706342021F047A600D6217B /* AgoraRtm.swift */,
+				A7FD7DE121F02709005ACFD9 /* AppId.swift */,
+				A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */,
+				A706342321F04E3B00D6217B /* PeerViewController.swift */,
+				A706342521F04E4A00D6217B /* ChannelViewController.swift */,
+				A706342721F050EC00D6217B /* ChatViewController.swift */,
+				A706343921F0818100D6217B /* MessageCell.swift */,
+				A7F23AB22202BA7D003C46FB /* TypeAlias.swift */,
+				A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */,
+				A706344B21F6EC2000D6217B /* Support Files */,
+			);
+			path = "Agora-Rtm-Tutorial";
+			sourceTree = "<group>";
+		};
+		A7FD7DDC21F0262C005ACFD9 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A7F23ACA2202C933003C46FB /* CoreWLAN.framework */,
+				A7F23AC62202BDA2003C46FB /* AgoraRtmKit.framework */,
+				A7F23AC42202BD99003C46FB /* CoreTelephony.framework */,
+				A7F23AC22202BD8B003C46FB /* SystemConfiguration.framework */,
+				A7F23AC02202BD7B003C46FB /* libresolv.tbd */,
+				A7F23ABE2202BD6F003C46FB /* libc++.tbd */,
+				A706340F21F02E0F00D6217B /* CoreTelephony.framework */,
+				A706340D21F02DFA00D6217B /* Accelerate.framework */,
+				A706340B21F02DE500D6217B /* SystemConfiguration.framework */,
+				A706340921F02DD700D6217B /* libresolv.tbd */,
+				A706340721F02DC800D6217B /* libc++.tbd */,
+				A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A7F23AA02202B4B9003C46FB /* Agora-Rtm-Tutorial-Mac */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7F23AB02202B4BC003C46FB /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial-Mac" */;
+			buildPhases = (
+				A7F23A9D2202B4B9003C46FB /* Sources */,
+				A7F23A9E2202B4B9003C46FB /* Frameworks */,
+				A7F23A9F2202B4B9003C46FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Agora-Rtm-Tutorial-Mac";
+			productName = "Agora-Rtm-Tutorial-Mac";
+			productReference = A7F23AA12202B4B9003C46FB /* Agora-Rtm-Tutorial-Mac.app */;
+			productType = "com.apple.product-type.application";
+		};
+		A7FD7DC421EF61E1005ACFD9 /* Agora-Rtm-Tutorial */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7FD7DD721EF61E3005ACFD9 /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial" */;
+			buildPhases = (
+				A7FD7DC121EF61E1005ACFD9 /* Sources */,
+				A7FD7DC221EF61E1005ACFD9 /* Frameworks */,
+				A7FD7DC321EF61E1005ACFD9 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Agora-Rtm-Tutorial";
+			productName = "Agora-Rtm-Tutorial";
+			productReference = A7FD7DC521EF61E1005ACFD9 /* Agora-Rtm-Tutorial.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A7FD7DBD21EF61E1005ACFD9 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1010;
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = Agora.IO;
+				TargetAttributes = {
+					A7F23AA02202B4B9003C46FB = {
+						CreatedOnToolsVersion = 10.1;
+						SystemCapabilities = {
+							com.apple.Sandbox = {
+								enabled = 1;
+							};
+						};
+					};
+					A7FD7DC421EF61E1005ACFD9 = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = A7FD7DC021EF61E1005ACFD9 /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A7FD7DBC21EF61E1005ACFD9;
+			productRefGroup = A7FD7DC621EF61E1005ACFD9 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A7FD7DC421EF61E1005ACFD9 /* Agora-Rtm-Tutorial */,
+				A7F23AA02202B4B9003C46FB /* Agora-Rtm-Tutorial-Mac */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A7F23A9F2202B4B9003C46FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7F23AA82202B4BC003C46FB /* Assets.xcassets in Resources */,
+				A7F23AAB2202B4BC003C46FB /* Main.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7FD7DC321EF61E1005ACFD9 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7FD7DDB21F025EB005ACFD9 /* Main.storyboard in Resources */,
+				A7FD7DD321EF61E3005ACFD9 /* LaunchScreen.storyboard in Resources */,
+				A7FD7DD021EF61E3005ACFD9 /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A7F23A9D2202B4B9003C46FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7F23AB42202BA7D003C46FB /* TypeAlias.swift in Sources */,
+				A7F23AA42202B4BA003C46FB /* AppDelegate.swift in Sources */,
+				A7F23AC82202BDB3003C46FB /* AppId.swift in Sources */,
+				A7F23ABD2202BCE3003C46FB /* AgoraRtm.swift in Sources */,
+				A7F23ABC2202BC09003C46FB /* MainViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		A7FD7DC121EF61E1005ACFD9 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7FD7DE221F02709005ACFD9 /* AppId.swift in Sources */,
+				A7FD7DE021F02651005ACFD9 /* MainViewController.swift in Sources */,
+				A706342121F047A600D6217B /* AgoraRtm.swift in Sources */,
+				A7FD7DC921EF61E1005ACFD9 /* AppDelegate.swift in Sources */,
+				A7F23AB32202BA7D003C46FB /* TypeAlias.swift in Sources */,
+				A706342621F04E4A00D6217B /* ChannelViewController.swift in Sources */,
+				A706342821F050EC00D6217B /* ChatViewController.swift in Sources */,
+				A706342421F04E3B00D6217B /* PeerViewController.swift in Sources */,
+				A706343A21F0818100D6217B /* MessageCell.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A7F23AA92202B4BC003C46FB /* Main.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A7F23AAA2202B4BC003C46FB /* Base */,
+			);
+			name = Main.storyboard;
+			sourceTree = "<group>";
+		};
+		A7FD7DD121EF61E3005ACFD9 /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A7FD7DD221EF61E3005ACFD9 /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A7F23AAE2202B4BC003C46FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Agora-Rtm-Tutorial-Mac/Agora-Rtm-Tutorial-Mac.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Agora-Rtm-Tutorial-Mac",
+				);
+				INFOPLIST_FILE = "Agora-Rtm-Tutorial-Mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial-Mac";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Debug;
+		};
+		A7F23AAF2202B4BC003C46FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = "Agora-Rtm-Tutorial-Mac/Agora-Rtm-Tutorial-Mac.entitlements";
+				CODE_SIGN_IDENTITY = "-";
+				CODE_SIGN_STYLE = Automatic;
+				COMBINE_HIDPI_IMAGES = YES;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Agora-Rtm-Tutorial-Mac",
+				);
+				INFOPLIST_FILE = "Agora-Rtm-Tutorial-Mac/Info.plist";
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/../Frameworks",
+				);
+				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial-Mac";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = macosx;
+				SWIFT_VERSION = 4.2;
+			};
+			name = Release;
+		};
+		A7FD7DD521EF61E3005ACFD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		A7FD7DD621EF61E3005ACFD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A7FD7DD821EF61E3005ACFD9 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+				);
+				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A7FD7DD921EF61E3005ACFD9 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+				);
+				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				SWIFT_VERSION = 4.2;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A7F23AB02202B4BC003C46FB /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial-Mac" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7F23AAE2202B4BC003C46FB /* Debug */,
+				A7F23AAF2202B4BC003C46FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7FD7DC021EF61E1005ACFD9 /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7FD7DD521EF61E3005ACFD9 /* Debug */,
+				A7FD7DD621EF61E3005ACFD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7FD7DD721EF61E3005ACFD9 /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7FD7DD821EF61E3005ACFD9 /* Debug */,
+				A7FD7DD921EF61E3005ACFD9 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A7FD7DBD21EF61E1005ACFD9 /* Project object */;
+}
