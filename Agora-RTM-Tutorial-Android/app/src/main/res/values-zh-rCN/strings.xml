@@ -6,7 +6,7 @@
     <string name="account_empty">账号不能为空</string>
     <string name="account_too_long">账号不能超过64字符</string>
     <string name="account_starts_with_space">账号不能以空格开头</string>
-    <string name="account_literal_null">账号不能是"null"</string>
+    <string name="account_literal_null">账号不能是\"null\"</string>
     <string name="account_cannot_be_yourself">不能呼叫自己</string>
     <string name="login_failed">登录失败</string>
 
@@ -17,7 +17,7 @@
     <string name="channel_name_empty">频道名不能为空</string>
     <string name="channel_name_too_long">频道名不能超过64个字符</string>
     <string name="channel_name_starts_with_space">频道名不能以空格开头</string>
-    <string name="channel_name_literal_null">频道名不能是"null"</string>
+    <string name="channel_name_literal_null">频道名不能是\"null\"</string>
     <string name="btn_chat">聊天</string>
     <string name="btn_join">加入</string>
 
@@ -26,7 +26,7 @@
     <string name="str_send">发送</string>
     <string name="send_msg_failed">消息发送失败</string>
     <string name="peer_offline">对方不在线</string>
-    <string name="reconnecting">网络正在重连...</string>
+    <string name="reconnecting">正在尝试重连...</string>
     <string name="account_offline">连接断开，请重试登录</string>
 
 </resources>
