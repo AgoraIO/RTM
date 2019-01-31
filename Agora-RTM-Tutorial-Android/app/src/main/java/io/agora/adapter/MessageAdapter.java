@@ -14,9 +14,6 @@ import java.util.List;
 import io.agora.model.MessageBean;
 import io.agora.rtmtutorial.R;
 
-/**
- * Created by yt on 2017/12/14/014.
- */
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
 
@@ -26,12 +23,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
     public MessageAdapter(Context context, List<MessageBean> messageBeanList) {
         inflater = ((Activity) context).getLayoutInflater();
         this.messageBeanList = messageBeanList;
-
     }
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-
         View view = inflater.inflate(R.layout.msg_item_layout, parent, false);
         MyViewHolder holder = new MyViewHolder(view);
         return holder;
@@ -39,14 +34,11 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-
         setupView(holder, position);
-
     }
 
     @Override
     public int getItemCount() {
-
         return messageBeanList.size();
     }
 

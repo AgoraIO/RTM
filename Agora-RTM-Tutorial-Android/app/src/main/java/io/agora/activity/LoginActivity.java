@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import io.agora.rtm.ErrorInfo;
@@ -15,56 +16,67 @@ import io.agora.rtm.RtmClient;
 import io.agora.rtmtutorial.AGApplication;
 import io.agora.rtmtutorial.R;
 import io.agora.rtmtutorial.ChatManager;
-import io.agora.utils.Constant;
+import io.agora.utils.MessageUtil;
 
 
 public class LoginActivity extends Activity {
     private final String TAG = LoginActivity.class.getSimpleName();
 
-    private EditText textAccountName;
-    private String account;
-    private boolean enableLoginBtnClick = true;
+    private TextView mLoginBtn;
+    private EditText mUserIdEditText;
+    private String mUserId;
 
     private ChatManager mChatManager;
     private RtmClient mRtmClient;
+    private boolean mIsInChat = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        mUserIdEditText = (EditText) findViewById(R.id.user_id);
+        mLoginBtn = (TextView) findViewById(R.id.button_login);
+
         mChatManager = AGApplication.the().getChatManager();
         mRtmClient = mChatManager.getRtmClient();
-        textAccountName = (EditText) findViewById(R.id.account_name);
     }
 
     public void onClickLogin(View v) {
-        if (!enableLoginBtnClick) {
-            return;
-        }
-
-        account = textAccountName.getText().toString();
-        if (account.equals("")) {
+        mUserId = mUserIdEditText.getText().toString();
+        if (mUserId.equals("")) {
             showToast(getString(R.string.account_empty));
 
-        } else if (account.length() > Constant.MAX_INPUT_NAME_LENGTH) {
+        } else if (mUserId.length() > MessageUtil.MAX_INPUT_NAME_LENGTH) {
             showToast(getString(R.string.account_too_long));
 
-        } else if (account.startsWith(" ")) {
+        } else if (mUserId.startsWith(" ")) {
             showToast(getString(R.string.account_starts_with_space));
 
-        } else if (account.equals("null")) {
+        } else if (mUserId.equals("null")) {
             showToast(getString(R.string.account_literal_null));
 
         } else {
-            enableLoginBtnClick = false;
+            mLoginBtn.setEnabled(false);
             doLogin();
         }
     }
 
-    // api call: login RTM server
+    @Override
+    protected void onResume() {
+        super.onResume();
+        mLoginBtn.setEnabled(true);
+        if (mIsInChat) {
+            doLogout();
+        }
+    }
+
+    /**
+     * API CALL: login RTM server
+     */
     private void doLogin() {
-        mRtmClient.login(null, account, new IResultCallback<Void>() {
+        mIsInChat = true;
+        mRtmClient.login(null, mUserId, new IResultCallback<Void>() {
             @Override
             public void onSuccess(Void responseInfo) {
                 Log.i(TAG, "login success");
@@ -72,7 +84,7 @@ public class LoginActivity extends Activity {
                     @Override
                     public void run() {
                         Intent intent = new Intent(LoginActivity.this, SelectionActivity.class);
-                        intent.putExtra("account", account);
+                        intent.putExtra(MessageUtil.INTENT_EXTRA_USER_ID, mUserId);
                         startActivity(intent);
                     }
                 });
@@ -84,7 +96,8 @@ public class LoginActivity extends Activity {
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        enableLoginBtnClick = true;
+                        mLoginBtn.setEnabled(true);
+                        mIsInChat = false;
                         showToast(getString(R.string.login_failed));
                     }
                 });
@@ -92,10 +105,12 @@ public class LoginActivity extends Activity {
         });
     }
 
-    @Override
-    protected void onResume() {
-        super.onResume();
-        enableLoginBtnClick = true;
+    /**
+     * API CALL: logout from RTM server
+     */
+    private void doLogout() {
+        mRtmClient.logout(null);
+        MessageUtil.cleanMessageListBeanList();
     }
 
     private void showToast(String text) {

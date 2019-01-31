@@ -24,7 +24,7 @@
         android:background="@drawable/logout"/>
 
     <TextView
-        android:id="@+id/selection_start_btn"
+        android:id="@+id/selection_chat_btn"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
         android:layout_margin="40dp"
@@ -44,7 +44,7 @@
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/selection_title"
-        android:layout_toLeftOf="@+id/selection_start_btn"
+        android:layout_toLeftOf="@+id/selection_chat_btn"
         android:hint="@string/hint_friend"
         android:layout_marginLeft="40dp"
         android:layout_marginBottom="25dp"
@@ -54,7 +54,7 @@
         android:padding="5dp" />
 
     <RadioGroup
-        android:id="@+id/selection_tab_group"
+        android:id="@+id/mode_radio_group"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -64,7 +64,7 @@
         android:paddingBottom="10dp"
         android:orientation="horizontal">
         <RadioButton
-            android:id="@+id/selection_tab_peer"
+            android:id="@+id/peer_radio_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:padding="15dp"

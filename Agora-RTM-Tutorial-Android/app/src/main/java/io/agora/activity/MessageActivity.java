@@ -32,23 +32,23 @@ import io.agora.rtm.RtmStatusCode;
 import io.agora.rtmtutorial.AGApplication;
 import io.agora.rtmtutorial.R;
 import io.agora.rtmtutorial.ChatManager;
-import io.agora.utils.Constant;
+import io.agora.utils.MessageUtil;
 
 
 public class MessageActivity extends Activity {
     private final String TAG = MessageActivity.class.getSimpleName();
 
-    private TextView textViewTitle;
-    private EditText editText;
-    private RecyclerView recyclerView;
-    private List<MessageBean> messageBeanList = new ArrayList<>();
-    private MessageAdapter adapter;
+    private TextView mTitleTextView;
+    private EditText mMsgEditText;
+    private RecyclerView mRecyclerView;
+    private List<MessageBean> mMessageBeanList = new ArrayList<>();
+    private MessageAdapter mMessageAdapter;
 
-    private String selfName = "";
-    private String peerName = "";
-    private boolean peerToPeerMode; // peer to peer mode, or channel mode
-    private String channelName = "";
-    private int channelMemberCount = 1;
+    private boolean mIsPeerToPeerMode = true;
+    private String mUserId = "";
+    private String mPeerId = "";
+    private String mChannelName = "";
+    private int mChannelMemberCount = 1;
 
     private ChatManager mChatManager;
     private RtmClient mRtmClient;
@@ -65,32 +65,32 @@ public class MessageActivity extends Activity {
     }
 
     private void initUIAndData() {
-        textViewTitle = (TextView) findViewById(R.id.message_title);
-        editText = (EditText) findViewById(R.id.message_edittiext);
-        recyclerView = (RecyclerView) findViewById(R.id.message_list);
+        mTitleTextView = (TextView) findViewById(R.id.message_title);
+        mMsgEditText = (EditText) findViewById(R.id.message_edittiext);
+        mRecyclerView = (RecyclerView) findViewById(R.id.message_list);
 
         Intent intent = getIntent();
-        peerToPeerMode = intent.getBooleanExtra("mode", true);
-        selfName = intent.getStringExtra("selfname");
-        String name = intent.getStringExtra("name");
-        if (peerToPeerMode) {
-            peerName = name;
-            textViewTitle.setText(peerName);
-            MessageListBean messageListBean = Constant.getExistMessageListBean(peerName);
+        mIsPeerToPeerMode = intent.getBooleanExtra(MessageUtil.INTENT_EXTRA_IS_PEER_MODE, true);
+        mUserId = intent.getStringExtra(MessageUtil.INTENT_EXTRA_USER_ID);
+        String targetName = intent.getStringExtra(MessageUtil.INTENT_EXTRA_TARGET_NAME);
+        if (mIsPeerToPeerMode) {
+            mPeerId = targetName;
+            mTitleTextView.setText(mPeerId);
+            MessageListBean messageListBean = MessageUtil.getExistMessageListBean(mPeerId);
             if (messageListBean != null) {
-                messageBeanList.addAll(messageListBean.getMessageBeanList());
+                mMessageBeanList.addAll(messageListBean.getMessageBeanList());
             }
         } else {
-            channelName = name;
-            channelMemberCount = 1;
-            textViewTitle.setText(channelName + "(" + channelMemberCount + ")");
+            mChannelName = targetName;
+            mChannelMemberCount = 1;
+            mTitleTextView.setText(mChannelName + "(" + mChannelMemberCount + ")");
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        adapter = new MessageAdapter(this, messageBeanList);
-        recyclerView.setAdapter(adapter);
+        mMessageAdapter = new MessageAdapter(this, mMessageBeanList);
+        mRecyclerView.setAdapter(mMessageAdapter);
     }
 
     private void initChat() {
@@ -99,7 +99,7 @@ public class MessageActivity extends Activity {
         mClientListener = new MyRtmClientListener();
         mChatManager.registerListener(mClientListener);
 
-        if (!peerToPeerMode) {
+        if (!mIsPeerToPeerMode) {
             createAndJoinChannel();
         }
     }
@@ -107,8 +107,8 @@ public class MessageActivity extends Activity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (peerToPeerMode) {
-            Constant.addMessageListBeanList(new MessageListBean(peerName, messageBeanList));
+        if (mIsPeerToPeerMode) {
+            MessageUtil.addMessageListBeanList(new MessageListBean(mPeerId, mMessageBeanList));
         } else {
             leaveAndReleaseChannel();
         }
@@ -116,73 +116,36 @@ public class MessageActivity extends Activity {
     }
 
     public void onClickSend(View v) {
-        String msg = editText.getText().toString();
+        String msg = mMsgEditText.getText().toString();
         if (!msg.equals("")) {
-            MessageBean messageBean = new MessageBean(selfName, msg, true);
-            messageBeanList.add(messageBean);
-            adapter.notifyItemRangeChanged(messageBeanList.size(), 1);
-            recyclerView.scrollToPosition(messageBeanList.size() - 1);
-            if (peerToPeerMode) {
+            MessageBean messageBean = new MessageBean(mUserId, msg, true);
+            mMessageBeanList.add(messageBean);
+            mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+            mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
+            if (mIsPeerToPeerMode) {
                 sendPeerMessage(msg);
             } else {
                 sendChannelMessage(msg);
             }
         }
-        editText.setText("");
+        mMsgEditText.setText("");
     }
 
     public void onClickFinish(View v) {
         finish();
     }
 
-    // api call: create and join channel
-    private void createAndJoinChannel() {
-
-        // 1: create channel
-        mRtmChannel = mRtmClient.createChannel(channelName, new MyChannelListener());
-        if (mRtmChannel == null) {
-            showToast(getString(R.string.join_channel_failed));
-            finish();
-            return;
-        }
-
-        // 2: join channel
-        mRtmChannel.join(new IResultCallback<Void>() {
-            @Override
-            public void onSuccess(Void responseInfo) {
-
-            }
-
-            @Override
-            public void onFailure(ErrorInfo errorInfo) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(getString(R.string.join_channel_failed));
-                        finish();
-                    }
-                });
-            }
-        });
-    }
-
-    // api call: leave and release channel
-    private void leaveAndReleaseChannel() {
-        if (mRtmChannel != null) {
-            mRtmChannel.leave(null);
-            mRtmChannel.release();
-            mRtmChannel = null;
-        }
-    }
-
-    // api call: send message to peer
+    /**
+     * API CALL: send message to peer
+     */
     private void sendPeerMessage(String content) {
-        // 1: create a message
+
+        // step 1: create a message
         RtmMessage message = RtmMessage.createMessage();
         message.setText(content);
-    
-        // 2: send message to peer
-        mRtmClient.sendMessageToPeer(peerName, message, new IStateListener() {
+
+        // step 2: send message to peer
+        mRtmClient.sendMessageToPeer(mPeerId, message, new IStateListener() {
             @Override
             public void onStateChanged(final int newState) {
                 // refer to RtmStatusCode.PeerMessageState for the message state
@@ -204,13 +167,74 @@ public class MessageActivity extends Activity {
         });
     }
 
-    // api call: send message to channel
+    /**
+     * API CALL: create and join channel
+    */
+    private void createAndJoinChannel() {
+
+        // step 1: create a channel instance
+        mRtmChannel = mRtmClient.createChannel(mChannelName, new MyChannelListener());
+        if (mRtmChannel == null) {
+            showToast(getString(R.string.join_channel_failed));
+            finish();
+            return;
+        }
+
+        // step 2: join the channel
+        mRtmChannel.join(new IResultCallback<Void>() {
+            @Override
+            public void onSuccess(Void responseInfo) {
+                Log.i(TAG, "join channel success");
+                getChannelMemberList();
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                Log.e(TAG, "join channel failed");
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        showToast(getString(R.string.join_channel_failed));
+                        finish();
+                    }
+                });
+            }
+        });
+    }
+
+    /**
+     * API CALL: get channel member list
+     */
+    private void getChannelMemberList() {
+        mRtmChannel.getMembers(new IResultCallback<List<RtmChannelMember>>() {
+            @Override
+            public void onSuccess(final List<RtmChannelMember> responseInfo) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mChannelMemberCount = responseInfo.size();
+                        refreshChannelTitle();
+                    }
+                });
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
+                Log.e(TAG, "failed to get channel members, err: " + errorInfo.getErrorCode());
+            }
+        });
+    }
+
+    /**
+     * API CALL: send message to a channel
+     */
     private void sendChannelMessage(String content) {
-        // 1: create a message
+
+        // step 1: create a message
         RtmMessage message = RtmMessage.createMessage();
         message.setText(content);
 
-        // 2: send message to channel
+        // step 2: send message to channel
         mRtmChannel.sendMessage(message, new IStateListener() {
             @Override
             public void onStateChanged(final int newState) {
@@ -230,7 +254,21 @@ public class MessageActivity extends Activity {
         });
     }
 
-    // api callback: rtm event listener
+    /**
+     * API CALL: leave and release channel
+     */
+    private void leaveAndReleaseChannel() {
+        if (mRtmChannel != null) {
+            mRtmChannel.leave(null);
+            mRtmChannel.release();
+            mRtmChannel = null;
+        }
+    }
+
+
+    /**
+     * API CALLBACK: rtm event listener
+     */
     class MyRtmClientListener implements RtmClientListener {
 
         @Override
@@ -244,7 +282,7 @@ public class MessageActivity extends Activity {
                             break;
                         case RtmStatusCode.ConnectionState.CONNECTION_STATE_ABORTED:
                             showToast(getString(R.string.account_offline));
-                            setResult(RESULT_CANCELED);
+                            setResult(MessageUtil.ACTIVITY_RESULT_CONN_ABORTED);
                             finish();
                             break;
                     }
@@ -258,21 +296,23 @@ public class MessageActivity extends Activity {
                 @Override
                 public void run() {
                     String content = message.getText();
-                    if (peerId.equals(peerName)) {
+                    if (peerId.equals(mPeerId)) {
                         MessageBean messageBean = new MessageBean(peerId, content,false);
                         messageBean.setBackground(getMessageColor(peerId));
-                        messageBeanList.add(messageBean);
-                        adapter.notifyItemRangeChanged(messageBeanList.size(), 1);
-                        recyclerView.scrollToPosition(messageBeanList.size() - 1);
+                        mMessageBeanList.add(messageBean);
+                        mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                        mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
                     } else {
-                        Constant.addMessageBean(peerId, content);
+                        MessageUtil.addMessageBean(peerId, content);
                     }
                 }
             });
         }
     }
 
-    // api callback: rtm channel event listener
+    /**
+     * API CALLBACK: rtm channel event listener
+     */
     class MyChannelListener implements RtmChannelListener {
 
         @Override
@@ -285,9 +325,9 @@ public class MessageActivity extends Activity {
                     Log.i(TAG, "onMessageReceived account = " + account + " msg = " + msg);
                     MessageBean messageBean = new MessageBean(account, msg, false);
                     messageBean.setBackground(getMessageColor(account));
-                    messageBeanList.add(messageBean);
-                    adapter.notifyItemRangeChanged(messageBeanList.size(), 1);
-                    recyclerView.scrollToPosition(messageBeanList.size() - 1);
+                    mMessageBeanList.add(messageBean);
+                    mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                    mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
                 }
             });
         }
@@ -297,8 +337,8 @@ public class MessageActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    channelMemberCount++;
-                    textViewTitle.setText(channelName + "(" + channelMemberCount + ")");
+                    mChannelMemberCount++;
+                    refreshChannelTitle();
                 }
             });
         }
@@ -308,8 +348,8 @@ public class MessageActivity extends Activity {
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    channelMemberCount--;
-                    textViewTitle.setText(channelName + "(" + channelMemberCount + ")");
+                    mChannelMemberCount--;
+                    refreshChannelTitle();
                 }
             });
         }
@@ -326,12 +366,18 @@ public class MessageActivity extends Activity {
     }
 
     private int getMessageColor(String account) {
-        for (int i = 0; i < messageBeanList.size(); i++) {
-            if (account.equals(messageBeanList.get(i).getAccount())) {
-                return messageBeanList.get(i).getBackground();
+        for (int i = 0; i < mMessageBeanList.size(); i++) {
+            if (account.equals(mMessageBeanList.get(i).getAccount())) {
+                return mMessageBeanList.get(i).getBackground();
             }
         }
-        return Constant.COLOR_ARRAY[Constant.RANDOM.nextInt(Constant.COLOR_ARRAY.length)];
+        return MessageUtil.COLOR_ARRAY[MessageUtil.RANDOM.nextInt(MessageUtil.COLOR_ARRAY.length)];
+    }
+
+    private void refreshChannelTitle() {
+        String titleFormat = getString(R.string.channel_title);
+        String title = String.format(titleFormat, mChannelName, mChannelMemberCount);
+        mTitleTextView.setText(title);
     }
 
     private void showToast(final String text) {
