@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_video_chat_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <TextView
+        android:id="@+id/selection_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:gravity="center"
+        android:text="@string/title_peer_msg"
+        android:textColor="@color/white"
+        android:padding="15dp"/>
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="15dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginRight="8dp"
+        android:onClick="onClickFinish"
+        android:background="@drawable/logout"/>
+
+    <TextView
+        android:id="@+id/selection_start_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="40dp"
+        android:layout_below="@+id/selection_title"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="onClickChat"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="@color/white"
+        android:background="@color/blue"
+        android:text="@string/btn_chat" />
+
+    <EditText
+        android:id="@+id/selection_name"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@+id/selection_title"
+        android:layout_toLeftOf="@+id/selection_start_btn"
+        android:hint="@string/hint_friend"
+        android:layout_marginLeft="40dp"
+        android:layout_marginBottom="25dp"
+        android:layout_marginTop="40dp"
+        android:background="@color/white"
+        android:lines="1"
+        android:padding="5dp" />
+
+    <RadioGroup
+        android:id="@+id/selection_tab_group"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@color/blue"
+        android:paddingLeft="120dp"
+        android:paddingTop="10dp"
+        android:paddingBottom="10dp"
+        android:orientation="horizontal">
+        <RadioButton
+            android:id="@+id/selection_tab_peer"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:padding="15dp"
+            android:clickable="true"
+            android:button="@null"
+            android:background="@drawable/selector_single_btn"/>
+        <RadioButton
+            android:id="@+id/selection_tab_channel"
+            android:layout_width="35dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="60dp"
+            android:padding="15dp"
+            android:clickable="true"
+            android:button="@null"
+            android:background="@drawable/selector_channel_btn"/>
+
+    </RadioGroup>
+
+
+</RelativeLayout>

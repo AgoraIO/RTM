@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <RelativeLayout
+        android:id="@+id/item_layout_l"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+        <TextView
+            android:id="@+id/item_name_l"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:gravity="center"
+            android:textColor="@color/white"
+            android:ellipsize="end"
+            android:lines="1"
+            android:textSize="10dp"
+            android:background="@drawable/shape_circle_red"
+            />
+
+        <TextView
+            android:id="@+id/item_msg_l"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:padding="10dp"
+            android:textColor="@color/black"
+            android:background="@drawable/icon_msg_l"
+            android:layout_toRightOf="@+id/item_name_l"
+            android:layout_centerVertical="true"
+            />
+    </RelativeLayout>
+   <RelativeLayout
+       android:id="@+id/item_layout_r"
+       android:layout_width="300dp"
+       android:layout_height="wrap_content"
+       android:layout_alignParentRight="true"
+       android:layout_margin="10dp">
+       <TextView
+           android:id="@+id/item_name_r"
+           android:layout_width="40dp"
+           android:layout_height="40dp"
+           android:layout_alignParentRight="true"
+           android:gravity="center"
+           android:textColor="@color/white"
+           android:ellipsize="marquee"
+           android:lines="1"
+           android:textSize="10dp"
+           android:background="@drawable/shape_circle_green"
+           />
+
+       <TextView
+           android:id="@+id/item_msg_r"
+           android:layout_width="wrap_content"
+           android:layout_height="wrap_content"
+           android:layout_toLeftOf="@+id/item_name_r"
+           android:gravity="center"
+           android:padding="10dp"
+           android:textColor="@color/white"
+           android:background="@drawable/icon_msg_r"
+           android:layout_centerVertical="true"
+           />
+   </RelativeLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/message_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/blue"
+        android:textColor="@color/white"
+        android:gravity="center"
+        android:padding="15dp"/>
+    <ImageView
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/icon_back"
+        android:onClick="onClickFinish"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="5dp"
+        android:padding="5dp"/>
+    <TextView
+        android:id="@+id/selection_start_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="40dp"
+        android:layout_margin="20dp"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:clickable="true"
+        android:gravity="center"
+        android:onClick="onClickSend"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:textColor="@color/white"
+        android:background="@color/blue"
+        android:text="@string/str_send" />
+    <EditText
+        android:id="@+id/message_edittiext"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginBottom="20dp"
+        android:hint="@string/single_input"
+        android:background="@color/white"
+        android:layout_alignParentBottom="true"
+        android:layout_toLeftOf="@+id/selection_start_btn"
+        android:lines="1"
+        android:padding="5dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/message_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/message_title"
+        android:layout_above="@+id/message_edittiext"/>
+
+
+
+
+</RelativeLayout>
