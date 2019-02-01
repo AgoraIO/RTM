@@ -30,6 +30,10 @@
 		A7F23AC72202BDA2003C46FB /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23AC62202BDA2003C46FB /* AgoraRtmKit.framework */; };
 		A7F23AC82202BDB3003C46FB /* AppId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DE121F02709005ACFD9 /* AppId.swift */; };
 		A7F23ACB2202C933003C46FB /* CoreWLAN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23ACA2202C933003C46FB /* CoreWLAN.framework */; };
+		A7F23ACE2202CEDF003C46FB /* ReplaceSegue.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F23ACD2202CEDF003C46FB /* ReplaceSegue.swift */; };
+		A7F23AD62202D2FC003C46FB /* PeerChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7F23AD52202D2FC003C46FB /* PeerChannelViewController.swift */; };
+		A7F23AD72202D523003C46FB /* ChatViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342721F050EC00D6217B /* ChatViewController.swift */; };
+		A7F23AE6220302F2003C46FB /* MessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706343921F0818100D6217B /* MessageCell.swift */; };
 		A7FD7DC921EF61E1005ACFD9 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */; };
 		A7FD7DD021EF61E3005ACFD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */; };
 		A7FD7DD321EF61E3005ACFD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DD121EF61E3005ACFD9 /* LaunchScreen.storyboard */; };
@@ -63,6 +67,8 @@
 		A7F23AC62202BDA2003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial-Mac/AgoraRtmKit.framework"; sourceTree = "<group>"; };
 		A7F23ACA2202C933003C46FB /* CoreWLAN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreWLAN.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreWLAN.framework; sourceTree = DEVELOPER_DIR; };
 		A7F23ACC2202C9AD003C46FB /* Agora-Rtm-Tutorial-Mac.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = "Agora-Rtm-Tutorial-Mac.entitlements"; sourceTree = "<group>"; };
+		A7F23ACD2202CEDF003C46FB /* ReplaceSegue.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ReplaceSegue.swift; sourceTree = "<group>"; };
+		A7F23AD52202D2FC003C46FB /* PeerChannelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerChannelViewController.swift; sourceTree = "<group>"; };
 		A7FD7DC521EF61E1005ACFD9 /* Agora-Rtm-Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-Rtm-Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -117,6 +123,8 @@
 		A7F23AA22202B4BA003C46FB /* Agora-Rtm-Tutorial-Mac */ = {
 			isa = PBXGroup;
 			children = (
+				A7F23AD52202D2FC003C46FB /* PeerChannelViewController.swift */,
+				A7F23ACD2202CEDF003C46FB /* ReplaceSegue.swift */,
 				A7F23AA92202B4BC003C46FB /* Main.storyboard */,
 				A7F23AC92202BEA2003C46FB /* Support Files */,
 			);
@@ -297,9 +305,13 @@
 			files = (
 				A7F23AB42202BA7D003C46FB /* TypeAlias.swift in Sources */,
 				A7F23AA42202B4BA003C46FB /* AppDelegate.swift in Sources */,
+				A7F23AD72202D523003C46FB /* ChatViewController.swift in Sources */,
+				A7F23ACE2202CEDF003C46FB /* ReplaceSegue.swift in Sources */,
 				A7F23AC82202BDB3003C46FB /* AppId.swift in Sources */,
 				A7F23ABD2202BCE3003C46FB /* AgoraRtm.swift in Sources */,
 				A7F23ABC2202BC09003C46FB /* MainViewController.swift in Sources */,
+				A7F23AD62202D2FC003C46FB /* PeerChannelViewController.swift in Sources */,
+				A7F23AE6220302F2003C46FB /* MessageCell.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -352,13 +364,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial-Mac",
+					"$(PROJECT_DIR)/../../libs",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial-Mac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial-Mac";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -377,13 +390,14 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial-Mac",
+					"$(PROJECT_DIR)/../../libs",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial-Mac/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 				);
-				MACOSX_DEPLOYMENT_TARGET = 10.14;
+				MACOSX_DEPLOYMENT_TARGET = 10.10;
 				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial-Mac";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SDKROOT = macosx;
@@ -517,6 +531,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+					"$(PROJECT_DIR)/../../libs",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -542,6 +557,7 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+					"$(PROJECT_DIR)/../../libs",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

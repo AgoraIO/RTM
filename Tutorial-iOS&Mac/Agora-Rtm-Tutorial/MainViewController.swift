@@ -18,14 +18,30 @@ class MainViewController: AGViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
     }
+    
     #if os(iOS)
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         logout()
     }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
     #else
     override func viewWillAppear() {
         logout()
+    }
+    
+    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
+        guard let identifier = segue.identifier, identifier == "mainToTab" else {
+            return
+        }
+        
+        let peerChannelVC = segue.destinationController as! PeerChannelViewController
+        peerChannelVC.delegate = self
     }
     #endif
     
@@ -69,3 +85,11 @@ private extension MainViewController {
         })
     }
 }
+
+#if os(macOS)
+extension MainViewController: PeerChannelVCDelegate {
+    func peerChannelVCWillClose(_ vc: PeerChannelViewController) {
+        vc.view.window?.contentViewController = self
+    }
+}
+#endif

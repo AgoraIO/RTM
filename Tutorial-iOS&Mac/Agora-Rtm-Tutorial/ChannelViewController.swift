@@ -11,8 +11,9 @@ import UIKit
 class ChannelViewController: UIViewController {
     @IBOutlet weak var channelTextField: UITextField!
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        view.endEditing(true)
     }
     
     @IBAction func doJoinPressed(_ sender: UIButton) {
@@ -34,5 +35,9 @@ class ChannelViewController: UIViewController {
         default:
             break
         }
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        view.endEditing(true)
     }
 }
