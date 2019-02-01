@@ -58,32 +58,24 @@ class ChatViewController: AGViewController {
         AgoraRtm.updateKit(delegate: self)
     }
     
+    #if os(iOS)
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         leaveChannel()
     }
     
-    func leaveChannel() {
-        var lChannel: String
-        switch type {
-        case .group(let channel): lChannel = channel
-        default: return
-        }
-
-        guard let rtmChannels = AgoraRtm.kit?.channels, let rtmChannel = rtmChannels[lChannel] as? AgoraRtmChannel else {
-            return
-        }
-        rtmChannel.leave { (error) in
-            print("leave channel error: \(error.rawValue)")
-        }
+    #else
+    override func viewWillDisappear() {
+        super.viewWillDisappear()
+        leaveChannel()
     }
     
-    #if os(macOS)
     @IBAction func doSendMsgPressed(_ sender: NSTextField) {
         if pressedReturnToSendText(sender.text) {
             sender.text = ""
         }
     }
+    
     @IBAction func doBackPressed(_ sender: NSButton) {
         self.delegate?.chatVCWillClose(self)
     }
@@ -102,6 +94,7 @@ class ChatViewController: AGViewController {
     }
 }
 
+// MARK: Peer
 extension ChatViewController: AgoraRtmDelegate {
     func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState) {
         print("connection state changed: \(state.rawValue)")
@@ -112,6 +105,7 @@ extension ChatViewController: AgoraRtmDelegate {
     }
 }
 
+// MARK: Channel
 extension ChatViewController: AgoraRtmChannelDelegate {
     func rtmKit(_ kit: AgoraRtmKit, channel: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
         DispatchQueue.main.async { [unowned self] in
@@ -137,6 +131,21 @@ private extension ChatViewController {
         }
         rtmChannel.join { (error) in
             print("join channel error: \(error.rawValue)")
+        }
+    }
+    
+    func leaveChannel() {
+        var lChannel: String
+        switch type {
+        case .group(let channel): lChannel = channel
+        default: return
+        }
+        
+        guard let rtmChannels = AgoraRtm.kit?.channels, let rtmChannel = rtmChannels[lChannel] as? AgoraRtmChannel else {
+            return
+        }
+        rtmChannel.leave { (error) in
+            print("leave channel error: \(error.rawValue)")
         }
     }
     
