@@ -3,7 +3,7 @@
 //  Agora-Rtm-Tutorial
 //
 //  Created by CavanSu on 2019/1/16.
-//  Copyright © 2019 CavanSu. All rights reserved.
+//  Copyright © 2019 Agora. All rights reserved.
 //
 
 import UIKit

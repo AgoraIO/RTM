@@ -3,14 +3,10 @@
 //  Agora-Rtm-Tutorial
 //
 //  Created by CavanSu on 2019/1/17.
-//  Copyright © 2019 Agora.IO. All rights reserved.
+//  Copyright © 2019 Agora. All rights reserved.
 //
 
-#if os(iOS)
-import UIKit
-#else
 import Cocoa
-#endif
 import AgoraRtmKit
 
 enum ChatType {
@@ -22,23 +18,19 @@ struct Message {
     var text: String
 }
 
-#if os(macOS)
 protocol ChatVCDelegate: NSObjectProtocol {
     func chatVCWillClose(_ vc: ChatViewController)
 }
-#endif
 
-class ChatViewController: AGViewController {
-    @IBOutlet weak var inputTextField: AGTextField!
+class ChatViewController: NSViewController {
+    @IBOutlet weak var inputTextField: NSTextField!
     @IBOutlet weak var inputViewBottom: NSLayoutConstraint!
-    @IBOutlet weak var tableView: AGTableView!
-    @IBOutlet weak var inputContainView: AGView!
+    @IBOutlet weak var tableView: NSTableView!
+    @IBOutlet weak var inputContainView: NSView!
     
     lazy var list = [Message]()
     
-    #if os(macOS)
     var delegate: ChatVCDelegate?
-    #endif
     
     var type: ChatType = .peer("unknow") {
         didSet {
@@ -51,35 +43,23 @@ class ChatViewController: AGViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        #if os(iOS)
-        addKeyboradObserver()
-        #endif
-        updateViews()
         AgoraRtm.updateKit(delegate: self)
     }
     
-    #if os(iOS)
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        leaveChannel()
-    }
-    
-    #else
     override func viewWillDisappear() {
         super.viewWillDisappear()
         leaveChannel()
     }
     
     @IBAction func doSendMsgPressed(_ sender: NSTextField) {
-        if pressedReturnToSendText(sender.text) {
-            sender.text = ""
+        if pressedReturnToSendText(sender.stringValue) {
+            sender.stringValue = ""
         }
     }
     
     @IBAction func doBackPressed(_ sender: NSButton) {
         self.delegate?.chatVCWillClose(self)
     }
-    #endif
     
     @discardableResult func pressedReturnToSendText(_ text: String?) -> Bool {
         guard let text = text, text.count > 0 else {
@@ -107,19 +87,19 @@ extension ChatViewController: AgoraRtmDelegate {
 
 // MARK: Channel
 extension ChatViewController: AgoraRtmChannelDelegate {
-    func rtmKit(_ kit: AgoraRtmKit, channel: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
+    func channel(_ channel: AgoraRtmChannel, memberJoined member: AgoraRtmMember) {
         DispatchQueue.main.async { [unowned self] in
             self.showAlert("\(member.userId) join")
         }
     }
     
-    func rtmKit(_ kit: AgoraRtmKit, channel: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
-        DispatchQueue.main.async { [unowned self] in 
+    func channel(_ channel: AgoraRtmChannel, memberLeft member: AgoraRtmMember) {
+        DispatchQueue.main.async { [unowned self] in
             self.showAlert("\(member.userId) left")
         }
     }
     
-    func rtmKit(_ kit: AgoraRtmKit, channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
+    func channel(_ channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
         appendMsg(user: member.userId, content: message.text)
     }
 }
@@ -178,37 +158,17 @@ private extension ChatViewController {
 }
 
 private extension ChatViewController {
-    func updateViews() {
-        #if os(iOS)
-        tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 55
-        #endif
-    }
-    
-    func appendMsg(user: String, content: String) {
+   func appendMsg(user: String, content: String) {
         let msg = Message(userId: user, text: content)
         list.append(msg)
-        #if os(iOS)
-        let end = IndexPath(row: list.count - 1, section: 0)
-        DispatchQueue.main.async { [unowned self] in
-            self.tableView.reloadData()
-            self.tableView.scrollToRow(at: end, at: .bottom, animated: true)
-        }
-        #else
         let end = list.count - 1
         DispatchQueue.main.async { [unowned self] in
             self.tableView.insertRows(at: IndexSet(integer: end), withAnimation: NSTableView.AnimationOptions())
             self.tableView.scrollRowToVisible(end)
         }
-        #endif
     }
     
     func showAlert(_ message: String) {
-        #if os(iOS)
-        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
-        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: nil))
-        present(alert, animated: true, completion: nil)
-        #else
         let alert = NSAlert()
         alert.messageText = message
         alert.addButton(withTitle: "OK")
@@ -219,75 +179,9 @@ private extension ChatViewController {
         }
         
         alert.beginSheetModal(for: window, completionHandler: nil)
-        #endif
-    }
-    
-    #if os(iOS)
-    func addKeyboradObserver() {
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(keyboardFrameWillChange(notification:)),
-                                               name: UIResponder.keyboardWillChangeFrameNotification, object: nil)
-    }
-    
-    @objc func keyboardFrameWillChange(notification: NSNotification) {
-        guard let userInfo = notification.userInfo,
-            let endKeyboardFrameValue = userInfo[UIResponder.keyboardFrameEndUserInfoKey] as? NSValue,
-            let durationValue = userInfo[UIResponder.keyboardAnimationDurationUserInfoKey] as? NSNumber else {
-                return
-        }
-        
-        let endKeyboardFrame = endKeyboardFrameValue.cgRectValue
-        let duration = durationValue.doubleValue
-        
-        let isShowing: Bool = endKeyboardFrame.maxY > UIScreen.main.bounds.height ? false : true
-        
-        UIView.animate(withDuration: duration) { [weak self] in
-            guard let strongSelf = self else {
-                return
-            }
-            
-            if isShowing {
-                let offsetY = strongSelf.inputContainView.frame.maxY - endKeyboardFrame.minY
-                guard offsetY > 0 else {
-                    return
-                }
-                strongSelf.inputViewBottom.constant = -offsetY
-            } else {
-                strongSelf.inputViewBottom.constant = 0
-            }
-        }
-    }
-    #endif
-}
-
-#if os(iOS)
-extension ChatViewController: UITableViewDataSource {
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return list.count
-    }
-    
-    func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let msg = list[indexPath.row]
-        let type: CellType = msg.userId == AgoraRtm.current ? .right : .left
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as! MessageCell
-        cell.update(type: type, message: msg)
-        return cell
     }
 }
 
-extension ChatViewController: UITextFieldDelegate {
-    func textFieldShouldReturn(_ textField: UITextField) -> Bool {
-        if pressedReturnToSendText(textField.text) {
-            textField.text = nil
-        } else {
-            view.endEditing(true)
-        }
-        
-        return true
-    }
-}
-
-#else
 extension ChatViewController: NSTableViewDelegate, NSTableViewDataSource {
     func numberOfRows(in tableView: NSTableView) -> Int {
         return list.count
@@ -317,4 +211,3 @@ extension ChatViewController: NSTableViewDelegate, NSTableViewDataSource {
         return textHeight;
     }
 }
-#endif

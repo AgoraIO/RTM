@@ -3,50 +3,33 @@
 //  Agora-Rtm-Tutorial
 //
 //  Created by CavanSu on 2019/1/17.
-//  Copyright © 2019 Agora.IO. All rights reserved.
+//  Copyright © 2019 Agora. All rights reserved.
 //
 
-#if os(iOS)
 import UIKit
-#else
-import Cocoa
-#endif
 
 enum CellType {
     case left, right
 }
 
-class MessageCell: AGTableViewCell {
-    @IBOutlet weak var rightUserLabel: AGLabel!
-    @IBOutlet weak var rightContentLabel: AGLabel!
-   
-    @IBOutlet weak var leftUserLabel: AGLabel!
-    @IBOutlet weak var leftContentLabel: AGLabel!
+class MessageCell: UITableViewCell {
+    @IBOutlet weak var rightUserLabel: UILabel!
+    @IBOutlet weak var rightContentLabel: UILabel!
+    @IBOutlet weak var leftUserLabel: UILabel!
+    @IBOutlet weak var leftContentLabel: UILabel!
     
-    #if os(iOS)
-    @IBOutlet weak var rightUserBgView: AGView!
-    @IBOutlet weak var rightContentBgView: AGView!
-    @IBOutlet weak var leftUserBgView: AGView!
-    @IBOutlet weak var leftContentBgView: AGView!
-    #endif
+    @IBOutlet weak var rightUserBgView: UIView!
+    @IBOutlet weak var rightContentBgView: UIView!
+    @IBOutlet weak var leftUserBgView: UIView!
+    @IBOutlet weak var leftContentBgView: UIView!
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        #if os(iOS)
         rightUserBgView.layer.cornerRadius = 20
         rightContentBgView.layer.cornerRadius = 5
         
         leftUserBgView.layer.cornerRadius = 20
         leftContentBgView.layer.cornerRadius = 5
-        #else
-        rightUserLabel?.usesSingleLineMode = false
-        rightUserLabel?.cell?.wraps = true
-        rightUserLabel?.cell?.isScrollable = false
-        
-        leftContentLabel?.usesSingleLineMode = false
-        leftContentLabel?.cell?.wraps = true
-        leftContentLabel?.cell?.isScrollable = false
-        #endif
     }
     
     private var type: CellType = .right {
@@ -59,13 +42,11 @@ class MessageCell: AGTableViewCell {
             leftUserLabel.isHidden = !rightHidden
             leftContentLabel.isHidden = !rightHidden
             
-            #if os(iOS)
             rightUserBgView.isHidden = rightHidden
             rightContentBgView.isHidden = rightHidden
             
             leftUserBgView.isHidden = !rightHidden
             leftContentBgView.isHidden = !rightHidden
-            #endif
         }
     }
     

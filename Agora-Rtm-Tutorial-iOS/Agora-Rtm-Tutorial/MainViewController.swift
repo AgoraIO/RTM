@@ -3,23 +3,18 @@
 //  Agora-Rtm-Tutorial
 //
 //  Created by CavanSu on 2019/1/17.
-//  Copyright © 2019 CavanSu. All rights reserved.
+//  Copyright © 2019 Agora. All rights reserved.
 //
 
-#if os(iOS)
 import UIKit
-#else
-import Cocoa
-#endif
 
-class MainViewController: AGViewController {
-    @IBOutlet weak var accountTextField: AGTextField!
+class MainViewController: UIViewController {
+    @IBOutlet weak var accountTextField: UITextField!
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
-    #if os(iOS)
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         logout()
@@ -30,22 +25,7 @@ class MainViewController: AGViewController {
         view.endEditing(true)
     }
     
-    #else
-    override func viewWillAppear() {
-        logout()
-    }
-    
-    override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
-        guard let identifier = segue.identifier, identifier == "mainToTab" else {
-            return
-        }
-        
-        let peerChannelVC = segue.destinationController as! PeerChannelViewController
-        peerChannelVC.delegate = self
-    }
-    #endif
-    
-    @IBAction func doLoginPressed(_ sender: AGButton) {
+    @IBAction func doLoginPressed(_ sender: UIButton) {
         login()
     }
 }
@@ -85,11 +65,3 @@ private extension MainViewController {
         })
     }
 }
-
-#if os(macOS)
-extension MainViewController: PeerChannelVCDelegate {
-    func peerChannelVCWillClose(_ vc: PeerChannelViewController) {
-        vc.view.window?.contentViewController = self
-    }
-}
-#endif

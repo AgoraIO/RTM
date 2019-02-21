@@ -3,7 +3,7 @@
 //  Agora-Rtm-Tutorial-Mac
 //
 //  Created by CavanSu on 2019/1/31.
-//  Copyright © 2019 Agora.IO. All rights reserved.
+//  Copyright © 2019 Agora. All rights reserved.
 //
 
 import Cocoa
@@ -32,7 +32,8 @@ class PeerChannelViewController: NSViewController {
     }
     
     @IBAction func doChatPressed(_ sender: NSButton) {
-        guard let peer = peerTextField.text, peer.count > 0 else {
+        let peer = peerTextField.stringValue
+        guard peer.count > 0 else {
             return
         }
         let type = ChatType.peer(peer)
@@ -40,7 +41,8 @@ class PeerChannelViewController: NSViewController {
     }
     
     @IBAction func doJoinPressed(_ sender: NSButton) {
-        guard let channel = channelTextField.text, channel.count > 0 else {
+        let channel = channelTextField.stringValue
+        guard  channel.count > 0 else {
             return
         }
         let type = ChatType.group(channel)

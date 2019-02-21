@@ -3,7 +3,7 @@
 //  Agora-Rtm-Tutorial
 //
 //  Created by CavanSu on 2019/1/17.
-//  Copyright © 2019 Agora.IO. All rights reserved.
+//  Copyright © 2019 Agora. All rights reserved.
 //
 
 import UIKit
@@ -24,14 +24,14 @@ class ChannelViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let identifier = segue.identifier, let peer = sender as? String else {
+        guard let identifier = segue.identifier, let channel = sender as? String else {
             return
         }
         
         switch identifier {
         case "channelToChat":
             let chatVC = segue.destination as! ChatViewController
-            chatVC.type = .group(peer)
+            chatVC.type = .group(channel)
         default:
             break
         }
