@@ -30,6 +30,10 @@
     [self.view endEditing:YES];
 }
 
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event {
+    [self.view endEditing:true];
+}
+
 - (IBAction)doLoginPressed:(UIButton *)sender {
     [self login];
 }
