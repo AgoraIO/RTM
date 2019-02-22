@@ -1,13 +1,15 @@
 //
-//  PeerViewController.h
+//  AppId.m
 //  Agora-Rtm-Tutorial
 //
 //  Created by CavanSu on 2019/2/19.
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "AppId.h"
 
-@interface PeerViewController : UIViewController
-
+@implementation AppId
++ (NSString *)appId {
+    return <#YOUR APPID#>;
+}
 @end

@@ -71,7 +71,7 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		A7F23AC92202BEA2003C46FB /* Support Files */ = {
+		A7EE1DBA221EA54D007B835A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
 				A7EE1D9B221E9C48007B835A /* Agora-Rtm-Tutorial-Mac.entitlements */,
@@ -80,7 +80,6 @@
 				A7EE1D9D221E9C49007B835A /* Info.plist */,
 			);
 			name = "Support Files";
-			path = "Agora-Rtm-Tutorial-Mac";
 			sourceTree = "<group>";
 		};
 		A7FD7DBC21EF61E1005ACFD9 = {
@@ -111,7 +110,7 @@
 				A706343921F0818100D6217B /* MessageCell.swift */,
 				A7F23ACD2202CEDF003C46FB /* ReplaceSegue.swift */,
 				A7F23AA92202B4BC003C46FB /* Main.storyboard */,
-				A7F23AC92202BEA2003C46FB /* Support Files */,
+				A7EE1DBA221EA54D007B835A /* Support Files */,
 			);
 			path = "Agora-Rtm-Tutorial";
 			sourceTree = "<group>";

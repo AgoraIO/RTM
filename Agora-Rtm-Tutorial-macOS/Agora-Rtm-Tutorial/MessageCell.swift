@@ -21,21 +21,13 @@ class MessageCell: NSTableCellView {
     
     override func awakeFromNib() {
         super.awakeFromNib()
-        #if os(iOS)
-        rightUserBgView.layer.cornerRadius = 20
-        rightContentBgView.layer.cornerRadius = 5
-        
-        leftUserBgView.layer.cornerRadius = 20
-        leftContentBgView.layer.cornerRadius = 5
-        #else
-        rightUserLabel?.usesSingleLineMode = false
-        rightUserLabel?.cell?.wraps = true
-        rightUserLabel?.cell?.isScrollable = false
+        rightContentLabel?.usesSingleLineMode = false
+        rightContentLabel?.cell?.wraps = true
+        rightContentLabel?.cell?.isScrollable = false
         
         leftContentLabel?.usesSingleLineMode = false
         leftContentLabel?.cell?.wraps = true
         leftContentLabel?.cell?.isScrollable = false
-        #endif
     }
     
     private var type: CellType = .right {
@@ -47,14 +39,6 @@ class MessageCell: NSTableCellView {
         
             leftUserLabel.isHidden = !rightHidden
             leftContentLabel.isHidden = !rightHidden
-            
-            #if os(iOS)
-            rightUserBgView.isHidden = rightHidden
-            rightContentBgView.isHidden = rightHidden
-            
-            leftUserBgView.isHidden = !rightHidden
-            leftContentBgView.isHidden = !rightHidden
-            #endif
         }
     }
     

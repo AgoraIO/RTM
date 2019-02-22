@@ -24,9 +24,7 @@ protocol ChatVCDelegate: NSObjectProtocol {
 
 class ChatViewController: NSViewController {
     @IBOutlet weak var inputTextField: NSTextField!
-    @IBOutlet weak var inputViewBottom: NSLayoutConstraint!
     @IBOutlet weak var tableView: NSTableView!
-    @IBOutlet weak var inputContainView: NSView!
     
     lazy var list = [Message]()
     

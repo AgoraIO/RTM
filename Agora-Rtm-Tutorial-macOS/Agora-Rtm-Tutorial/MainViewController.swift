@@ -70,10 +70,8 @@ private extension MainViewController {
     }
 }
 
-#if os(macOS)
 extension MainViewController: PeerChannelVCDelegate {
     func peerChannelVCWillClose(_ vc: PeerChannelViewController) {
         vc.view.window?.contentViewController = self
     }
 }
-#endif
