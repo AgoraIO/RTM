@@ -1,0 +1,426 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 50;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		A7EE1BE0221BFF8F007B835A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7EE1BDF221BFF8F007B835A /* Main.storyboard */; };
+		A7EE1D95221E58AE007B835A /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1D94221E58AE007B835A /* MessageCell.m */; };
+		A7EE1D98221E914F007B835A /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1D97221E914F007B835A /* Message.m */; };
+		A7F23CA8221BD726003C46FB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CA7221BD726003C46FB /* AppDelegate.m */; };
+		A7F23CB0221BD728003C46FB /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7F23CAF221BD728003C46FB /* Assets.xcassets */; };
+		A7F23CB3221BD728003C46FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7F23CB1221BD728003C46FB /* LaunchScreen.storyboard */; };
+		A7F23CB6221BD728003C46FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CB5221BD728003C46FB /* main.m */; };
+		A7F23CC0221BD826003C46FB /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CBF221BD826003C46FB /* AgoraRtm.m */; };
+		A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */; };
+		A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */; };
+		A7F23CC9221BDB11003C46FB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */; };
+		A7F23CCB221BDB1B003C46FB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CCA221BDB1B003C46FB /* libresolv.tbd */; };
+		A7F23CD5221BDE3F003C46FB /* AppId.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CD4221BDE3F003C46FB /* AppId.m */; };
+		A7F23CD7221BE087003C46FB /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CD6221BE087003C46FB /* libc++.tbd */; };
+		A7F23CDA221BE210003C46FB /* MainViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CD9221BE210003C46FB /* MainViewController.m */; };
+		A7F23D04221BF405003C46FB /* PeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D03221BF405003C46FB /* PeerViewController.m */; };
+		A7F23D09221BF99C003C46FB /* ChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D08221BF99C003C46FB /* ChannelViewController.m */; };
+		A7F23D0C221BFBE0003C46FB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D0B221BFBE0003C46FB /* ChatViewController.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		A7EE1BDF221BFF8F007B835A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
+		A7EE1D93221E58AE007B835A /* MessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
+		A7EE1D94221E58AE007B835A /* MessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
+		A7EE1D96221E914F007B835A /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
+		A7EE1D97221E914F007B835A /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
+		A7F23CA3221BD726003C46FB /* Agora-Rtm-Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-Rtm-Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F23CA6221BD726003C46FB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		A7F23CA7221BD726003C46FB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		A7F23CAF221BD728003C46FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		A7F23CB2221BD728003C46FB /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
+		A7F23CB4221BD728003C46FB /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		A7F23CB5221BD728003C46FB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		A7F23CBE221BD826003C46FB /* AgoraRtm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
+		A7F23CBF221BD826003C46FB /* AgoraRtm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
+		A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
+		A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
+		A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		A7F23CCA221BDB1B003C46FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		A7F23CD3221BDE3F003C46FB /* AppId.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppId.h; sourceTree = "<group>"; };
+		A7F23CD4221BDE3F003C46FB /* AppId.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppId.m; sourceTree = "<group>"; };
+		A7F23CD6221BE087003C46FB /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		A7F23CD8221BE210003C46FB /* MainViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MainViewController.h; sourceTree = "<group>"; };
+		A7F23CD9221BE210003C46FB /* MainViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MainViewController.m; sourceTree = "<group>"; };
+		A7F23D02221BF405003C46FB /* PeerViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeerViewController.h; sourceTree = "<group>"; };
+		A7F23D03221BF405003C46FB /* PeerViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeerViewController.m; sourceTree = "<group>"; };
+		A7F23D07221BF99C003C46FB /* ChannelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChannelViewController.h; sourceTree = "<group>"; };
+		A7F23D08221BF99C003C46FB /* ChannelViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChannelViewController.m; sourceTree = "<group>"; };
+		A7F23D0A221BFBE0003C46FB /* ChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
+		A7F23D0B221BFBE0003C46FB /* ChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		A7F23CA0221BD726003C46FB /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7F23CD7221BE087003C46FB /* libc++.tbd in Frameworks */,
+				A7F23CCB221BDB1B003C46FB /* libresolv.tbd in Frameworks */,
+				A7F23CC9221BDB11003C46FB /* SystemConfiguration.framework in Frameworks */,
+				A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */,
+				A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		A7F23C9A221BD726003C46FB = {
+			isa = PBXGroup;
+			children = (
+				A7F23CA5221BD726003C46FB /* Agora-Rtm-Tutorial */,
+				A7F23CA4221BD726003C46FB /* Products */,
+				A7F23CC3221BDB00003C46FB /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		A7F23CA4221BD726003C46FB /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				A7F23CA3221BD726003C46FB /* Agora-Rtm-Tutorial.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		A7F23CA5221BD726003C46FB /* Agora-Rtm-Tutorial */ = {
+			isa = PBXGroup;
+			children = (
+				A7F23CBE221BD826003C46FB /* AgoraRtm.h */,
+				A7F23CBF221BD826003C46FB /* AgoraRtm.m */,
+				A7F23CD3221BDE3F003C46FB /* AppId.h */,
+				A7F23CD4221BDE3F003C46FB /* AppId.m */,
+				A7F23CD8221BE210003C46FB /* MainViewController.h */,
+				A7F23CD9221BE210003C46FB /* MainViewController.m */,
+				A7F23D02221BF405003C46FB /* PeerViewController.h */,
+				A7F23D03221BF405003C46FB /* PeerViewController.m */,
+				A7F23D07221BF99C003C46FB /* ChannelViewController.h */,
+				A7F23D08221BF99C003C46FB /* ChannelViewController.m */,
+				A7F23D0A221BFBE0003C46FB /* ChatViewController.h */,
+				A7F23D0B221BFBE0003C46FB /* ChatViewController.m */,
+				A7EE1D93221E58AE007B835A /* MessageCell.h */,
+				A7EE1D94221E58AE007B835A /* MessageCell.m */,
+				A7EE1D96221E914F007B835A /* Message.h */,
+				A7EE1D97221E914F007B835A /* Message.m */,
+				A7EE1BDF221BFF8F007B835A /* Main.storyboard */,
+				A7F23CC2221BD834003C46FB /* Support Files */,
+			);
+			path = "Agora-Rtm-Tutorial";
+			sourceTree = "<group>";
+		};
+		A7F23CC2221BD834003C46FB /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				A7F23CA6221BD726003C46FB /* AppDelegate.h */,
+				A7F23CA7221BD726003C46FB /* AppDelegate.m */,
+				A7F23CAF221BD728003C46FB /* Assets.xcassets */,
+				A7F23CB1221BD728003C46FB /* LaunchScreen.storyboard */,
+				A7F23CB4221BD728003C46FB /* Info.plist */,
+				A7F23CB5221BD728003C46FB /* main.m */,
+			);
+			name = "Support Files";
+			sourceTree = "<group>";
+		};
+		A7F23CC3221BDB00003C46FB /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				A7F23CD6221BE087003C46FB /* libc++.tbd */,
+				A7F23CCA221BDB1B003C46FB /* libresolv.tbd */,
+				A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */,
+				A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */,
+				A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		A7F23CA2221BD726003C46FB /* Agora-Rtm-Tutorial */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = A7F23CB9221BD728003C46FB /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial" */;
+			buildPhases = (
+				A7F23C9F221BD726003C46FB /* Sources */,
+				A7F23CA0221BD726003C46FB /* Frameworks */,
+				A7F23CA1221BD726003C46FB /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Agora-Rtm-Tutorial";
+			productName = "Agora-Rtm-Tutorial";
+			productReference = A7F23CA3221BD726003C46FB /* Agora-Rtm-Tutorial.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		A7F23C9B221BD726003C46FB /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 1010;
+				ORGANIZATIONNAME = Agora;
+				TargetAttributes = {
+					A7F23CA2221BD726003C46FB = {
+						CreatedOnToolsVersion = 10.1;
+					};
+				};
+			};
+			buildConfigurationList = A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = A7F23C9A221BD726003C46FB;
+			productRefGroup = A7F23CA4221BD726003C46FB /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				A7F23CA2221BD726003C46FB /* Agora-Rtm-Tutorial */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		A7F23CA1221BD726003C46FB /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7EE1BE0221BFF8F007B835A /* Main.storyboard in Resources */,
+				A7F23CB3221BD728003C46FB /* LaunchScreen.storyboard in Resources */,
+				A7F23CB0221BD728003C46FB /* Assets.xcassets in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		A7F23C9F221BD726003C46FB /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				A7F23CDA221BE210003C46FB /* MainViewController.m in Sources */,
+				A7F23CB6221BD728003C46FB /* main.m in Sources */,
+				A7F23D04221BF405003C46FB /* PeerViewController.m in Sources */,
+				A7F23CC0221BD826003C46FB /* AgoraRtm.m in Sources */,
+				A7F23CA8221BD726003C46FB /* AppDelegate.m in Sources */,
+				A7F23CD5221BDE3F003C46FB /* AppId.m in Sources */,
+				A7EE1D95221E58AE007B835A /* MessageCell.m in Sources */,
+				A7EE1D98221E914F007B835A /* Message.m in Sources */,
+				A7F23D0C221BFBE0003C46FB /* ChatViewController.m in Sources */,
+				A7F23D09221BF99C003C46FB /* ChannelViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXVariantGroup section */
+		A7F23CB1221BD728003C46FB /* LaunchScreen.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				A7F23CB2221BD728003C46FB /* Base */,
+			);
+			name = LaunchScreen.storyboard;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		A7F23CB7221BD728003C46FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+			};
+			name = Debug;
+		};
+		A7F23CB8221BD728003C46FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 12.1;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		A7F23CBA221BD728003C46FB /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+				);
+				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		A7F23CBB221BD728003C46FB /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_TEAM = "";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+				);
+				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7F23CB7221BD728003C46FB /* Debug */,
+				A7F23CB8221BD728003C46FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		A7F23CB9221BD728003C46FB /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				A7F23CBA221BD728003C46FB /* Debug */,
+				A7F23CBB221BD728003C46FB /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = A7F23C9B221BD726003C46FB /* Project object */;
+}
