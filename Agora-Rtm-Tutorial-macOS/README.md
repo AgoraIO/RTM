@@ -7,7 +7,7 @@ The Agora RTM Tutorial macOS Sample App is an open-source demo that will help yo
 With this sample app, you can:
 
 - Log in / log out
-- Send and receive point to point message online
+- Send and receive Peer-to-Peer message online
 - Join / leave channel
 - Send and receive channel message
 
