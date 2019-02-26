@@ -33,7 +33,7 @@
 		A7EE1D94221E58AE007B835A /* MessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 		A7EE1D96221E914F007B835A /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
 		A7EE1D97221E914F007B835A /* Message.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Message.m; sourceTree = "<group>"; };
-		A7F23CA3221BD726003C46FB /* Agora-Rtm-Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-Rtm-Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		A7F23CA3221BD726003C46FB /* Agora-RTM-Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-RTM-Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7F23CA6221BD726003C46FB /* AppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		A7F23CA7221BD726003C46FB /* AppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		A7F23CAF221BD728003C46FB /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -78,7 +78,7 @@
 		A7F23C9A221BD726003C46FB = {
 			isa = PBXGroup;
 			children = (
-				A7F23CA5221BD726003C46FB /* Agora-Rtm-Tutorial */,
+				A7F23CA5221BD726003C46FB /* Agora-RTM-Tutorial */,
 				A7F23CA4221BD726003C46FB /* Products */,
 				A7F23CC3221BDB00003C46FB /* Frameworks */,
 			);
@@ -87,12 +87,12 @@
 		A7F23CA4221BD726003C46FB /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				A7F23CA3221BD726003C46FB /* Agora-Rtm-Tutorial.app */,
+				A7F23CA3221BD726003C46FB /* Agora-RTM-Tutorial.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		A7F23CA5221BD726003C46FB /* Agora-Rtm-Tutorial */ = {
+		A7F23CA5221BD726003C46FB /* Agora-RTM-Tutorial */ = {
 			isa = PBXGroup;
 			children = (
 				A7F23CBE221BD826003C46FB /* AgoraRtm.h */,
@@ -114,7 +114,7 @@
 				A7EE1BDF221BFF8F007B835A /* Main.storyboard */,
 				A7F23CC2221BD834003C46FB /* Support Files */,
 			);
-			path = "Agora-Rtm-Tutorial";
+			path = "Agora-RTM-Tutorial";
 			sourceTree = "<group>";
 		};
 		A7F23CC2221BD834003C46FB /* Support Files */ = {
@@ -145,9 +145,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		A7F23CA2221BD726003C46FB /* Agora-Rtm-Tutorial */ = {
+		A7F23CA2221BD726003C46FB /* Agora-RTM-Tutorial */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = A7F23CB9221BD728003C46FB /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial" */;
+			buildConfigurationList = A7F23CB9221BD728003C46FB /* Build configuration list for PBXNativeTarget "Agora-RTM-Tutorial" */;
 			buildPhases = (
 				A7F23C9F221BD726003C46FB /* Sources */,
 				A7F23CA0221BD726003C46FB /* Frameworks */,
@@ -157,9 +157,9 @@
 			);
 			dependencies = (
 			);
-			name = "Agora-Rtm-Tutorial";
+			name = "Agora-RTM-Tutorial";
 			productName = "Agora-Rtm-Tutorial";
-			productReference = A7F23CA3221BD726003C46FB /* Agora-Rtm-Tutorial.app */;
+			productReference = A7F23CA3221BD726003C46FB /* Agora-RTM-Tutorial.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -176,7 +176,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */;
+			buildConfigurationList = A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-RTM-Tutorial" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -189,7 +189,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				A7F23CA2221BD726003C46FB /* Agora-Rtm-Tutorial */,
+				A7F23CA2221BD726003C46FB /* Agora-RTM-Tutorial */,
 			);
 		};
 /* End PBXProject section */
@@ -368,7 +368,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-RTM-Tutorial";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -392,7 +392,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-Rtm-Tutorial";
+				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-RTM-Tutorial";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -402,7 +402,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */ = {
+		A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-RTM-Tutorial" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A7F23CB7221BD728003C46FB /* Debug */,
@@ -411,7 +411,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		A7F23CB9221BD728003C46FB /* Build configuration list for PBXNativeTarget "Agora-Rtm-Tutorial" */ = {
+		A7F23CB9221BD728003C46FB /* Build configuration list for PBXNativeTarget "Agora-RTM-Tutorial" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A7F23CBA221BD728003C46FB /* Debug */,
