@@ -1,4 +1,4 @@
-# Agora RTM Tutorial iOS Objective C
+# Agora RTM Tutorial macOS
 
 *Read this in other languages: [English](README.md)*
 
