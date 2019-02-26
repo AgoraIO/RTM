@@ -36,7 +36,6 @@
 		A706342721F050EC00D6217B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A706343921F0818100D6217B /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
 		A7EE1D9A221E9C48007B835A /* AppDelegate.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = AppDelegate.swift; path = "Agora-Rtm-Tutorial/AppDelegate.swift"; sourceTree = SOURCE_ROOT; };
-		A7EE1D9B221E9C48007B835A /* Agora-Rtm-Tutorial-Mac.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; name = "Agora-Rtm-Tutorial-Mac.entitlements"; path = "Agora-Rtm-Tutorial/Agora-Rtm-Tutorial-Mac.entitlements"; sourceTree = SOURCE_ROOT; };
 		A7EE1D9C221E9C48007B835A /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Assets.xcassets; path = "Agora-Rtm-Tutorial/Assets.xcassets"; sourceTree = SOURCE_ROOT; };
 		A7EE1D9D221E9C49007B835A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = "Agora-Rtm-Tutorial/Info.plist"; sourceTree = SOURCE_ROOT; };
 		A7F23AA12202B4B9003C46FB /* Agora-Rtm-Tutorial-Mac.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-Rtm-Tutorial-Mac.app"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -74,7 +73,6 @@
 		A7EE1DBA221EA54D007B835A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				A7EE1D9B221E9C48007B835A /* Agora-Rtm-Tutorial-Mac.entitlements */,
 				A7EE1D9A221E9C48007B835A /* AppDelegate.swift */,
 				A7EE1D9C221E9C48007B835A /* Assets.xcassets */,
 				A7EE1D9D221E9C49007B835A /* Info.plist */,

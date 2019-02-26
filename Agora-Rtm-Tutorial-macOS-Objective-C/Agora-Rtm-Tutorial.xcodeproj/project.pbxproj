@@ -48,7 +48,6 @@
 		A7EE1DD0221FA0CC007B835A /* ReplaceSegue.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ReplaceSegue.m; sourceTree = "<group>"; };
 		A7EE1DD2221FA1C3007B835A /* PeerChannelViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = PeerChannelViewController.h; sourceTree = "<group>"; };
 		A7EE1DD3221FA1C3007B835A /* PeerChannelViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = PeerChannelViewController.m; sourceTree = "<group>"; };
-		A7EE1DD6221FC309007B835A /* Agora-Rtm-Tutorial-Mac.entitlements */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.entitlements; path = "Agora-Rtm-Tutorial-Mac.entitlements"; sourceTree = "<group>"; };
 		A7F23CBE221BD826003C46FB /* AgoraRtm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		A7F23CBF221BD826003C46FB /* AgoraRtm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
 		A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
@@ -109,7 +108,6 @@
 		A7EE1DC3221EA6A3007B835A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
-				A7EE1DD6221FC309007B835A /* Agora-Rtm-Tutorial-Mac.entitlements */,
 				A7EE1DA7221EA4D8007B835A /* AppDelegate.h */,
 				A7EE1DA8221EA4D8007B835A /* AppDelegate.m */,
 				A7EE1DAD221EA4D9007B835A /* Assets.xcassets */,

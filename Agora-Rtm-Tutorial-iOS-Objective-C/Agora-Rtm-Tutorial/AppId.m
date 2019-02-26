@@ -10,6 +10,6 @@
 
 @implementation AppId
 + (NSString *)appId {
-    return <#YOUR APPID#>
+    return <#YOUR APPID#>;
 }
 @end
