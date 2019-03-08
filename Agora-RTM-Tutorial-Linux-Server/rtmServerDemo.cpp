@@ -39,8 +39,8 @@ class RtmEventHandler: public agora::rtm::IRtmServiceEventHandler {
         cout << "on connection state changed: state = " << state << endl;
     }
 
-    virtual void onSendMessageState(long long messageId,
-                        agora::rtm::PEER_MESSAGE_STATE state) override {
+    virtual void onSendMessageResult(long long messageId,
+                        agora::rtm::PEER_MESSAGE_ERR_CODE state) override {
         cout << "on send message messageId: " << messageId << " state: "
              << state << endl;
     }
@@ -72,9 +72,9 @@ class ChannelEventHandler: public agora::rtm::IChannelEventHandler {
     }
 
     virtual void onMessageReceived(const char* userId,
-                        const agora::rtm::IMessage *message) override {
+                        const agora::rtm::IMessage *msg) override {
         cout << "receive message from channel: " << channel_.c_str()
-             << " user: " << userId << " message: " << message->getText()
+             << " user: " << userId << " message: " << msg->getText()
              << endl;
     }
 
@@ -98,8 +98,8 @@ class ChannelEventHandler: public agora::rtm::IChannelEventHandler {
         }
     }
 
-    virtual void onSendMessageState(long long messageId,
-                    agora::rtm::CHANNEL_MESSAGE_STATE state) override {
+    virtual void onSendMessageResult(long long messageId,
+                    agora::rtm::CHANNEL_MESSAGE_ERR_CODE state) override {
         cout << "send messageId: " << messageId << " state: " << state << endl;
     }
     
@@ -122,7 +122,11 @@ class Demo {
         }
 
         eventHandler_.reset(new RtmEventHandler());
-        rtmService_.reset(coreService_->createRtmService());
+        agora::rtm::IRtmService* p_rs = coreService_->createRtmService();
+        rtmService_.reset(p_rs, [](agora::rtm::IRtmService* p) {
+            p->release();                                                           
+        });                                                                         
+
         if (!rtmService_) {
             cout << "rtm service created failure!" << endl;
             exit(0);
@@ -133,7 +137,9 @@ class Demo {
             exit(0);
         }
     }
-    ~Demo() {}
+    ~Demo() {
+        rtmService_->release();
+    }
 
   public:
     bool login() {
@@ -146,6 +152,7 @@ class Demo {
             cout << "login failed!" << endl;
             return false;
         }
+        cout << "here" << endl;
         return true;
     }
 
@@ -193,12 +200,12 @@ class Demo {
         }
     }
 
-    void sendMessageToPeer(std::string peerID, std::string message) {
-        std::unique_ptr<agora::rtm::IMessage>
-            rtmMessage(agora::rtm::IMessage::createMessage());
-        rtmMessage->setText(message.c_str());
+    void sendMessageToPeer(std::string peerID, std::string msg) {
+        agora::rtm::IMessage* rtmMessage = rtmService_->createMessage();
+        rtmMessage->setText(msg.c_str());
         int ret = rtmService_->sendMessageToPeer(peerID.c_str(),
-                                        rtmMessage.get());
+                                        rtmMessage);
+        rtmMessage->release();
         if (ret) {
             cout << "send message to peer failed! return code: " << ret
                  << endl;
@@ -206,11 +213,11 @@ class Demo {
     }
 
     void sendMessageToChannel(agora::rtm::IChannel * channelHandler,
-                            string& msg) {
-        std::unique_ptr<agora::rtm::IMessage>
-            rtmMessage(agora::rtm::IMessage::createMessage());
+                            string &msg) {
+        agora::rtm::IMessage* rtmMessage = rtmService_->createMessage();
         rtmMessage->setText(msg.c_str());
-        channelHandler->sendMessage(rtmMessage.get());
+        channelHandler->sendMessage(rtmMessage);
+        rtmMessage->release();
     }
 
     private:
@@ -218,7 +225,7 @@ class Demo {
         agora::base::AgoraServiceContext context_;
         std::unique_ptr<agora::rtm::IRtmServiceEventHandler> eventHandler_;
         std::unique_ptr<ChannelEventHandler> channelEvent_;
-        std::unique_ptr<agora::rtm::IRtmService> rtmService_;
+        std::shared_ptr<agora::rtm::IRtmService> rtmService_;
 };
 
 int main(int argc, const char * argv[]) {
