@@ -40,7 +40,7 @@ textarea:focus {
 }
 
 .current {
-  background: #95abab8f;
+  background: rgba(71, 32, 134, 0.28);
   box-shadow: 0px 0px 10px 0px rgba(212, 179, 179, 0.35)
 }
 
@@ -137,6 +137,7 @@ body {
 }
 
 .header {
+  align-items: center;
   display: flex;
   border-bottom: 1px solid #f1e1e1;
   text-align: left;
