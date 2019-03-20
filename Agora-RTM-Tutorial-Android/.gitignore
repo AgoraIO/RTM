@@ -46,8 +46,6 @@ cscope.out
 cscope.po.out
 tags
 
-.settings/
-
 app/libs/agora-rtm-sdk.jar
 app/src/main/jniLibs/arm64-v8a/libagora-rtm-sdk-jni.so
 app/src/main/jniLibs/armeabi-v7a/libagora-rtm-sdk-jni.so

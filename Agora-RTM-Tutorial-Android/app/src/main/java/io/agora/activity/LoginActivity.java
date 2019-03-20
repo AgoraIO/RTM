@@ -11,7 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import io.agora.rtm.ErrorInfo;
-import io.agora.rtm.ResultCallback;
+import io.agora.rtm.IResultCallback;
 import io.agora.rtm.RtmClient;
 import io.agora.rtmtutorial.AGApplication;
 import io.agora.rtmtutorial.R;
@@ -76,7 +76,7 @@ public class LoginActivity extends Activity {
      */
     private void doLogin() {
         mIsInChat = true;
-        mRtmClient.login(null, mUserId, new ResultCallback<Void>() {
+        mRtmClient.login(null, mUserId, new IResultCallback<Void>() {
             @Override
             public void onSuccess(Void responseInfo) {
                 Log.i(TAG, "login success");
