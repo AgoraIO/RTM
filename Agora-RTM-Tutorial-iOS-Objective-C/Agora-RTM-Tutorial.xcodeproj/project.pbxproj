@@ -42,7 +42,7 @@
 		A7F23CB5221BD728003C46FB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A7F23CBE221BD826003C46FB /* AgoraRtm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		A7F23CBF221BD826003C46FB /* AgoraRtm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
-		A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
+		A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "../Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
 		A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A7F23CCA221BDB1B003C46FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -64,11 +64,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */,
+				A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */,
 				A7F23CD7221BE087003C46FB /* libc++.tbd in Frameworks */,
 				A7F23CCB221BDB1B003C46FB /* libresolv.tbd in Frameworks */,
 				A7F23CC9221BDB11003C46FB /* SystemConfiguration.framework in Frameworks */,
-				A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */,
-				A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -126,6 +126,7 @@
 				A7F23CB1221BD728003C46FB /* LaunchScreen.storyboard */,
 				A7F23CB4221BD728003C46FB /* Info.plist */,
 				A7F23CB5221BD728003C46FB /* main.m */,
+				A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */,
 			);
 			name = "Support Files";
 			sourceTree = "<group>";
@@ -137,7 +138,6 @@
 				A7F23CCA221BDB1B003C46FB /* libresolv.tbd */,
 				A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */,
 				A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */,
-				A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -176,7 +176,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-RTM-Tutorial" */;
+			buildConfigurationList = A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -402,7 +402,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-RTM-Tutorial" */ = {
+		A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A7F23CB7221BD728003C46FB /* Debug */,

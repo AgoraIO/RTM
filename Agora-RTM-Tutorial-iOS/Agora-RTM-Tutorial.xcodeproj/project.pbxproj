@@ -7,10 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		38DF955B224249EC00A958D6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955A224249EC00A958D6 /* libc++.tbd */; };
+		38DF955D224249F800A958D6 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955C224249F800A958D6 /* libresolv.tbd */; };
+		38DF955F224249FC00A958D6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955E224249FB00A958D6 /* SystemConfiguration.framework */; };
 		A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340F21F02E0F00D6217B /* CoreTelephony.framework */; };
-		A706341121F02E2C00D6217B /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340B21F02DE500D6217B /* SystemConfiguration.framework */; };
-		A706341221F02E3C00D6217B /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340921F02DD700D6217B /* libresolv.tbd */; };
-		A706341321F02E4A00D6217B /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340721F02DC800D6217B /* libc++.tbd */; };
 		A706342121F047A600D6217B /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342021F047A600D6217B /* AgoraRtm.swift */; };
 		A706342421F04E3B00D6217B /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342321F04E3B00D6217B /* PeerViewController.swift */; };
 		A706342621F04E4A00D6217B /* ChannelViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342521F04E4A00D6217B /* ChannelViewController.swift */; };
@@ -26,29 +26,23 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
-		A706340721F02DC800D6217B /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
-		A706340921F02DD700D6217B /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
-		A706340B21F02DE500D6217B /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		A706340D21F02DFA00D6217B /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		38DF955A224249EC00A958D6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
+		38DF955C224249F800A958D6 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
+		38DF955E224249FB00A958D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A706340F21F02E0F00D6217B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		A706342021F047A600D6217B /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
 		A706342321F04E3B00D6217B /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
 		A706342521F04E4A00D6217B /* ChannelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
 		A706342721F050EC00D6217B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A706343921F0818100D6217B /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
-		A7F23ABE2202BD6F003C46FB /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
-		A7F23AC02202BD7B003C46FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
-		A7F23AC22202BD8B003C46FB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
 		A7F23AC42202BD99003C46FB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
-		A7F23AC62202BDA2003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial-Mac/AgoraRtmKit.framework"; sourceTree = "<group>"; };
-		A7F23ACA2202C933003C46FB /* CoreWLAN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreWLAN.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreWLAN.framework; sourceTree = DEVELOPER_DIR; };
 		A7FD7DC521EF61E1005ACFD9 /* Agora-RTM-Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-RTM-Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7FD7DD221EF61E3005ACFD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7FD7DD421EF61E3005ACFD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
+		A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "../Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
 		A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A7FD7DE121F02709005ACFD9 /* AppId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppId.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -58,11 +52,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A706341321F02E4A00D6217B /* libc++.tbd in Frameworks */,
-				A706341221F02E3C00D6217B /* libresolv.tbd in Frameworks */,
-				A706341121F02E2C00D6217B /* SystemConfiguration.framework in Frameworks */,
-				A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */,
 				A7FD7DDE21F0262F005ACFD9 /* AgoraRtmKit.framework in Frameworks */,
+				A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */,
+				38DF955D224249F800A958D6 /* libresolv.tbd in Frameworks */,
+				38DF955B224249EC00A958D6 /* libc++.tbd in Frameworks */,
+				38DF955F224249FC00A958D6 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -76,6 +70,7 @@
 				A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */,
 				A7FD7DD121EF61E3005ACFD9 /* LaunchScreen.storyboard */,
 				A7FD7DD421EF61E3005ACFD9 /* Info.plist */,
+				A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */,
 			);
 			name = "Support Files";
 			sourceTree = "<group>";
@@ -116,18 +111,11 @@
 		A7FD7DDC21F0262C005ACFD9 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
-				A7F23ACA2202C933003C46FB /* CoreWLAN.framework */,
-				A7F23AC62202BDA2003C46FB /* AgoraRtmKit.framework */,
+				38DF955E224249FB00A958D6 /* SystemConfiguration.framework */,
+				38DF955C224249F800A958D6 /* libresolv.tbd */,
+				38DF955A224249EC00A958D6 /* libc++.tbd */,
 				A7F23AC42202BD99003C46FB /* CoreTelephony.framework */,
-				A7F23AC22202BD8B003C46FB /* SystemConfiguration.framework */,
-				A7F23AC02202BD7B003C46FB /* libresolv.tbd */,
-				A7F23ABE2202BD6F003C46FB /* libc++.tbd */,
 				A706340F21F02E0F00D6217B /* CoreTelephony.framework */,
-				A706340D21F02DFA00D6217B /* Accelerate.framework */,
-				A706340B21F02DE500D6217B /* SystemConfiguration.framework */,
-				A706340921F02DD700D6217B /* libresolv.tbd */,
-				A706340721F02DC800D6217B /* libc++.tbd */,
-				A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -354,7 +342,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
-					"$(PROJECT_DIR)/../../libs",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -380,7 +367,6 @@
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
-					"$(PROJECT_DIR)/../../libs",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;

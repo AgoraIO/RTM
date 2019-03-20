@@ -103,8 +103,8 @@
     
     __weak ChatViewController *weakSelf = self;
     
-    [AgoraRtm.kit sendMessage:message toPeer:peer completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
-        NSLog(@"send peer msg error: %ld", (long)errorCode);
+    [AgoraRtm.kit sendMessage:message toPeer:peer completion:^(AgoraRtmSendChannelMessageState state) {
+        NSLog(@"send peer msg error: %ld", (long)state);
         [weakSelf appendMsg:msg user:AgoraRtm.current];
     }];
 }
@@ -145,8 +145,8 @@
     
     __weak ChatViewController *weakSelf = self;
     
-    [rtmChannel sendMessage:message completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
-        NSLog(@"send channel msg error: %ld", (long)errorCode);
+    [rtmChannel sendMessage:message completion:^(AgoraRtmSendChannelMessageState state) {
+        NSLog(@"send channel msg error: %ld", (long)state);
         [weakSelf appendMsg:msg user:AgoraRtm.current];
     }];
 }
