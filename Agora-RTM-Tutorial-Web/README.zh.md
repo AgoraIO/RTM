@@ -1,4 +1,4 @@
-# Agora RTM Tutorial iOS
+# Agora RTM Tutorial Web
 
 *Read this in other languages: [English](README.md)*
 
