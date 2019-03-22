@@ -1,0 +1,41 @@
+{
+  "name": "Agora-RTM-Web-Tutorial",
+  "author": "matrixbirds",
+  "version": "0.0.1",
+  "description": "",
+  "main": "./src/app.js",
+  "scripts": {
+    "build": "webpack --config ./build/webpack.config.prod.js --mode production",
+    "start": "webpack-dev-server --config ./build/webpack.config.dev.js --mode development"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "babel-eslint": "^9.0.0",
+    "babel-loader": "^8.0.2",
+    "clean-webpack-plugin": "^0.1.19",
+    "css-loader": "^1.0.0",
+    "eslint": "^5.5.0",
+    "eslint-config-airbnb-base": "^13.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "mini-css-extract-plugin": "^0.4.2",
+    "optimize-css-assets-webpack-plugin": "^5.0.1",
+    "postcss-import": "^12.0.0",
+    "postcss-loader": "^3.0.0",
+    "postcss-nested": "^3.0.0",
+    "postcss-preset-env": "^5.3.0",
+    "postcss-reporter": "^6.0.0",
+    "style-loader": "^0.17.0",
+    "webpack": "^4.17.1",
+    "webpack-cli": "^3.1.0",
+    "webpack-dev-server": "^3.1.7",
+    "webpack-merge": "^4.1.4"
+  },
+  "license": "MIT",
+  "dependencies": {
+    "jquery": "^3.3.1",
+    "@fortawesome/fontawesome-free": "^5.7.2"
+  }
+}
