@@ -14,6 +14,7 @@
 @property (weak, nonatomic) IBOutlet NSTextField *inputTextField;
 @property (weak, nonatomic) IBOutlet NSTableView *tableView;
 
+@property (nonatomic, strong) AgoraRtmChannel *channel;
 @property (nonatomic, strong) NSMutableArray *list;
 @end
 
@@ -63,7 +64,7 @@
     
     switch (self.mode.type) {
         case ChatTypePeer: [self sendPeer:name msg:text]; break;
-        case ChatTypeGroup: [self sendChannel:name msg:text]; break;
+        case ChatTypeGroup: [self sendChannelMessage:text]; break;
     }
     return YES;
 }
@@ -103,8 +104,8 @@
     
     __weak ChatViewController *weakSelf = self;
     
-    [AgoraRtm.kit sendMessage:message toPeer:peer completion:^(AgoraRtmSendChannelMessageState state) {
-        NSLog(@"send peer msg error: %ld", (long)state);
+    [AgoraRtm.kit sendMessage:message toPeer:peer completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
+        NSLog(@"send peer msg error: %ld", (long)errorCode);
         [weakSelf appendMsg:msg user:AgoraRtm.current];
     }];
 }
@@ -124,6 +125,7 @@
     [rtmChannel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
         NSLog(@"join channel error: %ld", (long)errorCode);
     }];
+    self.channel = rtmChannel;
 }
 
 - (void)leaveChannel {
@@ -131,22 +133,17 @@
         return;
     }
     
-    NSString *channelId = self.mode.name;
-    AgoraRtmChannel *channel = AgoraRtm.kit.channels[channelId];
-    
-    [channel leaveWithCompletion:^(AgoraRtmLeaveChannelErrorCode errorCode) {
+    [self.channel leaveWithCompletion:^(AgoraRtmLeaveChannelErrorCode errorCode) {
         NSLog(@"leave channel error: %ld", (long)errorCode);
     }];
 }
 
-- (void)sendChannel:(NSString *)channel msg:(NSString *)msg {
-    AgoraRtmChannel *rtmChannel = AgoraRtm.kit.channels[channel];
+- (void)sendChannelMessage:(NSString *)msg {
     AgoraRtmMessage *message = [[AgoraRtmMessage alloc] initWithText:msg];
     
     __weak ChatViewController *weakSelf = self;
-    
-    [rtmChannel sendMessage:message completion:^(AgoraRtmSendChannelMessageState state) {
-        NSLog(@"send channel msg error: %ld", (long)state);
+    [self.channel sendMessage:message completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
+        NSLog(@"send channel msg error: %ld", (long)errorCode);
         [weakSelf appendMsg:msg user:AgoraRtm.current];
     }];
 }

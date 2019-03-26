@@ -30,11 +30,15 @@ class ChatViewController: NSViewController {
     
     var delegate: ChatVCDelegate?
     
+    var channel: AgoraRtmChannel?
     var type: ChatType = .peer("unknow") {
         didSet {
             switch type {
-            case .peer(let name): self.title = name
-            case .group(let channel): self.title = channel; createChannel(channel)
+            case .peer(let name):
+                self.title = name
+            case .group(let channel):
+                self.title = channel;
+                createChannel(channel)
             }
         }
     }
@@ -66,7 +70,7 @@ class ChatViewController: NSViewController {
         
         switch type {
         case .peer(let name):     sendPeer(name, msg: text)
-        case .group(let channel): sendChannel(channel, msg: text)
+        case .group(_): sendChannelMessage(text)
         }
         return true
     }
@@ -113,13 +117,7 @@ private extension ChatViewController {
     }
     
     func leaveChannel() {
-        var lChannel: String
-        switch type {
-        case .group(let channel): lChannel = channel
-        default: return
-        }
-        
-        guard let rtmChannels = AgoraRtm.kit?.channels, let rtmChannel = rtmChannels[lChannel] as? AgoraRtmChannel else {
+        guard let rtmChannel = channel else {
             return
         }
         rtmChannel.leave { (error) in
@@ -139,8 +137,8 @@ private extension ChatViewController {
         })
     }
     
-    func sendChannel(_ channel: String, msg: String) {
-        guard let rtmChannels = AgoraRtm.kit?.channels, let rtmChannel = rtmChannels[channel] as? AgoraRtmChannel else {
+    func sendChannelMessage(_ msg: String) {
+        guard let rtmChannel = channel else {
             return
         }
         let message = AgoraRtmMessage(text: msg)

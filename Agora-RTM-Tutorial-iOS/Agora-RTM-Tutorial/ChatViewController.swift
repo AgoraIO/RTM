@@ -25,12 +25,16 @@ class ChatViewController: UIViewController {
     @IBOutlet weak var inputContainView: UIView!
     
     lazy var list = [Message]()
+    var channel: AgoraRtmChannel?
     
     var type: ChatType = .peer("unknow") {
         didSet {
             switch type {
-            case .peer(let name): self.title = name
-            case .group(let channel): self.title = channel; createChannel(channel)
+            case .peer(let name):
+                self.title = name
+            case .group(let channel):
+                self.title = channel;
+                createChannel(channel)
             }
         }
     }
@@ -58,7 +62,7 @@ class ChatViewController: UIViewController {
         
         switch type {
         case .peer(let name):     sendPeer(name, msg: text)
-        case .group(let channel): sendChannel(channel, msg: text)
+        case .group(_): sendChannelMessage(text)
         }
         return true
     }
@@ -102,19 +106,14 @@ private extension ChatViewController {
         rtmChannel.join { (error) in
             print("join channel error: \(error.rawValue)")
         }
+        self.channel = rtmChannel
     }
     
     func leaveChannel() {
-        var lChannel: String
-        switch type {
-        case .group(let channel): lChannel = channel
-        default: return
-        }
-        
-        guard let rtmChannels = AgoraRtm.kit?.channels, let rtmChannel = rtmChannels[lChannel] as? AgoraRtmChannel else {
+        guard let channel = channel else {
             return
         }
-        rtmChannel.leave { (error) in
+        channel.leave { (error) in
             print("leave channel error: \(error.rawValue)")
         }
     }
@@ -131,8 +130,8 @@ private extension ChatViewController {
         })
     }
     
-    func sendChannel(_ channel: String, msg: String) {
-        guard let rtmChannels = AgoraRtm.kit?.channels, let rtmChannel = rtmChannels[channel] as? AgoraRtmChannel else {
+    func sendChannelMessage(_ msg: String) {
+        guard let rtmChannel = self.channel else {
             return
         }
         let message = AgoraRtmMessage(text: msg)
