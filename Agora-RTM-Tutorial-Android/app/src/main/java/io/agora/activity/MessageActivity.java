@@ -20,8 +20,7 @@ import io.agora.adapter.MessageAdapter;
 import io.agora.model.MessageBean;
 import io.agora.model.MessageListBean;
 import io.agora.rtm.ErrorInfo;
-import io.agora.rtm.IResultCallback;
-import io.agora.rtm.IStateListener;
+import io.agora.rtm.ResultCallback;
 import io.agora.rtm.RtmChannel;
 import io.agora.rtm.RtmChannelListener;
 import io.agora.rtm.RtmChannelMember;
@@ -141,23 +140,30 @@ public class MessageActivity extends Activity {
     private void sendPeerMessage(String content) {
 
         // step 1: create a message
-        RtmMessage message = RtmMessage.createMessage();
+        RtmMessage message = mRtmClient.createMessage();
         message.setText(content);
 
         // step 2: send message to peer
-        mRtmClient.sendMessageToPeer(mPeerId, message, new IStateListener() {
+        mRtmClient.sendMessageToPeer(mPeerId, message, new ResultCallback<Void>() {
+
             @Override
-            public void onStateChanged(final int newState) {
+            public void onSuccess(Void aVoid) {
+
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
                 // refer to RtmStatusCode.PeerMessageState for the message state
+                final int errorCode = errorInfo.getErrorCode();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        switch (newState) {
-                            case RtmStatusCode.PeerMessageState.PEER_MESSAGE_SENT_TIMEOUT:
-                            case RtmStatusCode.PeerMessageState.PEER_MESSAGE_FAILURE:
+                        switch (errorCode) {
+                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_TIMEOUT:
+                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_FAILURE:
                                 showToast(getString(R.string.send_msg_failed));
                                 break;
-                            case RtmStatusCode.PeerMessageState.PEER_MESSAGE_PEER_UNREACHABLE:
+                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_PEER_UNREACHABLE:
                                 showToast(getString(R.string.peer_offline));
                                 break;
                         }
@@ -181,7 +187,7 @@ public class MessageActivity extends Activity {
         }
 
         // step 2: join the channel
-        mRtmChannel.join(new IResultCallback<Void>() {
+        mRtmChannel.join(new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void responseInfo) {
                 Log.i(TAG, "join channel success");
@@ -206,7 +212,7 @@ public class MessageActivity extends Activity {
      * API CALL: get channel member list
      */
     private void getChannelMemberList() {
-        mRtmChannel.getMembers(new IResultCallback<List<RtmChannelMember>>() {
+        mRtmChannel.getMembers(new ResultCallback<List<RtmChannelMember>>() {
             @Override
             public void onSuccess(final List<RtmChannelMember> responseInfo) {
                 runOnUiThread(new Runnable() {
@@ -231,20 +237,27 @@ public class MessageActivity extends Activity {
     private void sendChannelMessage(String content) {
 
         // step 1: create a message
-        RtmMessage message = RtmMessage.createMessage();
+        RtmMessage message = mRtmClient.createMessage();
         message.setText(content);
 
         // step 2: send message to channel
-        mRtmChannel.sendMessage(message, new IStateListener() {
+        mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
+
             @Override
-            public void onStateChanged(final int newState) {
+            public void onSuccess(Void aVoid) {
+
+            }
+
+            @Override
+            public void onFailure(ErrorInfo errorInfo) {
                 // refer to RtmStatusCode.ChannelMessageState for the message state
+                final int errorCode = errorInfo.getErrorCode();
                 runOnUiThread(new Runnable() {
                     @Override
                     public void run() {
-                        switch (newState) {
-                            case RtmStatusCode.ChannelMessageState.CHANNEL_MESSAGE_SENT_TIMEOUT:
-                            case RtmStatusCode.ChannelMessageState.CHANNEL_MESSAGE_FAILURE:
+                        switch (errorCode) {
+                            case RtmStatusCode.ChannelMessageError.CHANNEL_MESSAGE_ERR_TIMEOUT:
+                            case RtmStatusCode.ChannelMessageError.CHANNEL_MESSAGE_ERR_FAILURE:
                                 showToast(getString(R.string.send_msg_failed));
                                 break;
                         }
@@ -352,16 +365,6 @@ public class MessageActivity extends Activity {
                     refreshChannelTitle();
                 }
             });
-        }
-
-        @Override
-        public void onAttributesUpdated(Map<String, String> attributes) {
-            // not supported yet
-        }
-
-        @Override
-        public void onAttributesDeleted(Map<String, String> attributes) {
-            // not supported yet
         }
     }
 
