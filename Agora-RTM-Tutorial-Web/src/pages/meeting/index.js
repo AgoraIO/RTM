@@ -47,7 +47,7 @@ class View {
             <div class="content ${className}">
             ${content}
             </div>
-            ${className === "sender" ?
+            ${className === "sender" && type == 'p2p' ?
             `
               ${result && result.hasPeerReceived === true ?
                 `<i class="received"></i>`
