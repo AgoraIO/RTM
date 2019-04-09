@@ -237,9 +237,8 @@ body {
 .not_received:after {
   content:'!';
   display: block;
-  font-size: 28px;
   position: absolute;
-  top: 0;
+  bottom: 0;
   left: -4px;
   color:red;
 }
