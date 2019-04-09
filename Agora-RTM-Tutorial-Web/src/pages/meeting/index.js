@@ -36,17 +36,24 @@ class View {
     })
   }
 
-  static addMessageView ({type, userName, content, className, channelName}) {
+  static addMessageView ({type, userName, content, className, channelName, result}) {
     const {rtm} = this;
     $(".messages").append(`
         <div class="message ${className}">
           <div>
             <div class="avatar">${userName}</div>
           </div>
-          <div>
+          <div style="position: relative">
             <div class="content ${className}">
             ${content}
             </div>
+            ${className === "sender" ?
+            `
+              ${result && result.hasPeerReceived === true ?
+                `<i class="received"></i>`
+                : `<i class="not_received"></i>`}
+            ` : ''
+            }
           </div>
         </div>
       `)
@@ -281,6 +288,7 @@ class RTM {
 
   async sendMsg({type, peerId, text, channelName}) {
     let {client} = this;
+    console.log("type", type);
     try {
       if (type === 'channel') {
         const channel = this.channels[channelName];
@@ -289,7 +297,7 @@ class RTM {
         return result;
       } else {
         console.log("[RTM-DEMO] p2p ", {text}, peerId);
-        let result = await client.sendMessageToPeer({text}, peerId);
+        let result = await client.sendMessageToPeer({text}, `${peerId}`);
         console.log('[RTM-DEMO] [send to peer] received', result);
         return result;
       }
@@ -384,12 +392,13 @@ $(() => {
         text,
         className: 'sender',
         channelName: currentData.name
-      }).then(e => {
+      }).then(result => {
         View.addMessageView({
           type: currentData.type,
           userName: rtm.accountName,
           content: text,
           className: 'sender',
+          result,
           channelName: currentData.name
         })
         $("#message").val('');
