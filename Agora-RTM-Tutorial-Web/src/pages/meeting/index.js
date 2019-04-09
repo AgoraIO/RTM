@@ -1,5 +1,6 @@
 import './meeting.css';
 import {APP_ID as appId} from '../../config';
+import Toastr from 'toastr';
 
 class View {
 
@@ -35,17 +36,24 @@ class View {
     })
   }
 
-  static addMessageView ({type, userName, content, className, channelName}) {
+  static addMessageView ({type, userName, content, className, channelName, result}) {
     const {rtm} = this;
     $(".messages").append(`
         <div class="message ${className}">
           <div>
             <div class="avatar">${userName}</div>
           </div>
-          <div>
+          <div style="position: relative">
             <div class="content ${className}">
             ${content}
             </div>
+            ${className === "sender" && type == 'p2p' ?
+            `
+              ${result && result.hasPeerReceived === true ?
+                `<i class="received"></i>`
+                : `<i class="not_received"></i>`}
+            ` : ''
+            }
           </div>
         </div>
       `)
@@ -194,6 +202,7 @@ class RTM {
     this.client = AgoraRTM.createInstance(appId);
 
     this.client.on('MessageFromPeer', ({text}, peerId) => {
+      console.log("message from peer", text, peerId);
       const msg = {
         userName: peerId,
         content: text
@@ -250,7 +259,7 @@ class RTM {
         }
         console.log(`[RTM-DEMO] [createChannel] [${senderId}] channel message text: ${message}, name: ${name} , curName: ${currentData.name}`);
       });
-      channel.on('MemberJoin', memberId => {
+      channel.on('MemberJoined', memberId => {
         console.log("[RTM-DEMO] MemberJoin", memberId);
       });
       channel.on('MemberLeft', memberId => {
@@ -286,7 +295,7 @@ class RTM {
         return result;
       } else {
         console.log("[RTM-DEMO] p2p ", {text}, peerId);
-        let result = await client.sendMessageToPeer({text}, peerId);
+        let result = await client.sendMessageToPeer({text}, `${peerId}`);
         console.log('[RTM-DEMO] [send to peer] received', result);
         return result;
       }
@@ -353,6 +362,21 @@ $(() => {
   const accountName = location.href.split("?")[1].split("=")[1];
 
   let rtm = new RTM(accountName);
+  rtm.client.on("ConnectionStateChange", (newState, reason) => {
+    let type = 'info';
+    if (newState === 'ABORTED') {
+      type = 'error';
+    } else if (newState === 'CONNECTED') {
+      type = 'success';
+    } else if (newState === 'RECONNECTING') {
+      type = 'warning';
+    } else if (newState === 'DISCONNECTED') {
+      type = 'warning';
+    }
+    newState == 'ABORTED' && setTimeout(() => {
+      location.replace('/');
+    }, 1000) && Toastr[type](reason);
+  })
   rtm.client.login({uid: accountName}).then(_ => _);
 
   RTM.channelName = '';
@@ -366,12 +390,13 @@ $(() => {
         text,
         className: 'sender',
         channelName: currentData.name
-      }).then(e => {
+      }).then(result => {
         View.addMessageView({
           type: currentData.type,
           userName: rtm.accountName,
           content: text,
           className: 'sender',
+          result,
           channelName: currentData.name
         })
         $("#message").val('');
