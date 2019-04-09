@@ -240,7 +240,6 @@ class RTM {
       channelMsgs[name] = [];
 
       channel.on('ChannelMessage', ({ text: message }, senderId) => {
-        console.log("")
         if (senderId === accountName) {
           return;
         }
@@ -288,7 +287,6 @@ class RTM {
 
   async sendMsg({type, peerId, text, channelName}) {
     let {client} = this;
-    console.log("type", type);
     try {
       if (type === 'channel') {
         const channel = this.channels[channelName];
