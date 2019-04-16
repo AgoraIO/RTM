@@ -16,7 +16,7 @@ const config = {
     path: path.resolve(__dirname, '../dist'),
     filename: 'js/[name].[hash:8].js',
     chunkFilename: 'js/[name].chunk.[chunkhash:8].js',
-    publicPath: '/',
+    // publicPath: '/',
   },
   resolve: {
     alias: {
@@ -32,7 +32,12 @@ const config = {
       {
         test: /\.js$/,
         exclude: /node_modules/,
-        use: ['babel-loader'],
+        use: [{
+          loader: 'babel-loader',
+          options: {
+            root: '../'
+          }
+        }],
       },
       {
         test: /\.html$/,
