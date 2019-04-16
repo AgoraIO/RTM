@@ -125,7 +125,6 @@ class Modal {
             })
             return ;
           }
-          RTM.currentChannel = channelName;
           this.rtm.dialogues[channelName] = {
             peerId: channelName
           };
@@ -150,7 +149,6 @@ class Modal {
             })
             return;
           }
-          RTM.currentChannel = channelName;
           RTM.channelName = channelName;
           View.addRoom({
             name: RTM.channelName,
@@ -207,7 +205,26 @@ class RTM {
         userName: peerId,
         content: text
       };
-      const currentData = $(".current").data();
+      let currentData = $(".current").data();
+      if (!this.dialogues[peerId]) {
+        if (!currentData) {
+          const roomHTMLTmpl = `
+            <div class="room current" data-name="${peerId}" data-type="p2p">
+              <h8>${peerId}</h8>
+              <span>p2p</span>
+            </div>
+          `;
+          View.textarea = true;
+          this.dialogues[peerId] = {
+            peerId
+          }
+          $(".rooms").append(roomHTMLTmpl);
+          currentData = {
+            type: 'p2p',
+            name: peerId
+          }
+        }
+      }
       if (currentData.type === 'p2p' && currentData.name == peerId) {
         View.addMessageView({
           channelName: msg.userName,
@@ -380,7 +397,6 @@ $(() => {
   rtm.client.login({uid: accountName}).then(_ => _);
 
   RTM.channelName = '';
-  RTM.currentChannel = null;
   $('#message').keypress(function (e) {
     if (View.textarea && e.which == 13) {
       const currentData = $(".current").data();
