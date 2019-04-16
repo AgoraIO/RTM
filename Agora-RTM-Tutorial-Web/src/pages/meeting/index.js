@@ -36,30 +36,33 @@ class View {
     })
   }
 
-  static addMessageView ({type, userName, content, className, channelName, result}) {
+  static addMessageView ({type, userName, content, className, channelName, result, append}) {
     const {rtm} = this;
-    $(".messages").append(`
-        <div class="message ${className}">
-          <div>
-            <div class="avatar">${userName}</div>
-          </div>
-          <div style="position: relative">
-            <div class="content ${className}">
-            ${content}
-            </div>
-            ${className === "sender" && type == 'p2p' ?
-            `
-              ${result && result.hasPeerReceived === true ?
-                `<i class="received"></i>`
-                : `<i class="not_received"></i>`}
-            ` : ''
-            }
-          </div>
+    if (append) {
+      $(".messages").append(`
+      <div class="message ${className}">
+        <div>
+          <div class="avatar">${userName}</div>
         </div>
-      `)
+        <div style="position: relative">
+          <div class="content ${className}">
+          ${content}
+          </div>
+          ${className === "sender" && type == 'p2p' ?
+          `
+            ${result && result.hasPeerReceived === true ?
+              `<i class="received"></i>`
+              : `<i class="not_received"></i>`}
+          ` : ''
+          }
+        </div>
+      </div>
+    `)
+    }
     const msg = {
       userName,
-      content
+      content,
+      className
     }
     if (type === 'p2p') {
       rtm.p2pChannelMsgs[channelName] = rtm.p2pChannelMsgs[channelName] || [];
@@ -68,7 +71,7 @@ class View {
       rtm.channelMsgs[channelName] = rtm.channelMsgs[channelName] || [];
       rtm.channelMsgs[channelName].push(msg);
     }
-    $(".messages").scrollTop($(".messages")[0].scrollHeight);
+    append && $(".messages").scrollTop($(".messages")[0].scrollHeight);
   }
 
   static buildMessage ({userName, content, className}) {
@@ -200,40 +203,37 @@ class RTM {
     this.client = AgoraRTM.createInstance(appId);
 
     this.client.on('MessageFromPeer', ({text}, peerId) => {
-      console.log("message from peer", text, peerId);
       const msg = {
         userName: peerId,
         content: text
       };
       let currentData = $(".current").data();
       if (!this.dialogues[peerId]) {
-        if (!currentData) {
+        !currentData && $(".current").length > 0 && $(".current").toggleClass(".current")
           const roomHTMLTmpl = `
-            <div class="room current" data-name="${peerId}" data-type="p2p">
+            <div class="room ${$(".current").length > 0 ? '' : 'current'}" data-name="${peerId}" data-type="p2p">
               <h8>${peerId}</h8>
               <span>p2p</span>
             </div>
           `;
           View.textarea = true;
           this.dialogues[peerId] = {
-            peerId
+            peerId,
           }
           $(".rooms").append(roomHTMLTmpl);
           currentData = {
             type: 'p2p',
             name: peerId
           }
-        }
       }
-      if (currentData.type === 'p2p' && currentData.name == peerId) {
-        View.addMessageView({
-          channelName: msg.userName,
-          type: currentData.type,
-          userName: msg.userName,
-          content: msg.content,
-          className: this.accountName === msg.userName ? 'sender' : ''
-        })
-      }
+      View.addMessageView({
+        channelName: msg.userName,
+        type: 'p2p',
+        userName: msg.userName,
+        content: msg.content,
+        className: this.accountName === msg.userName ? 'sender' : '',
+        append: currentData.type === 'p2p' && currentData.name == peerId
+      })
       console.log(`[RTM-DEMO] MessageFromPeer [${peerId}] channel message text: ${text}`);
     })
     this.channels = {};
@@ -265,15 +265,14 @@ class RTM {
           content: message
         };
         const currentData = $(".current").data();
-        if (currentData.type === 'channel' && currentData.name == name) {
-          View.addMessageView({
-            channelName: name,
-            type: currentData.type,
-            userName: msg.userName,
-            content: msg.content,
-            className: this.accountName === senderId ? 'sender' : ''
-          })
-        }
+        View.addMessageView({
+          channelName: name,
+          type: 'channel',
+          userName: msg.userName,
+          content: msg.content,
+          className: this.accountName === senderId ? 'sender' : '',
+          append: currentData.type === 'channel' && currentData.name == name
+        })
         console.log(`[RTM-DEMO] [createChannel] [${senderId}] channel message text: ${message}, name: ${name} , curName: ${currentData.name}`);
       });
       channel.on('MemberJoined', memberId => {
@@ -289,7 +288,7 @@ class RTM {
   }
 
   async leaveChannel(name) {
-    const {channels, channelUsers, channelMsgs} = this;
+    const {channels, channelUsers, channelMsgs, p2pChannelMsgs} = this;
     const channel = channels[name];
     if (!channel) return;
     return new Promise((resolve) => {
@@ -297,6 +296,7 @@ class RTM {
         delete channels[name];
         delete channelUsers[name];
         delete channelMsgs[name];
+        delete p2pChannelMsgs[name];
         resolve(name);
       })
     });
@@ -365,7 +365,7 @@ class MeetingPage {
           msgHTML += View.buildMessage({
             userName: msg.userName,
             content: msg.content,
-            className: msg.userName === accountName ? 'sender' : '',
+            className: msg.className
           })
         }
       }
@@ -413,7 +413,8 @@ $(() => {
           content: text,
           className: 'sender',
           result,
-          channelName: currentData.name
+          channelName: currentData.name,
+          append: true
         })
         $("#message").val('');
       })
