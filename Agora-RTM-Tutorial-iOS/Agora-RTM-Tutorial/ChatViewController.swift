@@ -155,6 +155,9 @@ private extension ChatViewController {
     func appendMsg(user: String, content: String) {
         let msg = Message(userId: user, text: content)
         list.append(msg)
+        if list.count > 300 {
+            list.removeFirst()
+        }
         let end = IndexPath(row: list.count - 1, section: 0)
         DispatchQueue.main.async { [unowned self] in
             self.tableView.reloadData()

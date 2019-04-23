@@ -87,6 +87,10 @@
     msg.text = text;
     [self.list addObject:msg];
     
+    if (self.list.count > 300) {
+        [self.list removeObjectAtIndex:0];
+    }
+    
     NSIndexPath *end = [NSIndexPath indexPathForRow:self.list.count - 1 inSection:0];
     
     __weak ChatViewController *weakSelf = self;
