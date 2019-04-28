@@ -23,7 +23,11 @@
 #define AGORA_API __attribute__((visibility("default"))) extern "C"
 #define AGORA_CALL
 #elif defined(__ANDROID__) || defined(__linux__)
+#if defined(__ANDROID__) && defined(FEATURE_RTM_STANDALONE_SDK)
+#define AGORA_API extern "C"
+#else
 #define AGORA_API extern "C" __attribute__((visibility("default")))
+#endif
 #define AGORA_CALL
 #else
 #define AGORA_API extern "C"
