@@ -312,7 +312,7 @@ class RTM {
         return result;
       } else {
         console.log("[RTM-DEMO] p2p ", {text}, peerId);
-        let result = await client.sendMessageToPeer({text}, `${peerId}`);
+        let result = await client.sendMessageToPeer({text}, peerId.toString());
         console.log('[RTM-DEMO] [send to peer] received', result);
         return result;
       }
@@ -421,7 +421,7 @@ $(() => {
       return false;
     }
   });
-  $("#user").text(`${accountName}`)
+  $("#user").text(accountName.toString())
 
   $("#quit").on('click', () => {
     const promises = []
