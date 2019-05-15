@@ -1,4 +1,4 @@
-# Agora RTMing Tutorial for Windows
+# Agora RTM Tutorial for Windows
 *其他语言版本： [简体中文](README.zh.md)*
 
 The Agora Windows Sample App is an open-source demo that will help you get message chat integrated directly into your Windows applications using the Agora RTM SDK.
@@ -30,8 +30,8 @@ The user can generate a tokenID based on the AppCertificateID, and the tokenID c
 - Visual Studio 2013
 
 ## Operating Instructions
-- 1.Create SDK directory at the same level of Sln directory
-- 2.You need to copy the agora_sig_sdk.dll file in the dLL directory of the SDK to the compiled executable directory (debug / release)
+- 1.Copy the corresponding files to the relevant directories in the SDK folder of the sln peer directory
+- 2.Copy the agora_rtm_sdk.dll file to the compile execution directory (debug/release)
 
 ## Connect Us
 - You can find full API document at [Document Center](https://docs.agora.io/en/)
