@@ -149,7 +149,7 @@ bool CAgoraRTMInstance::sendInstantMsg(const std::string &account, const std::st
     IMessage* rtmMessage(m_rtmService->createMessage());
     rtmMessage->setText(gbk2utf8(msg).c_str());
     int nret = m_rtmService->sendMessageToPeer(account.c_str(), rtmMessage);
-    //rtmMessage->release();
+    rtmMessage->release();
     return true;
   }
 
