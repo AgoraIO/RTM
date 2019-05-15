@@ -1,0 +1,109 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="common">
+      <UniqueIdentifier>{40e4949e-7e2d-4f86-bfd0-eff3e0b2ef9e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="AgoraSDK">
+      <UniqueIdentifier>{9771f05d-3ecf-44fd-9220-1a0400a9477b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="stdafx.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="targetver.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="Resource.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgChatMsg.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="ChatDlg.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="commonFun.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="FileIO.h">
+      <Filter>common</Filter>
+    </ClInclude>
+    <ClInclude Include="DlgInput.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="AgoraRTMlDlg.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="AgoraRTMTutorial.h">
+      <Filter>Header</Filter>
+    </ClInclude>
+    <ClInclude Include="AgoraRTMInstance.h">
+      <Filter>AgoraSDK</Filter>
+    </ClInclude>
+    <ClInclude Include="RTMWrap.h">
+      <Filter>AgoraSDK</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="stdafx.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgChatMsg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="ChatDlg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="commonFun.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="FileIO.cpp">
+      <Filter>common</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgInput.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AgoraRTMlDlg.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AgoraRTMTutorial.cpp">
+      <Filter>Source</Filter>
+    </ClCompile>
+    <ClCompile Include="AgoraRTMInstance.cpp">
+      <Filter>AgoraSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="RTMWrap.cpp">
+      <Filter>AgoraSDK</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\Debug\AgoraSignal.ini" />
+    <None Include="res\AgoraRTMTutorial.rc2">
+      <Filter>Resource</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="res\AgoraRTMTutorial.ico">
+      <Filter>Resource</Filter>
+    </Image>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="AgoraRTMTutorial.rc">
+      <Filter>Resource</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+</Project>

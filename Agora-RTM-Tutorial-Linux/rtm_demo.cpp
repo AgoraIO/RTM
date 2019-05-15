@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 #include <exception>
-#include <unistd.h>
+//#include <unistd.h>
 
 #include "IAgoraService.h"
 #include "IAgoraRtmService.h"
