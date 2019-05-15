@@ -180,8 +180,6 @@ void CAgoraRTMDlg::OnBnClickedButtonLogin()
 	time_t ltime;
 	time(&ltime);
 	int expiredSecond = ltime + 3600;
-	std::string channelKey = "_no_need_token";
-	m_pRTMInstance->setChannelKey(channelKey);
 	m_pRTMInstance->Login(m_account, appId);
 }
 

@@ -23,7 +23,6 @@ Update "Agora-RTM-Tutorial-Windows/AgoraRTM.ini" with your App ID and App Certif
 AppID=
 AppCertificatedId=
 ```
-The user can generate a tokenID based on the AppCertificateID, and the tokenID can also be '_no_need_token'
 
 ## Developer Environment Requirements
 - win7 above

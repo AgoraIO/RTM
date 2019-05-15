@@ -42,7 +42,6 @@ m_isLoginPt(false),
 m_isJoinChannel(false),
 m_Account(""),
 m_ChannelName(""),
-m_channelKey(""),
 m_AppId(appId),
 m_AppCertificateId(""),
 m_agoraService(createAgoraService()),
@@ -104,13 +103,6 @@ std::string CAgoraRTMInstance::getCertificateId() {
   return m_AppCertificateId;
 }
 
-void CAgoraRTMInstance::setChannelKey(const std::string &channelKey) {
-  m_channelKey = channelKey;
-}
-
-std::string CAgoraRTMInstance::getChannelKey() {
-  return m_channelKey;
-}
 
 std::string CAgoraRTMInstance::getLoginAccount() {
   return m_Account;

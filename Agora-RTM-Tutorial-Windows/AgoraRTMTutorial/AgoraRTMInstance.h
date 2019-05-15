@@ -30,8 +30,6 @@ public:
   std::string getAppId();
   void setAppCertificateId(const std::string &certificateId);
   std::string getCertificateId();
-  void setChannelKey(const std::string &channelKey);
-  std::string getChannelKey();
   std::string getLoginAccount();
 
   IRtmService* getAgoraAPI();
@@ -65,8 +63,7 @@ private:
 
   std::string m_AppId;
   std::string m_AppCertificateId;
-  std::string m_channelKey;
-  
+
   std::unique_ptr<agora::base::IAgoraService> m_agoraService;
   agora::base::AgoraServiceContext context_;
   CRTMCallBack *m_RtmCallback;

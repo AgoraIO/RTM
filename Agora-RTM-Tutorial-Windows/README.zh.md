@@ -25,7 +25,6 @@
 AppID=
 AppCertificatedId=
 ```
-- 用户可以根据 AppCertificateID 生成 tokenID, tokenID也可以为 "_no_need_token".
 
 ## 运行环境
 - win7以上
