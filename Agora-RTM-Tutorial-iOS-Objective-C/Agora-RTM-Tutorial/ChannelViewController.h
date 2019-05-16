@@ -6,8 +6,8 @@
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BasicViewController.h"
 
-@interface ChannelViewController : UIViewController
+@interface ChannelViewController : BasicViewController
 
 @end

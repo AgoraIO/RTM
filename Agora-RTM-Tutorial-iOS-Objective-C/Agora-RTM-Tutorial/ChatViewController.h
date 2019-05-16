@@ -6,7 +6,7 @@
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BasicViewController.h"
 
 typedef NS_ENUM(NSInteger, ChatType) {
     ChatTypePeer = 0,
@@ -18,6 +18,6 @@ typedef struct  {
     NSString *name;
 } ChatMode;
 
-@interface ChatViewController : UIViewController
+@interface ChatViewController : BasicViewController
 @property (nonatomic, assign) ChatMode mode;
 @end

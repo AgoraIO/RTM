@@ -7,20 +7,17 @@
 //
 
 import UIKit
+import AgoraRtmKit
 
-class ChannelViewController: UIViewController {
+class ChannelViewController: UIViewController, ShowAlertProtocol {
     @IBOutlet weak var channelTextField: UITextField!
     
-    override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
-        view.endEditing(true)
+    override func viewWillAppear(_ animated: Bool) {
+        AgoraRtm.updateKit(delegate: self)
     }
     
-    @IBAction func doJoinPressed(_ sender: UIButton) {
-        guard let channel = channelTextField.text, channel.count > 0 else {
-            return
-        }
-        performSegue(withIdentifier: "channelToChat", sender: channel)
+    override func viewWillDisappear(_ animated: Bool) {
+        view.endEditing(true)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -39,5 +36,26 @@ class ChannelViewController: UIViewController {
     
     override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
+    }
+    
+    @IBAction func doJoinPressed(_ sender: UIButton) {
+        guard let channel = channelTextField.text, channel.count > 0 else {
+            return
+        }
+        performSegue(withIdentifier: "channelToChat", sender: channel)
+    }
+}
+
+extension ChannelViewController: AgoraRtmDelegate {
+    func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
+        guard state == .aborted else {
+            return
+        }
+        
+        showAlert("connection state changed: \(state.rawValue)") { [weak self] (_) in
+            if reason == .remoteLogin, let strongSelf = self {
+                strongSelf.navigationController?.popToRootViewController(animated: true)
+            }
+        }
     }
 }

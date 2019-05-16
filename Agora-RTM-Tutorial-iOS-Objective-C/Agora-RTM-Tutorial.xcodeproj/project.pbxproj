@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A76F388A228D68EA00B91466 /* BasicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76F3889228D68EA00B91466 /* BasicViewController.m */; };
 		A7EE1BE0221BFF8F007B835A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7EE1BDF221BFF8F007B835A /* Main.storyboard */; };
 		A7EE1D95221E58AE007B835A /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1D94221E58AE007B835A /* MessageCell.m */; };
 		A7EE1D98221E914F007B835A /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1D97221E914F007B835A /* Message.m */; };
@@ -28,6 +29,8 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A76F3888228D68EA00B91466 /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
+		A76F3889228D68EA00B91466 /* BasicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicViewController.m; sourceTree = "<group>"; };
 		A7EE1BDF221BFF8F007B835A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		A7EE1D93221E58AE007B835A /* MessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		A7EE1D94221E58AE007B835A /* MessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
@@ -99,6 +102,8 @@
 				A7F23CBF221BD826003C46FB /* AgoraRtm.m */,
 				A7F23CD3221BDE3F003C46FB /* AppId.h */,
 				A7F23CD4221BDE3F003C46FB /* AppId.m */,
+				A76F3888228D68EA00B91466 /* BasicViewController.h */,
+				A76F3889228D68EA00B91466 /* BasicViewController.m */,
 				A7F23CD8221BE210003C46FB /* MainViewController.h */,
 				A7F23CD9221BE210003C46FB /* MainViewController.m */,
 				A7F23D02221BF405003C46FB /* PeerViewController.h */,
@@ -176,7 +181,7 @@
 					};
 				};
 			};
-			buildConfigurationList = A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */;
+			buildConfigurationList = A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-RTM-Tutorial" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -221,6 +226,7 @@
 				A7EE1D95221E58AE007B835A /* MessageCell.m in Sources */,
 				A7EE1D98221E914F007B835A /* Message.m in Sources */,
 				A7F23D0C221BFBE0003C46FB /* ChatViewController.m in Sources */,
+				A76F388A228D68EA00B91466 /* BasicViewController.m in Sources */,
 				A7F23D09221BF99C003C46FB /* ChannelViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

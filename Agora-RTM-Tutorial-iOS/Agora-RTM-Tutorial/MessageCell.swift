@@ -24,7 +24,6 @@ class MessageCell: UITableViewCell {
     @IBOutlet weak var leftContentBgView: UIView!
     
     override func awakeFromNib() {
-        super.awakeFromNib()
         rightUserBgView.layer.cornerRadius = 20
         rightContentBgView.layer.cornerRadius = 5
         
