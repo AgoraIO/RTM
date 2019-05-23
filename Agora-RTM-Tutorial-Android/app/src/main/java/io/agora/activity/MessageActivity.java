@@ -321,6 +321,11 @@ public class MessageActivity extends Activity {
                 }
             });
         }
+
+        @Override
+        public void onTokenExpired() {
+
+        }
     }
 
     /**
