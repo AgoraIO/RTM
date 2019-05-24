@@ -108,10 +108,6 @@
 
 #pragma mark - AgoraRtmDelegate
 - (void)rtmKit:(AgoraRtmKit *)kit connectionStateChanged:(AgoraRtmConnectionState)state reason:(AgoraRtmConnectionChangeReason)reason {
-    if (state != AgoraRtmConnectionStateAborted) {
-        return;
-    }
-    
     NSString *message = [NSString stringWithFormat:@"connection state changed: %ld", state];
     __weak ChatViewController *weakSelf = self;
     [self showAlert:message handle:^(UIAlertAction * action) {

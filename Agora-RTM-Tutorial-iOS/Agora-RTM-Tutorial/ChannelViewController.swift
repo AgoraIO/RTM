@@ -48,10 +48,6 @@ class ChannelViewController: UIViewController, ShowAlertProtocol {
 
 extension ChannelViewController: AgoraRtmDelegate {
     func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
-        guard state == .aborted else {
-            return
-        }
-        
         showAlert("connection state changed: \(state.rawValue)") { [weak self] (_) in
             if reason == .remoteLogin, let strongSelf = self {
                 strongSelf.navigationController?.popToRootViewController(animated: true)

@@ -6,7 +6,7 @@
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "BasicViewController.h"
 
 typedef NS_ENUM(NSInteger, ChatType) {
     ChatTypePeer = 0,
@@ -23,7 +23,7 @@ typedef struct  {
 - (void)chatVCWillClose:(ChatViewController *)vc;
 @end
 
-@interface ChatViewController : NSViewController
+@interface ChatViewController : BasicViewController
 @property (nonatomic, assign) ChatMode mode;
 @property (nonatomic, strong) id<ChatVCDelegate> delegate;
 @end

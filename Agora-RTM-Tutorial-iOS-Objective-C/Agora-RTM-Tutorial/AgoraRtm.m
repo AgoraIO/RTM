@@ -18,15 +18,15 @@ static LoginStatus _status = LoginStatusOffline;
     _kit = [[AgoraRtmKit alloc] initWithAppId:[AppId appId] delegate:nil];
 }
 
-+ (AgoraRtmKit *)kit {
++ (AgoraRtmKit * _Nullable)kit {
     return _kit;
 }
 
-+ (NSString *)current {
++ (NSString * _Nullable)current {
     return _current;
 }
 
-+ (void)setCurrent:(NSString *)name {
++ (void)setCurrent:(NSString * _Nonnull)name {
     _current = name;
 }
 

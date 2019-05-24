@@ -6,8 +6,8 @@
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "BasicViewController.h"
 
-@interface MainViewController : NSViewController
+@interface MainViewController : BasicViewController
 
 @end
