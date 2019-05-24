@@ -16,9 +16,9 @@ typedef NS_ENUM(NSInteger, LoginStatus) {
 };
 
 @interface AgoraRtm : NSObject
-+ (AgoraRtmKit *)kit;
-+ (NSString *)current;
-+ (void)setCurrent:(NSString *)name;
++ (AgoraRtmKit * _Nullable)kit;
++ (NSString * _Nullable)current;
++ (void)setCurrent:(NSString * _Nonnull)name;
 + (LoginStatus)status;
 + (void)setStatus:(LoginStatus)status;
 + (void)updateDelegate:(id <AgoraRtmDelegate> _Nullable)delegate;

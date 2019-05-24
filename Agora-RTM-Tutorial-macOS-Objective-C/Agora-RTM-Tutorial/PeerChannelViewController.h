@@ -6,13 +6,13 @@
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import <Cocoa/Cocoa.h>
+#import "BasicViewController.h"
 
 @class PeerChannelViewController;
 @protocol PeerChannelVCDelegate <NSObject>
 - (void)peerChannelVCWillClose:(PeerChannelViewController *)vc;
 @end
 
-@interface PeerChannelViewController : NSViewController
+@interface PeerChannelViewController : BasicViewController
 @property (nonatomic, strong) id<PeerChannelVCDelegate> delegate;
 @end

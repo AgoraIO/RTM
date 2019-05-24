@@ -13,19 +13,20 @@ static NSString *_current = nil;
 static LoginStatus _status = LoginStatusOffline;
 
 @implementation AgoraRtm
+
 + (void)load {
     _kit = [[AgoraRtmKit alloc] initWithAppId:[AppId appId] delegate:nil];
 }
 
-+ (AgoraRtmKit *)kit {
++ (AgoraRtmKit * _Nullable)kit {
     return _kit;
 }
 
-+ (NSString *)current {
++ (NSString * _Nullable)current {
     return _current;
 }
 
-+ (void)setCurrent:(NSString *)name {
++ (void)setCurrent:(NSString * _Nonnull)name {
     _current = name;
 }
 
@@ -40,4 +41,5 @@ static LoginStatus _status = LoginStatusOffline;
 + (void)updateDelegate:(id <AgoraRtmDelegate> _Nullable)delegate {
     _kit.agoraRtmDelegate = delegate;
 }
+
 @end

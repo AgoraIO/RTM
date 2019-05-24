@@ -15,11 +15,6 @@
 
 @implementation MainViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-}
-
 - (void)viewWillAppear:(BOOL)animated {
     [super viewWillAppear:animated];
     [self logout];
@@ -48,6 +43,7 @@
     
     [AgoraRtm.kit loginByToken:nil user:account completion:^(AgoraRtmLoginErrorCode errorCode) {
         if (errorCode != AgoraRtmLoginErrorOk) {
+            [self showAlert: [NSString stringWithFormat:@"login error: %ld", errorCode]];
             return;
         }
         

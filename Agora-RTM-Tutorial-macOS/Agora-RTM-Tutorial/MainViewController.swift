@@ -8,15 +8,37 @@
 
 import Cocoa
 
-class MainViewController: NSViewController {
-    @IBOutlet weak var accountTextField: NSTextField!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+protocol ShowAlertProtocol: NSViewController {
+    func showAlert(_ message: String, handler: ((NSApplication.ModalResponse) -> Void)?)
+    func showAlert(_ message: String)
+}
+
+extension ShowAlertProtocol {
+    func showAlert(_ message: String, handler: ((NSApplication.ModalResponse) -> Void)?) {
+        let alert = NSAlert()
+        alert.messageText = message
+        alert.addButton(withTitle: "OK")
+        alert.alertStyle = .informational
+        guard let window = NSApplication.shared.windows.first else {
+            return
+        }
+        alert.beginSheetModal(for: window, completionHandler: handler)
     }
+    
+    func showAlert(_ message: String) {
+        showAlert(message, handler: nil)
+    }
+}
+
+class MainViewController: NSViewController, ShowAlertProtocol {
+    @IBOutlet weak var accountTextField: NSTextField!
     
     override func viewWillAppear() {
         logout()
+    }
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
     }
     
     override func prepare(for segue: NSStoryboardSegue, sender: Any?) {
@@ -44,6 +66,7 @@ private extension MainViewController {
 
         AgoraRtm.kit?.login(byToken: nil, user: account) { [unowned self] (errorCode) in
             guard errorCode == .ok else {
+                self.showAlert("login error: \(errorCode.rawValue)")
                 return
             }
             

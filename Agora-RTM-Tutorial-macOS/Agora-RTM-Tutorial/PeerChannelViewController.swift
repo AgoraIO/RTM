@@ -7,16 +7,21 @@
 //
 
 import Cocoa
+import AgoraRtmKit
 
 protocol PeerChannelVCDelegate: NSObjectProtocol {
     func peerChannelVCWillClose(_ vc: PeerChannelViewController)
 }
 
-class PeerChannelViewController: NSViewController {
+class PeerChannelViewController: NSViewController, ShowAlertProtocol {
     @IBOutlet weak var peerTextField: NSTextField!
     @IBOutlet weak var channelTextField: NSTextField!
     
     var delegate: PeerChannelVCDelegate?
+    
+    override func viewWillAppear() {
+        AgoraRtm.updateKit(delegate: self)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -54,8 +59,22 @@ class PeerChannelViewController: NSViewController {
     }
 }
 
+extension PeerChannelViewController: AgoraRtmDelegate {
+    func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
+        showAlert("connection state changed: \(state.rawValue)") { [weak self] (_) in
+            if reason == .remoteLogin, let strongSelf = self {
+                strongSelf.delegate?.peerChannelVCWillClose(strongSelf)
+            }
+        }
+    }
+}
+
 extension PeerChannelViewController: ChatVCDelegate {
     func chatVCWillClose(_ vc: ChatViewController) {
         vc.view.window?.contentViewController = self
+    }
+    
+    func chatVCBackToRootVC(_ vc: ChatViewController) {
+        self.delegate?.peerChannelVCWillClose(self)
     }
 }

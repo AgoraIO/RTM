@@ -14,24 +14,23 @@
 @property (weak, nonatomic) IBOutlet NSTextField *inputTextField;
 @property (weak, nonatomic) IBOutlet NSTableView *tableView;
 
-@property (nonatomic, strong) AgoraRtmChannel *channel;
+@property (nonatomic, strong) AgoraRtmChannel *rtmChannel;
 @property (nonatomic, strong) NSMutableArray *list;
 @end
 
 @implementation ChatViewController
 
-- (void)setMode:(ChatMode)mode {
-    _mode = mode;
-    self.title = mode.name;
-    
-    if (mode.type == ChatTypeGroup) {
-        [self createChannel:mode.name];
-    }
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     [AgoraRtm updateDelegate:self];
+}
+
+- (void)viewDidAppear {
+    [super viewDidAppear];
+    switch (self.mode.type) {
+        case ChatTypePeer:  self.title = self.mode.name; break;
+        case ChatTypeGroup: self.title = self.mode.name; [self createChannel:self.mode.name]; break;
+    }
 }
 
 - (void)viewWillDisappear {
@@ -39,7 +38,110 @@
     [self leaveChannel];
 }
 
-- (void)appendMsg:(NSString *)text user:(NSString *)user {
+#pragma mark - Send Message
+- (void)sendMessage:(NSString *)message {
+    NSString *typeName = (self.mode.type == ChatTypePeer ? @"peer" : @"channel");
+    
+    __weak ChatViewController *weakSelf = self;
+    void(^sent)(int) = ^(int status) {
+        if (status != 0) {
+            NSString *alert = [NSString stringWithFormat:@"send %@ message error: %d", typeName, status];
+            [weakSelf showAlert:alert];
+            return;
+        }
+        
+        [weakSelf appendMessage:message user:AgoraRtm.current];
+    };
+    
+    AgoraRtmMessage *rtmMessage = [[AgoraRtmMessage alloc] initWithText:message];
+    
+    switch (self.mode.type) {
+        case ChatTypePeer: {
+            [AgoraRtm.kit sendMessage:rtmMessage toPeer:self.mode.name completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
+                sent(errorCode);
+            }];
+        }
+        case ChatTypeGroup: {
+            [self.rtmChannel sendMessage:rtmMessage completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
+                sent(errorCode);
+            }];
+        }
+    }
+}
+
+#pragma mark - Channel
+- (void)createChannel:(NSString *)channel {
+    __weak ChatViewController *weakSelf = self;
+    void(^errorHandle)(NSModalResponse) = ^(NSModalResponse returnCode) {
+        [weakSelf.delegate chatVCWillClose:weakSelf];
+    };
+    
+    AgoraRtmChannel *rtmChannel = [AgoraRtm.kit createChannelWithId:channel delegate:self];
+    
+    if (!rtmChannel) {
+        [self showAlert:@"join channel fail" handle:errorHandle];
+    }
+    
+    [rtmChannel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
+        if (errorCode != AgoraRtmJoinChannelErrorOk) {
+            NSString *alert = [NSString stringWithFormat:@"join channel error: %ld", errorCode];
+            [weakSelf showAlert:alert handle:errorHandle];
+        }
+    }];
+    
+    self.rtmChannel = rtmChannel;
+}
+
+- (void)leaveChannel {
+    if (self.mode.type == ChatTypePeer) {
+        return;
+    }
+    
+    [self.rtmChannel leaveWithCompletion:^(AgoraRtmLeaveChannelErrorCode errorCode) {
+        NSLog(@"leave channel error: %ld", (long)errorCode);
+    }];
+}
+
+#pragma mark - AgoraRtmDelegate
+- (void)rtmKit:(AgoraRtmKit *)kit connectionStateChanged:(AgoraRtmConnectionState)state reason:(AgoraRtmConnectionChangeReason)reason {
+    NSLog(@"connection state changed: %ld", (long)reason);
+}
+
+- (void)rtmKit:(AgoraRtmKit *)kit messageReceived:(AgoraRtmMessage *)message fromPeer:(NSString *)peerId {
+    [self appendMessage:message.text user:peerId];
+}
+
+#pragma mark - AgoraRtmChannelDelegate
+- (void)channel:(AgoraRtmChannel *)channel memberJoined:(AgoraRtmMember *)member {
+    NSString *user = member.userId;
+    NSString *text = [user stringByAppendingString:@" join"];
+    [self showAlert:text];
+}
+
+- (void)channel:(AgoraRtmChannel *)channel memberLeft:(AgoraRtmMember *)member {
+    NSString *user = member.userId;
+    NSString *text = [user stringByAppendingString:@" left"];
+    [self showAlert:text];
+}
+
+- (void)channel:(AgoraRtmChannel *)channel messageReceived:(AgoraRtmMessage *)message fromMember:(AgoraRtmMember *)member {
+    [self appendMessage:message.text user:member.userId];
+}
+
+#pragma mark - UI
+- (IBAction)doBackPressed:(NSButton *)sender {
+    if (self.delegate && [self.delegate respondsToSelector:@selector(chatVCWillClose:)]) {
+        [self.delegate chatVCWillClose:self];
+    }
+}
+
+- (IBAction)doSendMsgPressed:(NSTextField *)sender {
+    if ([self pressedReturnToSendText:sender.stringValue]) {
+        sender.stringValue = @"";
+    }
+}
+
+- (void)appendMessage:(NSString *)text user:(NSString *)user {
     Message *msg = [[Message alloc] init];
     msg.userId = user;
     msg.text = text;
@@ -60,109 +162,8 @@
         return NO;
     }
     
-    NSString *name = self.mode.name;
-    
-    switch (self.mode.type) {
-        case ChatTypePeer: [self sendPeer:name msg:text]; break;
-        case ChatTypeGroup: [self sendChannelMessage:text]; break;
-    }
+    [self sendMessage:text];
     return YES;
-}
-
-- (void)showAlert:(NSString *)text {
-    NSAlert *alert = [[NSAlert alloc] init];
-    alert.messageText = text;
-    [alert addButtonWithTitle:@"OK"];
-    alert.alertStyle = NSAlertStyleInformational;
-    
-    NSWindow *window = [NSApplication sharedApplication].windows.firstObject;
-    
-    if (!window) {
-        return;
-    }
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [alert beginSheetModalForWindow:window completionHandler:nil];
-    });
-}
-
-- (IBAction)doBackPressed:(NSButton *)sender {
-    if (self.delegate && [self.delegate respondsToSelector:@selector(chatVCWillClose:)]) {
-        [self.delegate chatVCWillClose:self];
-    }
-}
-
-- (IBAction)doSendMsgPressed:(NSTextField *)sender {
-    if ([self pressedReturnToSendText:sender.stringValue]) {
-        sender.stringValue = @"";
-    }
-}
-
-#pragma mark - Peer
-- (void)sendPeer:(NSString *)peer msg: (NSString *)msg {
-    AgoraRtmMessage *message = [[AgoraRtmMessage alloc] initWithText:msg];
-    
-    __weak ChatViewController *weakSelf = self;
-    
-    [AgoraRtm.kit sendMessage:message toPeer:peer completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
-        NSLog(@"send peer msg error: %ld", (long)errorCode);
-        [weakSelf appendMsg:msg user:AgoraRtm.current];
-    }];
-}
-
-#pragma mark - AgoraRtmDelegate
-- (void)rtmKit:(AgoraRtmKit *)kit connectionStateChanged:(AgoraRtmConnectionState)state reason:(AgoraRtmConnectionChangeReason)reason {
-    NSLog(@"connection state changed: %ld", (long)reason);
-}
-
-- (void)rtmKit:(AgoraRtmKit *)kit messageReceived:(AgoraRtmMessage *)message fromPeer:(NSString *)peerId {
-    [self appendMsg:message.text user:peerId];
-}
-
-#pragma mark - Channel
-- (void)createChannel:(NSString *)channel {
-    AgoraRtmChannel *rtmChannel = [AgoraRtm.kit createChannelWithId:channel delegate:self];
-    [rtmChannel joinWithCompletion:^(AgoraRtmJoinChannelErrorCode errorCode) {
-        NSLog(@"join channel error: %ld", (long)errorCode);
-    }];
-    self.channel = rtmChannel;
-}
-
-- (void)leaveChannel {
-    if (self.mode.type == ChatTypePeer) {
-        return;
-    }
-    
-    [self.channel leaveWithCompletion:^(AgoraRtmLeaveChannelErrorCode errorCode) {
-        NSLog(@"leave channel error: %ld", (long)errorCode);
-    }];
-}
-
-- (void)sendChannelMessage:(NSString *)msg {
-    AgoraRtmMessage *message = [[AgoraRtmMessage alloc] initWithText:msg];
-    
-    __weak ChatViewController *weakSelf = self;
-    [self.channel sendMessage:message completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
-        NSLog(@"send channel msg error: %ld", (long)errorCode);
-        [weakSelf appendMsg:msg user:AgoraRtm.current];
-    }];
-}
-
-#pragma mark - AgoraRtmChannelDelegate
-- (void)channel:(AgoraRtmChannel *)channel memberJoined:(AgoraRtmMember *)member {
-    NSString *user = member.userId;
-    NSString *text = [user stringByAppendingString:@" join"];
-    [self showAlert:text];
-}
-
-- (void)channel:(AgoraRtmChannel *)channel memberLeft:(AgoraRtmMember *)member {
-    NSString *user = member.userId;
-    NSString *text = [user stringByAppendingString:@" left"];
-    [self showAlert:text];
-}
-
-- (void)channel:(AgoraRtmChannel *)channel messageReceived:(AgoraRtmMessage *)message fromMember:(AgoraRtmMember *)member {
-    [self appendMsg:message.text user:member.userId];
 }
 
 #pragma mark - NSTableViewDataSource, NSTableViewDelegate
@@ -206,10 +207,6 @@
         _list = [NSMutableArray array];
     }
     return _list;
-}
-
-- (void)dealloc {
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 @end
