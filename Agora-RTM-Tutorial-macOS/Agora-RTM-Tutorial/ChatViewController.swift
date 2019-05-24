@@ -36,9 +36,8 @@ class ChatViewController: NSViewController, ShowAlertProtocol {
     
     lazy var list = [Message]()
     
-    var delegate: ChatVCDelegate?
-    
     var type: ChatType = .peer("unknow")
+    var delegate: ChatVCDelegate?
     var rtmChannel: AgoraRtmChannel?
     
     override func viewDidLoad() {

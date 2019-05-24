@@ -88,7 +88,7 @@
             [weakSelf showAlert:alert handle:errorHandle];
         }
     }];
-    
+  
     self.rtmChannel = rtmChannel;
 }
 

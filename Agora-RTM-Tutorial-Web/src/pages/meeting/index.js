@@ -1,5 +1,6 @@
 import './meeting.css';
 import {APP_ID as appId} from '../../config';
+import Toastr from 'toastr';
 
 class View {
 
@@ -35,23 +36,33 @@ class View {
     })
   }
 
-  static addMessageView ({type, userName, content, className, channelName}) {
+  static addMessageView ({type, userName, content, className, channelName, result, append}) {
     const {rtm} = this;
-    $(".messages").append(`
-        <div class="message ${className}">
-          <div>
-            <div class="avatar">${userName}</div>
-          </div>
-          <div>
-            <div class="content ${className}">
-            ${content}
-            </div>
-          </div>
+    if (append) {
+      $(".messages").append(`
+      <div class="message ${className}">
+        <div>
+          <div class="avatar">${userName}</div>
         </div>
-      `)
+        <div style="position: relative">
+          <div class="content ${className}">
+          ${content}
+          </div>
+          ${className === "sender" && type == 'p2p' ?
+          `
+            ${result && result.hasPeerReceived === true ?
+              `<i class="received"></i>`
+              : `<i class="not_received"></i>`}
+          ` : ''
+          }
+        </div>
+      </div>
+    `)
+    }
     const msg = {
       userName,
-      content
+      content,
+      className
     }
     if (type === 'p2p') {
       rtm.p2pChannelMsgs[channelName] = rtm.p2pChannelMsgs[channelName] || [];
@@ -60,7 +71,7 @@ class View {
       rtm.channelMsgs[channelName] = rtm.channelMsgs[channelName] || [];
       rtm.channelMsgs[channelName].push(msg);
     }
-    $(".messages").scrollTop($(".messages")[0].scrollHeight);
+    append && $(".messages").scrollTop($(".messages")[0].scrollHeight);
   }
 
   static buildMessage ({userName, content, className}) {
@@ -117,7 +128,6 @@ class Modal {
             })
             return ;
           }
-          RTM.currentChannel = channelName;
           this.rtm.dialogues[channelName] = {
             peerId: channelName
           };
@@ -142,7 +152,6 @@ class Modal {
             })
             return;
           }
-          RTM.currentChannel = channelName;
           RTM.channelName = channelName;
           View.addRoom({
             name: RTM.channelName,
@@ -198,16 +207,33 @@ class RTM {
         userName: peerId,
         content: text
       };
-      const currentData = $(".current").data();
-      if (currentData.type === 'p2p' && currentData.name == peerId) {
-        View.addMessageView({
-          channelName: msg.userName,
-          type: currentData.type,
-          userName: msg.userName,
-          content: msg.content,
-          className: this.accountName === msg.userName ? 'sender' : ''
-        })
+      let currentData = $(".current").data();
+      if (!this.dialogues[peerId]) {
+        !currentData && $(".current").length > 0 && $(".current").toggleClass(".current")
+          const roomHTMLTmpl = `
+            <div class="room ${$(".current").length > 0 ? '' : 'current'}" data-name="${peerId}" data-type="p2p">
+              <h8>${peerId}</h8>
+              <span>p2p</span>
+            </div>
+          `;
+          View.textarea = true;
+          this.dialogues[peerId] = {
+            peerId,
+          }
+          $(".rooms").append(roomHTMLTmpl);
+          currentData = {
+            type: 'p2p',
+            name: peerId
+          }
       }
+      View.addMessageView({
+        channelName: msg.userName,
+        type: 'p2p',
+        userName: msg.userName,
+        content: msg.content,
+        className: this.accountName === msg.userName ? 'sender' : '',
+        append: currentData.type === 'p2p' && currentData.name == peerId
+      })
       console.log(`[RTM-DEMO] MessageFromPeer [${peerId}] channel message text: ${text}`);
     })
     this.channels = {};
@@ -239,18 +265,17 @@ class RTM {
           content: message
         };
         const currentData = $(".current").data();
-        if (currentData.type === 'channel' && currentData.name == name) {
-          View.addMessageView({
-            channelName: name,
-            type: currentData.type,
-            userName: msg.userName,
-            content: msg.content,
-            className: this.accountName === senderId ? 'sender' : ''
-          })
-        }
+        View.addMessageView({
+          channelName: name,
+          type: 'channel',
+          userName: msg.userName,
+          content: msg.content,
+          className: this.accountName === senderId ? 'sender' : '',
+          append: currentData.type === 'channel' && currentData.name == name
+        })
         console.log(`[RTM-DEMO] [createChannel] [${senderId}] channel message text: ${message}, name: ${name} , curName: ${currentData.name}`);
       });
-      channel.on('MemberJoin', memberId => {
+      channel.on('MemberJoined', memberId => {
         console.log("[RTM-DEMO] MemberJoin", memberId);
       });
       channel.on('MemberLeft', memberId => {
@@ -263,7 +288,7 @@ class RTM {
   }
 
   async leaveChannel(name) {
-    const {channels, channelUsers, channelMsgs} = this;
+    const {channels, channelUsers, channelMsgs, p2pChannelMsgs} = this;
     const channel = channels[name];
     if (!channel) return;
     return new Promise((resolve) => {
@@ -271,6 +296,7 @@ class RTM {
         delete channels[name];
         delete channelUsers[name];
         delete channelMsgs[name];
+        delete p2pChannelMsgs[name];
         resolve(name);
       })
     });
@@ -286,7 +312,7 @@ class RTM {
         return result;
       } else {
         console.log("[RTM-DEMO] p2p ", {text}, peerId);
-        let result = await client.sendMessageToPeer({text}, peerId);
+        let result = await client.sendMessageToPeer({text}, peerId.toString());
         console.log('[RTM-DEMO] [send to peer] received', result);
         return result;
       }
@@ -339,7 +365,7 @@ class MeetingPage {
           msgHTML += View.buildMessage({
             userName: msg.userName,
             content: msg.content,
-            className: msg.userName === accountName ? 'sender' : '',
+            className: msg.className
           })
         }
       }
@@ -353,10 +379,24 @@ $(() => {
   const accountName = location.href.split("?")[1].split("=")[1];
 
   let rtm = new RTM(accountName);
+  rtm.client.on("ConnectionStateChange", (newState, reason) => {
+    let type = 'info';
+    if (newState === 'ABORTED') {
+      type = 'error';
+    } else if (newState === 'CONNECTED') {
+      type = 'success';
+    } else if (newState === 'RECONNECTING') {
+      type = 'warning';
+    } else if (newState === 'DISCONNECTED') {
+      type = 'warning';
+    }
+    newState == 'ABORTED' && setTimeout(() => {
+      location.replace('/');
+    }, 1000) && Toastr[type](reason);
+  })
   rtm.client.login({uid: accountName}).then(_ => _);
 
   RTM.channelName = '';
-  RTM.currentChannel = null;
   $('#message').keypress(function (e) {
     if (View.textarea && e.which == 13) {
       const currentData = $(".current").data();
@@ -366,20 +406,22 @@ $(() => {
         text,
         className: 'sender',
         channelName: currentData.name
-      }).then(e => {
+      }).then(result => {
         View.addMessageView({
           type: currentData.type,
           userName: rtm.accountName,
           content: text,
           className: 'sender',
-          channelName: currentData.name
+          result,
+          channelName: currentData.name,
+          append: true
         })
         $("#message").val('');
       })
       return false;
     }
   });
-  $("#user").text(`${accountName}`)
+  $("#user").text(accountName.toString())
 
   $("#quit").on('click', () => {
     const promises = []

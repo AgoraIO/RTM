@@ -39,6 +39,11 @@ public class ChatManager {
                         listener.onMessageReceived(rtmMessage, peerId);
                     }
                 }
+
+                @Override
+                public void onTokenExpired() {
+
+                }
             });
 
             if (BuildConfig.DEBUG) {
