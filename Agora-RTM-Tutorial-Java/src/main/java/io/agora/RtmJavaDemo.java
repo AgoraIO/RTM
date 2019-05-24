@@ -71,6 +71,10 @@ public class RtmJavaDemo {
                     System.out.println("Receive message: " + msg 
                                 + " from " + peerId);
                 }
+
+                @Override
+                public void onTokenExpired() {
+                }
             });
         } catch (Exception e) {
             System.out.println("Rtm sdk init fatal error!");
