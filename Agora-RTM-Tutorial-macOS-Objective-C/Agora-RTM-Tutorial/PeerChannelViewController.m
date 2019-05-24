@@ -8,8 +8,9 @@
 
 #import "PeerChannelViewController.h"
 #import "ChatViewController.h"
+#import "AgoraRtm.h"
 
-@interface PeerChannelViewController () <ChatVCDelegate>
+@interface PeerChannelViewController () <AgoraRtmDelegate, ChatVCDelegate>
 @property (weak, nonatomic) IBOutlet NSTextField *peerTextField;
 @property (weak, nonatomic) IBOutlet NSTextField *channelTextField;
 
@@ -18,8 +19,17 @@
 
 @implementation PeerChannelViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
+- (void)viewWillAppear {
+    [super viewWillAppear];
+    [AgoraRtm updateDelegate:self];
+}
+
+- (void)prepareForSegue:(NSStoryboardSegue *)segue sender:(id)sender {
+    if ([segue.identifier isEqualToString:@"peerChannelToChat"]) {
+        ChatViewController *chatVC = (ChatViewController *)segue.destinationController;
+        chatVC.mode = self.selectedMode;
+        chatVC.delegate = self;
+    }
 }
 
 - (IBAction)doChatPressed:(NSButton *)sender {
@@ -60,12 +70,14 @@
     }
 }
 
-- (void)prepareForSegue:(NSStoryboardSegue *)segue sender:(id)sender {
-    if ([segue.identifier isEqualToString:@"peerChannelToChat"]) {
-        ChatViewController *chatVC = (ChatViewController *)segue.destinationController;
-        chatVC.mode = self.selectedMode;
-        chatVC.delegate = self;
-    }
+- (void)rtmKit:(AgoraRtmKit *)kit connectionStateChanged:(AgoraRtmConnectionState)state reason:(AgoraRtmConnectionChangeReason)reason {
+    NSString *message = [NSString stringWithFormat:@"connection state changed: %ld", state];
+    __weak PeerChannelViewController *weakSelf = self;
+    [self showAlert:message handle:^(NSModalResponse returnCode) {
+        if (reason == AgoraRtmConnectionChangeReasonRemoteLogin) {
+            [weakSelf.delegate peerChannelVCWillClose:weakSelf];
+        }
+    }];
 }
 
 - (void)chatVCWillClose:(ChatViewController *)vc {

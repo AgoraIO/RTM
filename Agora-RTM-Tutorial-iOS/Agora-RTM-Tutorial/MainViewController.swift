@@ -8,20 +8,40 @@
 
 import UIKit
 
-class MainViewController: UIViewController {
-    @IBOutlet weak var accountTextField: UITextField!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
+protocol ShowAlertProtocol: UIViewController {
+    func showAlert(_ message: String, handler: ((UIAlertAction) -> Void)?)
+    func showAlert(_ message: String)
+}
+
+extension ShowAlertProtocol {
+    func showAlert(_ message: String, handler: ((UIAlertAction) -> Void)?) {
+        view.endEditing(true)
+        let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default, handler: handler))
+        present(alert, animated: true, completion: nil)
     }
     
+    func showAlert(_ message: String) {
+        showAlert(message, handler: nil)
+    }
+}
+
+class MainViewController: UIViewController, ShowAlertProtocol {
+    @IBOutlet weak var accountTextField: UITextField!
+    
     override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
         logout()
     }
     
+    override func viewDidLoad() {
+        self.navigationController?.interactivePopGestureRecognizer?.isEnabled = false
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
-        super.viewWillDisappear(animated)
+        view.endEditing(true)
+    }
+    
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
         view.endEditing(true)
     }
     
@@ -40,6 +60,7 @@ private extension MainViewController {
 
         AgoraRtm.kit?.login(byToken: nil, user: account) { [unowned self] (errorCode) in
             guard errorCode == .ok else {
+                self.showAlert("login error: \(errorCode.rawValue)")
                 return
             }
             

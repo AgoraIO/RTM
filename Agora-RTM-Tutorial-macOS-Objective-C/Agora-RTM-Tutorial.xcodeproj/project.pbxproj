@@ -11,6 +11,7 @@
 		38DF956C22424C4D00A958D6 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF956B22424C4D00A958D6 /* libresolv.tbd */; };
 		38DF956E22424C5400A958D6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF956D22424C5400A958D6 /* libc++.tbd */; };
 		38DF957022424C5A00A958D6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF956F22424C5A00A958D6 /* SystemConfiguration.framework */; };
+		A704E1FD2297BCFC00E876D0 /* BasicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A704E1FC2297BCFC00E876D0 /* BasicViewController.m */; };
 		A7EE1DA9221EA4D8007B835A /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1DA8221EA4D8007B835A /* AppDelegate.m */; };
 		A7EE1DAE221EA4D9007B835A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7EE1DAD221EA4D9007B835A /* Assets.xcassets */; };
 		A7EE1DB1221EA4D9007B835A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7EE1DAF221EA4D9007B835A /* Main.storyboard */; };
@@ -31,6 +32,8 @@
 		38DF956B22424C4D00A958D6 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
 		38DF956D22424C5400A958D6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		38DF956F22424C5A00A958D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/SystemConfiguration.framework; sourceTree = DEVELOPER_DIR; };
+		A704E1FB2297BCFC00E876D0 /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
+		A704E1FC2297BCFC00E876D0 /* BasicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicViewController.m; sourceTree = "<group>"; };
 		A7EE1D93221E58AE007B835A /* MessageCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MessageCell.h; sourceTree = "<group>"; };
 		A7EE1D94221E58AE007B835A /* MessageCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MessageCell.m; sourceTree = "<group>"; };
 		A7EE1D96221E914F007B835A /* Message.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Message.h; sourceTree = "<group>"; };
@@ -80,6 +83,8 @@
 				A7F23CBF221BD826003C46FB /* AgoraRtm.m */,
 				A7F23CD3221BDE3F003C46FB /* AppId.h */,
 				A7F23CD4221BDE3F003C46FB /* AppId.m */,
+				A704E1FB2297BCFC00E876D0 /* BasicViewController.h */,
+				A704E1FC2297BCFC00E876D0 /* BasicViewController.m */,
 				A7F23CD8221BE210003C46FB /* MainViewController.h */,
 				A7F23CD9221BE210003C46FB /* MainViewController.m */,
 				A7EE1DD2221FA1C3007B835A /* PeerChannelViewController.h */,
@@ -222,6 +227,7 @@
 				A7EE1DBE221EA6A0007B835A /* MessageCell.m in Sources */,
 				A7EE1DC0221EA6A0007B835A /* Message.m in Sources */,
 				A7EE1DD1221FA0CC007B835A /* ReplaceSegue.m in Sources */,
+				A704E1FD2297BCFC00E876D0 /* BasicViewController.m in Sources */,
 				A7EE1DA9221EA4D8007B835A /* AppDelegate.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

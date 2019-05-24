@@ -6,8 +6,8 @@
 //  Copyright © 2019 Agora. All rights reserved.
 //
 
-#import <UIKit/UIKit.h>
+#import "BasicViewController.h"
 
-@interface PeerViewController : UIViewController
+@interface PeerViewController : BasicViewController
 
 @end
