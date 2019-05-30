@@ -379,7 +379,7 @@ $(() => {
   const accountName = location.href.split("?")[1].split("=")[1];
 
   let rtm = new RTM(accountName);
-  rtm.client.on("ConnectionStateChange", (newState, reason) => {
+  rtm.client.on("ConnectionStateChanged", (newState, reason) => {
     let type = 'info';
     if (newState === 'ABORTED') {
       type = 'error';
