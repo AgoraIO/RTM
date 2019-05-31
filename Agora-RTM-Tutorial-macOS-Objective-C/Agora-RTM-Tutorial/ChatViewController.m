@@ -147,14 +147,14 @@
     msg.text = text;
     [self.list addObject:msg];
     
+    if (self.list.count > 100) {
+        [self.list removeObjectAtIndex:0];
+    }
+    
     NSInteger end = self.list.count - 1;
     
-    __weak ChatViewController *weakSelf = self;
-    
-    dispatch_async(dispatch_get_main_queue(), ^{
-        [weakSelf.tableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndex:end] withAnimation:NSTableViewAnimationSlideUp];
-        [weakSelf.tableView scrollRowToVisible:end];
-    });
+    [self.tableView insertRowsAtIndexes:[NSIndexSet indexSetWithIndex:end] withAnimation:NSTableViewAnimationSlideUp];
+    [self.tableView scrollRowToVisible:end];
 }
 
 - (BOOL)pressedReturnToSendText:(NSString *)text {
@@ -182,24 +182,7 @@
 }
 
 - (CGFloat)tableView:(NSTableView *)tableView heightOfRow:(NSInteger)row {
-    CGFloat defaultHeight = 39;
-    CGFloat viewWidth = self.view.bounds.size.width - (32 + 16 + 16 + 50);
-    Message *msg = self.list[row];
-    
-    NSString *text = msg.text;
-    
-    
-    CGRect textRect = [text boundingRectWithSize:NSMakeSize(viewWidth, 0)
-                                         options:NSStringDrawingUsesLineFragmentOrigin
-                                      attributes:@{NSFontAttributeName: [NSFont systemFontOfSize:13]}];
-                       
-                       
-    CGFloat textHeight = textRect.size.height + 6 + 6;
-    
-    if (textHeight <= defaultHeight) {
-        textHeight = defaultHeight;
-    }
-    return textHeight;
+    return 36;
 }
 
 - (NSMutableArray *)list {

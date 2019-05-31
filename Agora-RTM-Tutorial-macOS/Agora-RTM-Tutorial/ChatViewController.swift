@@ -173,11 +173,13 @@ private extension ChatViewController {
     func appendMessage(user: String, content: String) {
         let msg = Message(userId: user, text: content)
         list.append(msg)
-        let end = list.count - 1
-        DispatchQueue.main.async { [unowned self] in
-            self.tableView.insertRows(at: IndexSet(integer: end), withAnimation: NSTableView.AnimationOptions())
-            self.tableView.scrollRowToVisible(end)
+        if list.count > 100 {
+            list.removeFirst()
         }
+        let end = list.count - 1
+        
+        self.tableView.reloadData()
+        self.tableView.scrollRowToVisible(end)
     }
 }
 
@@ -189,24 +191,12 @@ extension ChatViewController: NSTableViewDelegate, NSTableViewDataSource {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let msg = list[row]
         let type: CellType = msg.userId == AgoraRtm.current ? .right : .left
-        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "MessageCell"), owner: self) as! MessageCell
+        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "MessageCell"), owner: nil) as! MessageCell
         cell.update(type: type, message: msg)
         return cell
     }
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
-        let defaultHeight: CGFloat = 39
-        let viewWidth = view.bounds.size.width - (32 + 16 + 16 + 50)
-        let msg = list[row]
-        let string: NSString = msg.text as NSString
-
-        let textRect = string.boundingRect(with: NSMakeSize(viewWidth, 0), options: [NSString.DrawingOptions.usesLineFragmentOrigin], attributes: [NSAttributedString.Key.font: NSFont.systemFont(ofSize: 13)])
-
-        var textHeight = textRect.height + 6 + 6
-        
-        if textHeight <= defaultHeight {
-            textHeight = defaultHeight;
-        }
-        return textHeight;
+        return 36
     }
 }
