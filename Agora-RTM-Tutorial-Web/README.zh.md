@@ -18,7 +18,7 @@
 export const APP_ID = <#Your Agora APPID#>;
 ```
 
-然后在 [Agora.io SDK](https://www.agora.io/cn/download/) 下载 **RTM SDK**，解压后将其中的 "AgoraRTM-production.js" 文件复制到本项目文件夹下的子路径 "src/assets/rtm.min.js"。
+然后在 [Agora.io SDK](https://www.agora.io/cn/download/) 下载 **RTM SDK**，解压后将其中的 "agora-rtm-sdk-0.9.1.js" 文件复制到本项目文件夹下的子路径 "src/assets/rtm.min.js"。此处文件名 `agora-rtm-sdk-0.9.1.js` 中的版本号 `0.9.1` 仅供参考，安装时请使用最新版的 SDK 和链接地址。
 
 最后。安装该示例的npm依赖并且执行`npm run start`。
 
