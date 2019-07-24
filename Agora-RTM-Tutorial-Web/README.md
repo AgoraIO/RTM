@@ -18,8 +18,6 @@ First, create a developer account at [Agora.io](https://dashboard.agora.io/signi
 export const APP_ID = <#Your Agora APPID#>;
 ```
 
-Next, download the **Agora RTM SDK** from [Agora.io SDK](https://www.agora.io/en/download/). Unzip the downloaded SDK package and copy the "agora-rtm-sdk-0.9.1.js" file to the project folder's sub path "src/assets/rtm.min.js". The version above is for reference only, please use the latest version of the SDK.
-
 Finally, install the project's dependencies and `npm run start`.
 
 ## Developer Environment Requirements
