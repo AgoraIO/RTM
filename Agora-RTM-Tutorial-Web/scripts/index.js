@@ -2,9 +2,9 @@ const path = require("path");
 const loaders = require("./loaders");
 const plugins = require("./plugins");
 
-const NODE_ENV = process.env.NODE_ENV
+const NODE_ENV = process.env.NODE_ENV;
 
-const distPath = NODE_ENV == 'development' ? '../dist' : '../build'
+const distPath = NODE_ENV == 'development' ? '../dist' : '../build';
 
 module.exports = {
   entry: {

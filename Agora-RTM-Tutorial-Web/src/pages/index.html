@@ -1,86 +1,95 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>Agora Web RTM Tutorial</title>
-
+  <title>Agora RTM Tutorial - Chatroom</title>
+</head>
 <body class="agora-theme">
-  <div class="navbar-fixed">
-    <nav class="agora-navbar">
-      <div class="nav-wrapper agora-primary-bg valign-wrapper">
-        <h5 class="left-align">Agora Web RTM Tutorial</h5>
-        <a href="https://github.com/AgoraIO/RTM/tree/master/Agora-RTM-Tutorial-Web" class="agora-github-pin"></a>
-      </div>
-    </nav>
-  </div>
-  <form id="form" class="row col l12 s12">
-    <div class="row container col l12 s12" style="display: flex;">
-      <div class="col" style="min-width: 433px; max-width: 443px">
-        <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
-          <div class="row card-content" style="margin-bottom: 0px;">
-            <div class="input-field">
-              <label for="appId" class="active">App ID</label>
-              <input type="text" placeholder="App ID" name="appId" id="appId">
-            </div>
-            <div class="input-field">
-              <label for="accountName" class="active">ACCOUNT NAME</label>
-              <input type="text" placeholder="ACCOUNT NAME" name="accountName" id="accountName">
-            </div>
-            <div class="input-field">
-              <label for="token" class="active">Token</label>
-              <input type="text" placeholder="token" name="token">
-            </div>
-            <div class="row" style="margin: 0">
-              <div class="col s12">
-                <button class="btn btn-raised btn-primary " id="login">LOGIN</button>
-                <button class="btn btn-raised btn-primary hide" id="logout">LOGOUT</button>
-                <button class="btn btn-raised btn-primary" id="add_new_chat">ADD NEW CHAT</button>
-              </div>
-            </div>
+  <div class="flex-container">
+      <ul id="slide-out" class="sidenav">
+        <li class="background-theme">
+          <div class="user-view">
+            <a id="avatar"></a>
+            <a><span class="white-text name" id="accountName">Agora Chatroom</span></a>
+            <a>
+                <div class="operate-button">
+                    <a class="icon-btn" id="showLogin">
+                      <i class="iconfont icon-login_user" ></i>
+                    </a>
+                    <a class="icon-btn hide" id="logout">
+                      <i class="iconfont icon-logout"></i>
+                    </a>
+                    <a class="icon-btn" id="add_new_dialogue">
+                      <i class="iconfont icon-add"></i>
+                    </a>
+                  </div>
+            </a>
           </div>
-        </div>
-      </div>
-      <div class="col" style="flex: 1; display: flex;">
-        <div class="card" style="margin-top: 0px; margin-bottom: 0px; flex: 1;">
-          <div class="chat" style="margin-bottom: 0px;">
-            <div class="dialogue-list" id="dialogue-list"></div>
-            <div class="chat-board">
-              <div class="chat-list" id="chat-message"></div>
-              <div class="chat-input">
-                <textarea id="message" class="materialize-textarea chat-message-preview"></textarea>
-                <button class="btn btn-raised btn-primary send" id="send">SEND</button>
-              </div>
+        </li>
+        <li class="chats-dialogue">
+            <div class="dialogue-list" id="dialogue-list">
+
             </div>
-          </div>
-        </div>
+        </li>
+        <a class="agora-github-pin" target="_blank" href="https://github.com/AgoraIO/RTM/tree/master/Agora-RTM-Tutorial-Web"></a>
+      </ul>
+    <div class="wrapper">
+    </div>
+    <div class="flex-item chat-board">
+      <div class="message-board" id="chat-message"></div>
+      <div class="chat-input">
+        <textarea id="message" class="materialize-textarea"></textarea>
       </div>
     </div>
-  </form>
-  <!-- add dialogue -->
-  <div id="dialogue" class="modal">
+  </div>
+  <!-- login modal -->
+  <div class="modal" id="loginModal">
     <div class="modal-content">
-      <form id="dialogueForm">
+      <form id="loginForm">
         <div class="input-field">
-          <select name="dialogue_type">
-            <option value="channel" selected>Channel</option>
-            <option value="p2p">p2p</option>
-          </select>
-          <label for="dialogue_type">type</label>
+          <input type="text" name="appId" class="active" />
+          <label for="appId">APP ID</label>
         </div>
         <div class="input-field">
-          <input type="text" class="active" name="dialogue_name" />
-          <label for="dialogue_name">name</label>
+          <input type="text" name="accountName" class="active" />
+          <label for="accountName">Account Name</label>
+        </div>
+        <div class="input-field">
+          <input type="text" name="token" class="active" />
+          <label for="token">Token</label>
         </div>
       </form>
     </div>
     <div class="modal-footer">
-      <a id="cancel" class="modal-close btn light-blue darken-1">cancel</a>
-      <a id="submit" class="modal-close btn light-blue darken-4">submit</a>
+      <a id="cancelLogin" class="modal-close btn-flat">Cancel</a>
+      <a id="login" class="btn btn-primary ">Confirm</a>
     </div>
   </div>
-  <!-- add dialogue -->
-
+  <!-- login modal -->
+  <!-- dialogue modal -->
+    <div class="modal" id="dialogueModal">
+        <div class="modal-content">
+          <form id="dialogueForm">
+            <div class="input-field">
+              <select name="dialogue_type">
+                <option value="channel" selected>channel</option>
+                <option value="p2p">p2p</option>
+              </select>
+              <label for="dialogue_type">Type</label>
+            </div>
+            <div class="input-field">
+              <input type="text" name="dialogue_name" class="active" />
+              <label for="dialogue_name">name</label>
+            </div>
+          </form>
+        </div>
+        <div class="modal-footer">
+          <a id="cancel_new_dialogue" class="modal-close btn-flat">Cancel</a>
+          <a id="create_new_dialogue" class="btn btn-primary ">Confirm</a>
+        </div>
+    </div>
+    <!-- dialogue modal -->
+</body>
 </html>

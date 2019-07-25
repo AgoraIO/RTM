@@ -3,17 +3,32 @@ import * as $ from 'jquery';
 import * as M from 'materialize-css';
 
 import RtmClient from '../rtm-client';
-import {addDialogue, removeDialogue, Toast, validator, serializeFormData, addMessage} from '../common';
+import {addDialogue, removeDialogue,
+  Toast, validator,
+  serializeFormData, addMessage,
+  getRandomAvatar} from '../common';
 
 $(() => {
   M.AutoInit();
 
+  $("#avatar").append($("<img/>", {
+    class: 'avatar',
+    src: getRandomAvatar(Date.now())
+  }));
+
+  M.Sidenav.init($("#slide-out")[0], {
+    edge: 'left'
+  }).open();
+
   function updateChatMessage (message) {
-    if (rtm._currentDialogue) {
+    if (rtm._currentDialogue
+      && rtm._currentDialogue.type == message.type
+      && rtm._currentDialogue.name == message.name) {
       addMessage({
         type: message.id == rtm.accountName ? 'sender' : 'receiver',
         text: message.message,
-        id: message.id
+        id: message.id,
+        src: message.id == rtm.accountName ? getRandomAvatar() : null,
       })
     }
   }
@@ -21,13 +36,24 @@ $(() => {
   let rtm = new RtmClient();
 
   rtm.on("ConnectionStateChanged", (newState, reason) => {
+    console.log("reason", reason);
+    if (reason == "LOGIN_SUCCESS") {
+      $("#accountName").text(rtm.accountName);
+    }
     if (newState == "ABORTED") {
       if (reason == "REMOTE_LOGIN") {
         Toast.error("You have already been kicked off!");
         $("#logout").removeClass("hide");
         $("#login").addClass("hide");
 
-        // TODO: need confirm kickoff's channel 
+        $("#accountName").text('Agora Chatroom');
+
+        rtm.clearState();
+      }
+    }
+    if (newState == "DISCONNECTED") {
+      if (reason == "LOGOUT") {
+        $("#accountName").text('Agora Chatroom');
         rtm.clearState();
       }
     }
@@ -40,7 +66,9 @@ $(() => {
     }
     const peerMessage = {
       message: message.text,
-      id: peerId
+      id: peerId,
+      name: peerId,
+      type: 'peer',
     }
     rtm._peerMessages[peerId].push();
     updateChatMessage(peerMessage);
@@ -58,7 +86,9 @@ $(() => {
     }
     const channelMessage = {
       message: message.text,
-      id: memberId
+      id: memberId,
+      name: channelName,
+      type: 'channel',
     }
     rtm._channelMessages[channelName].push(channelMessage);
     updateChatMessage(channelMessage);
@@ -68,12 +98,44 @@ $(() => {
     console.log("channel ", channelName, " member: ", args, " left");
   });
 
+  $("#showLogin").on("click", function (e) {
+    e.preventDefault();
+    M.Modal.init($("#loginModal")[0], {
+      dismissible: false
+    }).open();
+  })
+
+  $("#cancelLogin").on("click", function (e) {
+    e.preventDefault();
+    M.Modal.init($("#loginModal")[0], {
+      dismissible: false
+    }).close();
+  })
+
+  $("#add_new_dialogue").on("click", function (e) {
+    e.preventDefault();
+    if (!rtm || !rtm._logined) {
+      Toast.error("Please login first!");
+      return;
+    }
+    M.Modal.init($("#dialogueModal")[0], {
+      dismissible: false
+    }).open();
+  })
+
+  $("#cancel_new_dialogue").on("click", function (e) {
+    e.preventDefault();
+    M.Modal.init($("#dialogueModal")[0], {
+      dismissible: false
+    }).close();
+  })
+
   $("#login").on("click", function (e) {
     e.preventDefault();
 
-    const params = serializeFormData("form");
+    const params = serializeFormData("loginForm");
 
-    if (!validator(params, ['dialogue_type', 'dialogue_name'])) {
+    if (!validator(params, ['appId', 'accountName'])) {
       return;
     }
 
@@ -82,8 +144,11 @@ $(() => {
       window.rtm = rtm;
       rtm.login(params.accountName).then(() => {
         console.log('login')
-        $("#login").addClass("hide")
+        $("#showLogin").addClass("hide")
         $("#logout").removeClass("hide")
+        M.Modal.init($("#loginModal")[0], {
+          dismissible: false
+        }).close();
         rtm._logined = true
         Toast.notice("Login: " + params.accountName);
       }).catch((err) => {
@@ -99,33 +164,17 @@ $(() => {
     e.preventDefault();
     rtm.logout().then(() => {
       console.log('logout')
-      $("#login").removeClass("hide")
+      $("#showLogin").removeClass("hide")
       $("#logout").addClass("hide")
       rtm._logined = false
-      Toast.notice("Logout: " + params.accountName);
+      Toast.notice("Logout: " + rtm.accountName);
     }).catch((err) => {
       Toast.error("Logout failed, please open console see more details");
       console.log(err)
     })
   })
 
-  $("#add_new_chat").on("click", function (e) {
-    e.preventDefault();
-    if (!rtm || !rtm._logined) {
-      Toast.error("Please login first!");
-      return;
-    }
-    M.Modal.init($("#dialogue")[0], {
-      dismissible: false,
-    }).open();
-  })
-
-  $("#cancel").on("click", function (e) {
-    e.preventDefault();
-    M.Modal.init($("#dialogue")[0]).close();
-  })
-
-  $("#submit").on("click", function (e) {
+  $("#create_new_dialogue").on("click", function (e) {
     e.preventDefault();
     const dialogueParams = serializeFormData("dialogueForm");
     if (!validator(dialogueParams, ['dialogue_type', 'dialogue_name'])) {
@@ -159,7 +208,7 @@ $(() => {
       }
     }
   
-    M.Modal.init($("#dialogue")[0]).close();
+    M.Modal.init($("#dialogueModal")[0]).close();
   })
 
   $("body").on("click", ".dialogue-item", function (e) {
@@ -218,7 +267,9 @@ $(() => {
         }
         const channelMessage = {
           message,
-          id: rtm.accountName
+          id: rtm.accountName,
+          name: channelName,
+          type: 'channel'
         };
 
         rtm._channelMessages[channelName].push(channelMessage);
@@ -240,6 +291,8 @@ $(() => {
         const peerMessage = {
           message,
           id: rtm.accountName,
+          type: 'peer',
+          name: peerId
         };
 
         rtm._peerMessages[peerId].push(peerMessage);

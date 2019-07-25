@@ -1,3 +1,20 @@
+import md5 from 'blueimp-md5';
+import Identicon from 'identicon.js';
+
+let avatars = {};
+
+export function getRandomAvatar () {
+  if (!avatars.default) {
+  const str = new Identicon(md5(Date.now()), {
+    background: [255, 255, 255, 255],
+    margin: 0.2,
+    size: 88,
+    format: 'svg'
+  }).toString()
+    avatars.default = `data:image/svg+xml;base64,${str}`;
+  }
+  return avatars.default;
+}
 
 export function addDialogue(type, name) {
   const $dialogue = $("#dialogue-list");
@@ -74,19 +91,44 @@ export function serializeFormData(domId) {
   return obj;
 }
 
+function genAvatar (name) {
+  const str = new Identicon(md5(name), {
+    background: [255, 255, 255, 255],
+    margin: 0.2,
+    size: 88,
+    format: 'svg'
+  }).toString()
+  return `data:image/svg+xml;base64,${str}`;
+}
+
+function getAvatarByName(name) {
+  const avatars = {};
+  if (!avatars[name]) {
+    avatars[name] = genAvatar(name);
+  }
+  return avatars[name];
+}
+
 export function addMessage (msg) {
   const chatContainer = $("<div/>", {
     class: msg.type,
   });
   $("#chat-message").append(chatContainer);
-  $("<div/>", {
+
+  $("<img/>", {
     class: 'id',
-    text: msg.id
+    src: msg.src ? msg.src : getAvatarByName(msg.type + msg.id)
   }).appendTo(chatContainer);
+
+  const panel = $("<div/>", {
+    class: 'panel bubble',
+  }).appendTo(chatContainer);
+
   $("<pre/>", {
     class: 'text',
     text: msg.text
-  }).appendTo(chatContainer);
+  }).appendTo(panel);
+
   requestAnimationFrame(() => {
     $("#chat-message").scrollTop($("#chat-message")[0].scrollHeight);
   });
