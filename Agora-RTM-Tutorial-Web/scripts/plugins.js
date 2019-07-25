@@ -8,11 +8,7 @@ const webpack = require('webpack');
 const plugins = [
   new HtmlWebpackPlugin({
     filename: "index.html",
-    template: path.resolve(__dirname, "../src/pages/index.html"),
-  }),
-  new HtmlWebpackPlugin({
-    filename: "meeting.html",
-    template: path.resolve(__dirname, "../src/pages/meeting/index.html"),
+    template: path.resolve(__dirname, "../src/index.html"),
   }),
   new CleanWebpackPlugin(),
   new FriendlyErrorsPlugin({

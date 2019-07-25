@@ -5,7 +5,7 @@ let avatars = {};
 
 export function getRandomAvatar () {
   if (!avatars.default) {
-  const str = new Identicon(md5(Date.now()), {
+  const str = new Identicon(md5("agora", ''+Date.now()), {
     background: [255, 255, 255, 255],
     margin: 0.2,
     size: 88,
@@ -32,13 +32,6 @@ export function addDialogue(type, name) {
     id: id + "-close",
     class: 'iconfont icon-close dialogue-close'
   }).appendTo($("#"+id));
-}
-
-export function removeDialogue(name) {
-  const dialogueId = "#"+name;
-  if ($(dialogueId)[0]) {
-    $(dialogueId).remove();
-  }
 }
 
 function Toastify (options) {

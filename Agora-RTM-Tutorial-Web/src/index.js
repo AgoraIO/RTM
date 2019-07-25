@@ -1,12 +1,12 @@
-import './meeting/meeting.scss';
+import './assets/styles.scss';
 import * as $ from 'jquery';
 import * as M from 'materialize-css';
 
-import RtmClient from '../rtm-client';
-import {addDialogue, removeDialogue,
+import RtmClient from './rtm-client';
+import {addDialogue,
   Toast, validator,
   serializeFormData, addMessage,
-  getRandomAvatar} from '../common';
+  getRandomAvatar} from './common';
 
 $(() => {
   M.AutoInit();
@@ -49,12 +49,16 @@ $(() => {
         $("#accountName").text('Agora Chatroom');
 
         rtm.clearState();
+        $("#dialogue-list")[0].innerHTML = '';
+        $("#chat-message")[0].innerHTML = '';
       }
     }
     if (newState == "DISCONNECTED") {
       if (reason == "LOGOUT") {
         $("#accountName").text('Agora Chatroom');
         rtm.clearState();
+        $("#dialogue-list")[0].innerHTML = '';
+        $("#chat-message")[0].innerHTML = '';
       }
     }
   })

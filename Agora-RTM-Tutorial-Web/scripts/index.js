@@ -8,8 +8,7 @@ const distPath = NODE_ENV == 'development' ? '../dist' : '../build';
 
 module.exports = {
   entry: {
-    index: "./src/pages/index.js",
-    meeting: './src/pages/meeting/index.js',
+    index: "./src/index.js",
   },
   devtool: 'source-map',
   module: loaders,
