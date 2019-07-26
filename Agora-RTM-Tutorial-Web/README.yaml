@@ -1,8 +1,16 @@
 Meta:
-  name: Web Tutorial For Webpack - 1to1 
+  name: Web Tutorial For Webpack - Agora Web RTM
   lang: en
   description: |
-    This tutorial shows you how to quickly create an basic video communication using the Agora sample app.
+    This tutorial shows you how to quickly integrate Agora Web RTM SDK with the Agora sample app.
+    This demo contains following features:
+
+    - Login & Logout:
+    - Join & Leave Channel:
+    - Query Peer User online status:
+    - Send P2P Message:
+    - Send Channel Message:
+
 Prerequisites:
   - nodejs LTS
   - A web browser
@@ -36,7 +44,7 @@ QuickStart:
             **Note:** In some cases, you may need to open a browser and enter `http://localhost:8080` as the URL.
 Resources:
   document: https://docs.agora.io/en/
-  issue: https://github.com/AgoraIO/Basic-Video-Call/issues
+  issue: https://github.com/AgoraIO/RTM/issues
 
 License:
   type: MIT

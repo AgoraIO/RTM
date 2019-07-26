@@ -1,27 +1,54 @@
-# Agora RTM Tutorial Web
+# Web Tutorial For Webpack - Agora Web RTM
 
-*Read this in other languages: [English](README.md)*
+*[English](README.md) | 中文*
 
-这个开源示例项目演示了如何快速集成 Agora RTM Web SDK，实现消息通讯。
+这个开源示例项目演示了如何快速集成 Agora Web RTM SDK。
 
 在这个示例项目中包含了以下功能：
 
-- 登录和登出；
-- 发送和接收在线点对点消息；
-- 加入频道和离开频道；
-- 发送和接收频道消息；
+- 登录和退出:
+- 加入频道和离开频道:
+- 查询用户在线状态:
+- 发送点对点消息:
+- 发送频道消息:
+
+## 环境准备
+
+- nodejs LTS
+- 浏览器
 
 ## 运行示例程序
-首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 ["config.js"](src/config.js)
 
-```javascript
-export const APP_ID = <#Your Agora APPID#>;
-```
+This section shows you how to prepare, and run the sample application.
 
-最后。安装该示例的npm依赖并且执行`npm run start`。
+### 创建Agora账号并获取AppId
 
-## 运行环境
-* nodejs 10.0.0+
+在编译和启动实例程序前，您需要首先获取一个可用的App ID:
+1. 在[agora.io](https://dashboard.agora.io/signin/)创建一个开发者账号
+2. 前往后台页面，点击左部导航栏的 **项目 > 项目列表** 菜单
+3. 复制后台的 **App ID** 并备注，稍后启动应用时会用到它
+4. 在项目页面生成临时 **Access Token** (24小时内有效)并备注，注意生成的Token只能适用于对应的频道名。
+
+
+### 集成 Agora 视频 SDK
+
+1. 在Terminal中，在您的项目根目录输入`install`命令以安装项目依赖
+    ```shell
+    # install dependencies
+    npm install
+    ```
+2. 输入`run dev`命令以启动Web程序
+    ```shell
+    # serve with hot reload at localhost:8080
+    npm run dev
+    ```
+    输入`npm run build`会压缩静态资源文件，可作为生产环境打包发布。
+    ``` bash
+    # build for production with minification
+    npm run build
+    ```
+3. 你的浏览器默认会打开示例应用程序。
+    **注意** 如果没有自动打开，请在浏览器里手动输入URL `http://localhost:8080`。
 
 ## 联系我们
 
@@ -33,4 +60,4 @@ export const APP_ID = <#Your Agora APPID#>;
 
 ## 代码许可
 
-The MIT License (MIT).
+The MIT License (MIT)
