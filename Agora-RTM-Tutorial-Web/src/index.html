@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>RTM Tutorial - Chatroom</title>
+
+<body class="agora-theme">
+  <div class="navbar-fixed">
+    <nav class="agora-navbar">
+      <div class="nav-wrapper agora-primary-bg valign-wrapper">
+        <h5 class="left-align">RTM Tutorial - Chatroom</h5>
+        <a href="https://github.com/AgoraIO/RTM/tree/master/Agora-RTM-Tutorial-Web" class="agora-github-pin"></a>
+      </div>
+    </nav>
+  </div>
+  <div class="row col l12 s12">
+    <div class="row container col l12 s12 main-container">
+      <form id="loginForm">
+      <div class="col" style="min-width: 433px; max-width: 443px">
+        <div class="card" style="margin-top: 0px; margin-bottom: 0px;">
+          <div class="row card-content" style="margin-bottom: 0px;">
+              <div class="input-field">
+                <label for="appId" class="active">App ID</label>
+                <input type="text" placeholder="App ID" name="appId">
+              </div>
+              <div class="input-field">
+                <label for="accountName" class="active">Account Name</label>
+                <input type="text" placeholder="account name" name="accountName">
+              </div>
+              <div class="input-field">
+                <label for="channelName" class="active">Channel Name</label>
+                <input type="text" placeholder="channel name" name="channelName">
+              </div>
+              <div class="row">
+                <div class="col s12">
+                    <button class="btn btn-raised btn-primary waves-effect waves-light" id="join">JOIN</button>
+                    <button class="btn btn-raised btn-primary waves-effect waves-light" id="leave">LEAVE</button>
+                </div>
+              </div>
+              <div class="input-field channel-padding">
+                  <label for="channelMessage" class="active">Channel Message</label>
+                  <input type="text" placeholder="channel message" name="channelMessage">
+                <button class="btn btn-raised btn-primary waves-effect waves-light custom-btn-pin" id="send_channel_message">SEND</button>
+              </div>
+              <div class="input-field">
+                <label for="peerId" class="active">Peer Id</label>
+                <input type="text" placeholder="peer name" name="peerId">
+              </div>
+              <div class="input-field channel-padding">
+                <label for="peerMessage" class="active">Peer Message</label>
+                <input type="text" placeholder="peer name" name="peerMessage">
+                <button class="btn btn-raised btn-primary waves-effect waves-light custom-btn-pin" id="send_peer_message">SEND</button>
+              </div>
+              <div class="input-field channel-padding">
+                <label for="memberId" class="active">query member</label>
+                <input type="text" placeholder="query member online status" name="memberId">
+                <button class="btn btn-raised btn-primary waves-effect waves-light custom-btn-pin" id="query_peer">QUERY</button>
+              </div>
+              <div class="input-field">
+                <label for="token" class="active">Token</label>
+                <input type="text" placeholder="token" name="token">
+              </div>
+              <div class="row" style="margin: 0">
+                <div class="col s12">
+                  <button class="btn btn-raised btn-primary waves-effect waves-light" id="login">LOGIN</button>
+                  <button class="btn btn-raised btn-primary waves-effect waves-light" id="logout">LOGOUT</button>
+                </div>
+              </div>
+          </div>
+        </div>
+      </div>
+      </form>
+      <div class="col s7 card card-container" id="log">
+
+      </div>
+    </div>
+  </div>
+
+</html>
