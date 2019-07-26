@@ -2,15 +2,10 @@ import AgoraRTM from 'agora-rtm-sdk';
 import EventEmitter from 'events';
 
 export default class RTMClient extends EventEmitter {
-  constructor(appId) {
+  constructor() {
     super();
     this.channels = {};
-
     this._logined = false;
-
-    this._currentDialogue = null;
-    this._channelMessages = {};
-    this._peerMessages = {};
   }
 
   init(appId) {
@@ -18,26 +13,16 @@ export default class RTMClient extends EventEmitter {
     this.subscribeClientEvents();
   }
 
-  clearState() {
-    this.channels = {};
-
-    this._logined = false;
-
-    this._currentDialogue = null;
-    this._channelMessages = {};
-    this._peerMessages = {};
-  }
-
   // subscribe client events
   subscribeClientEvents() {
     const clientEvents = [
       "ConnectionStateChanged",
       "MessageFromPeer",
-      "RemoteInvitationReceived"
     ];
     clientEvents.forEach((eventName) => {
       this.client.on(eventName, (...args) => {
         console.log("emit ", eventName, ...args);
+        // log event message
         this.emit(eventName, ...args);
       });
     });
@@ -58,9 +43,9 @@ export default class RTMClient extends EventEmitter {
     });
   }
 
-  async login(accountName) {
+  async login(accountName, token) {
     this.accountName = accountName;
-    return this.client.login({uid: this.accountName});
+    return this.client.login({uid: this.accountName, token});
   }
 
   async logout() {
@@ -72,7 +57,7 @@ export default class RTMClient extends EventEmitter {
     const channel = this.client.createChannel(name);
     this.channels[name] = {
       channel,
-      joined: false
+      joined: false // channel state
     }
     this.subscribeChannelEvents(name)
     return channel.join();
@@ -80,7 +65,9 @@ export default class RTMClient extends EventEmitter {
 
   async leaveChannel(name) {
     console.log("leaveChannel", name);
-    if (!this.channels[name] || (this.channels[name] && !this.channels[name].joined)) return;
+    if (!this.channels[name] ||
+      (this.channels[name]
+        && !this.channels[name].joined)) return;
     return this.channels[name].channel.leave();
   }
 
@@ -93,5 +80,10 @@ export default class RTMClient extends EventEmitter {
   async sendPeerMessage(text, peerId) {
     console.log("sendPeerMessage", text, peerId);
     return this.client.sendMessageToPeer({text}, peerId.toString());
+  }
+
+  async queryPeersOnlineStatus(memberId) {
+    console.log("queryPeersOnlineStatus", memberId);
+    return this.client.queryPeersOnlineStatus([memberId]);
   }
 }

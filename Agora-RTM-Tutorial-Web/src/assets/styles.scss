@@ -40,6 +40,10 @@
   }
 }
 
+.main-container {
+  display: flex;
+}
+
 html, body {
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue', sans-serif;
@@ -53,6 +57,10 @@ $base-margin-left: 20px;
 $theme-primary: #1E88E5;
 $theme-secondary: #424242;
 
+.agora-navbar {
+  height: 55px;
+}
+
 .toast.info-toast {
   background-color: #3498db;
 }
@@ -65,8 +73,41 @@ $theme-secondary: #424242;
   background-color: #e74c3c;
 }
 
+.btn {
+  max-width: 90px;
+  min-width: 90px;
+}
+
 .sidenav {
   overflow: hidden;
+}
+
+.card-container {
+  margin-top: 0px;
+  padding: 0px;
+  flex: 1;
+  max-height: 600px;
+  overflow: auto;
+}
+
+.chatroom {
+  flex-direction: row;
+  display: flex;
+  .chats-dialogue {
+    border-right: 1px solid #f0f0f0;
+    flex: 1;
+    max-width: 150px;
+  }
+}
+
+.channel-padding {
+  padding-right: 110px;
+}
+
+.custom-btn-pin {
+  position: absolute;
+  right: 0;
+  top: 0;
 }
 
 .chat-board {
@@ -100,6 +141,11 @@ $theme-secondary: #424242;
   width: 64px;
 }
 
+textarea.materialize-textarea{
+  height: 3rem !important;
+  overflow: auto !important;
+}
+
 .flex-table {
   display: flex;
   flex-direction: column;
@@ -120,6 +166,7 @@ $theme-secondary: #424242;
 .flex-container {
   display: flex;
   flex-direction: row;
+  flex: 1;
   .flex-item {
     flex: 1;
     height: 100%;
