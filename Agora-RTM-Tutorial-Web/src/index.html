@@ -5,13 +5,13 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <title>RTM Tutorial - Chatroom</title>
+  <title>RTM Tutorial</title>
 
 <body class="agora-theme">
   <div class="navbar-fixed">
     <nav class="agora-navbar">
       <div class="nav-wrapper agora-primary-bg valign-wrapper">
-        <h5 class="left-align">RTM Tutorial - Chatroom</h5>
+        <h5 class="left-align">RTM Tutorial</h5>
         <a href="https://github.com/AgoraIO/RTM/tree/master/Agora-RTM-Tutorial-Web" class="agora-github-pin"></a>
       </div>
     </nav>
@@ -29,6 +29,12 @@
               <div class="input-field">
                 <label for="accountName" class="active">Account Name</label>
                 <input type="text" placeholder="account name" name="accountName">
+              </div>
+              <div class="row">
+                <div class="col s12">
+                  <button class="btn btn-raised btn-primary waves-effect waves-light" id="login">LOGIN</button>
+                  <button class="btn btn-raised btn-primary waves-effect waves-light" id="logout">LOGOUT</button>
+                </div>
               </div>
               <div class="input-field">
                 <label for="channelName" class="active">Channel Name</label>
@@ -63,17 +69,11 @@
                 <label for="token" class="active">Token</label>
                 <input type="text" placeholder="token" name="token">
               </div>
-              <div class="row" style="margin: 0">
-                <div class="col s12">
-                  <button class="btn btn-raised btn-primary waves-effect waves-light" id="login">LOGIN</button>
-                  <button class="btn btn-raised btn-primary waves-effect waves-light" id="logout">LOGOUT</button>
-                </div>
-              </div>
           </div>
         </div>
       </div>
       </form>
-      <div class="col s7 card card-container" id="log">
+      <div class="col s7 log-container" id="log">
 
       </div>
     </div>
