@@ -82,7 +82,7 @@ $theme-secondary: #424242;
   overflow: hidden;
 }
 
-.card-container {
+.log-container {
   margin-top: 0px;
   padding: 0px;
   flex: 1;
@@ -263,7 +263,7 @@ textarea.materialize-textarea{
 }
 
 .agora-theme {
-  overflow: hidden;
+  overflow: auto;
   height: 100%;
   .btn-primary {
     color: #fff;
