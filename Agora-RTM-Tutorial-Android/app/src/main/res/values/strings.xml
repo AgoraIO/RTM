@@ -13,6 +13,7 @@
     <string name="title_channel_message">Channel message</string>
     <string name="hint_friend">Friends name</string>
     <string name="hint_channel">Channel name</string>
+    <string name="hint_enable_offline_message">Enable offline message</string>
     <string name="account_cannot_be_yourself">Account can not be yourself</string>
     <string name="channel_name_empty">Channel name can not be empty</string>
     <string name="channel_name_too_long">Channel name can not exceed 64 characters</string>
@@ -27,6 +28,7 @@
     <string name="str_send">Send</string>
     <string name="send_msg_failed">Failed to send message</string>
     <string name="peer_offline">Peer is offline</string>
+    <string name="message_cached">Message cached by server</string>
     <string name="reconnecting">Network reconnecting ...</string>
     <string name="account_offline">Connection lost</string>
 
