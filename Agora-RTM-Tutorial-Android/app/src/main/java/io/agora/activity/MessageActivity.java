@@ -58,21 +58,21 @@ public class MessageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-
-        initChat();
-        initUIAndData();
+        init();
     }
 
-    private void initUIAndData() {
-        mTitleTextView = findViewById(R.id.message_title);
-        mMsgEditText = findViewById(R.id.message_edittiext);
-        mRecyclerView = findViewById(R.id.message_list);
+    private void init() {
+        mChatManager = AGApplication.the().getChatManager();
+        mRtmClient = mChatManager.getRtmClient();
+        mClientListener = new MyRtmClientListener();
+        mChatManager.registerListener(mClientListener);
 
         Intent intent = getIntent();
         mIsPeerToPeerMode = intent.getBooleanExtra(MessageUtil.INTENT_EXTRA_IS_PEER_MODE, true);
         mUserId = intent.getStringExtra(MessageUtil.INTENT_EXTRA_USER_ID);
         String targetName = intent.getStringExtra(MessageUtil.INTENT_EXTRA_TARGET_NAME);
 
+        mTitleTextView = findViewById(R.id.message_title);
         if (mIsPeerToPeerMode) {
             mPeerId = targetName;
             mTitleTextView.setText(mPeerId);
@@ -93,24 +93,17 @@ public class MessageActivity extends Activity {
             mChannelName = targetName;
             mChannelMemberCount = 1;
             mTitleTextView.setText(mChannelName + "(" + mChannelMemberCount + ")");
+            createAndJoinChannel();
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
         layoutManager.setOrientation(OrientationHelper.VERTICAL);
         mMessageAdapter = new MessageAdapter(this, mMessageBeanList);
+        mRecyclerView = findViewById(R.id.message_list);
+        mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mMessageAdapter);
-    }
 
-    private void initChat() {
-        mChatManager = AGApplication.the().getChatManager();
-        mRtmClient = mChatManager.getRtmClient();
-        mClientListener = new MyRtmClientListener();
-        mChatManager.registerListener(mClientListener);
-
-        if (!mIsPeerToPeerMode) {
-            createAndJoinChannel();
-        }
+        mMsgEditText = findViewById(R.id.message_edittiext);
     }
 
     @Override
@@ -188,7 +181,6 @@ public class MessageActivity extends Activity {
      * API CALL: create and join channel
     */
     private void createAndJoinChannel() {
-
         // step 1: create a channel instance
         mRtmChannel = mRtmClient.createChannel(mChannelName, new MyChannelListener());
         if (mRtmChannel == null) {
@@ -196,6 +188,8 @@ public class MessageActivity extends Activity {
             finish();
             return;
         }
+
+        Log.e("channel", mRtmChannel + "");
 
         // step 2: join the channel
         mRtmChannel.join(new ResultCallback<Void>() {
@@ -249,6 +243,8 @@ public class MessageActivity extends Activity {
         // step 1: create a message
         RtmMessage message = mRtmClient.createMessage();
         message.setText(content);
+
+        Log.e("channel", mRtmChannel + "");
 
         // step 2: send message to channel
         mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
