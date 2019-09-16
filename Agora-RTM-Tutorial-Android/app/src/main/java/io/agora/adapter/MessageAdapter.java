@@ -18,7 +18,7 @@ import io.agora.rtmtutorial.R;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHolder> {
 
     private List<MessageBean> messageBeanList;
-    protected final LayoutInflater inflater;
+    private LayoutInflater inflater;
 
     public MessageAdapter(Context context, List<MessageBean> messageBeanList) {
         inflater = ((Activity) context).getLayoutInflater();
@@ -44,12 +44,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
 
     private void setupView(MyViewHolder holder, int position) {
-
         MessageBean bean = messageBeanList.get(position);
         if (bean.isBeSelf()) {
             holder.textViewSelfName.setText(bean.getAccount());
             holder.textViewSelfMsg.setText(bean.getMessage());
-
         } else {
             holder.textViewOtherName.setText(bean.getAccount());
             holder.textViewOtherMsg.setText(bean.getMessage());
@@ -71,15 +69,15 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
         private RelativeLayout layoutLeft;
         private RelativeLayout layoutRight;
 
-        public MyViewHolder(View itemView) {
+        MyViewHolder(View itemView) {
             super(itemView);
 
-            textViewOtherName = (TextView) itemView.findViewById(R.id.item_name_l);
-            textViewOtherMsg = (TextView) itemView.findViewById(R.id.item_msg_l);
-            textViewSelfName = (TextView) itemView.findViewById(R.id.item_name_r);
-            textViewSelfMsg = (TextView) itemView.findViewById(R.id.item_msg_r);
-            layoutLeft = (RelativeLayout) itemView.findViewById(R.id.item_layout_l);
-            layoutRight = (RelativeLayout) itemView.findViewById(R.id.item_layout_r);
+            textViewOtherName = itemView.findViewById(R.id.item_name_l);
+            textViewOtherMsg = itemView.findViewById(R.id.item_msg_l);
+            textViewSelfName = itemView.findViewById(R.id.item_name_r);
+            textViewSelfMsg = itemView.findViewById(R.id.item_msg_r);
+            layoutLeft = itemView.findViewById(R.id.item_layout_l);
+            layoutRight = itemView.findViewById(R.id.item_layout_r);
         }
     }
 }

@@ -35,8 +35,8 @@ public class LoginActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mUserIdEditText = (EditText) findViewById(R.id.user_id);
-        mLoginBtn = (TextView) findViewById(R.id.button_login);
+        mUserIdEditText = findViewById(R.id.user_id);
+        mLoginBtn = findViewById(R.id.button_login);
 
         mChatManager = AGApplication.the().getChatManager();
         mRtmClient = mChatManager.getRtmClient();
@@ -46,16 +46,12 @@ public class LoginActivity extends Activity {
         mUserId = mUserIdEditText.getText().toString();
         if (mUserId.equals("")) {
             showToast(getString(R.string.account_empty));
-
         } else if (mUserId.length() > MessageUtil.MAX_INPUT_NAME_LENGTH) {
             showToast(getString(R.string.account_too_long));
-
         } else if (mUserId.startsWith(" ")) {
             showToast(getString(R.string.account_starts_with_space));
-
         } else if (mUserId.equals("null")) {
             showToast(getString(R.string.account_literal_null));
-
         } else {
             mLoginBtn.setEnabled(false);
             doLogin();

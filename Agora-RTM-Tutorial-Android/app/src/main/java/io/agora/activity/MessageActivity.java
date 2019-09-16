@@ -14,7 +14,6 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import io.agora.adapter.MessageAdapter;
 import io.agora.model.MessageBean;
@@ -22,6 +21,7 @@ import io.agora.model.MessageListBean;
 import io.agora.rtm.ErrorInfo;
 import io.agora.rtm.ResultCallback;
 import io.agora.rtm.RtmChannel;
+import io.agora.rtm.RtmChannelAttribute;
 import io.agora.rtm.RtmChannelListener;
 import io.agora.rtm.RtmChannelMember;
 import io.agora.rtm.RtmClient;
@@ -58,49 +58,52 @@ public class MessageActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_message);
-
-        initUIAndData();
-        initChat();
+        init();
     }
 
-    private void initUIAndData() {
-        mTitleTextView = (TextView) findViewById(R.id.message_title);
-        mMsgEditText = (EditText) findViewById(R.id.message_edittiext);
-        mRecyclerView = (RecyclerView) findViewById(R.id.message_list);
-
-        Intent intent = getIntent();
-        mIsPeerToPeerMode = intent.getBooleanExtra(MessageUtil.INTENT_EXTRA_IS_PEER_MODE, true);
-        mUserId = intent.getStringExtra(MessageUtil.INTENT_EXTRA_USER_ID);
-        String targetName = intent.getStringExtra(MessageUtil.INTENT_EXTRA_TARGET_NAME);
-        if (mIsPeerToPeerMode) {
-            mPeerId = targetName;
-            mTitleTextView.setText(mPeerId);
-            MessageListBean messageListBean = MessageUtil.getExistMessageListBean(mPeerId);
-            if (messageListBean != null) {
-                mMessageBeanList.addAll(messageListBean.getMessageBeanList());
-            }
-        } else {
-            mChannelName = targetName;
-            mChannelMemberCount = 1;
-            mTitleTextView.setText(mChannelName + "(" + mChannelMemberCount + ")");
-        }
-
-        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(layoutManager);
-        layoutManager.setOrientation(OrientationHelper.VERTICAL);
-        mMessageAdapter = new MessageAdapter(this, mMessageBeanList);
-        mRecyclerView.setAdapter(mMessageAdapter);
-    }
-
-    private void initChat() {
+    private void init() {
         mChatManager = AGApplication.the().getChatManager();
         mRtmClient = mChatManager.getRtmClient();
         mClientListener = new MyRtmClientListener();
         mChatManager.registerListener(mClientListener);
 
-        if (!mIsPeerToPeerMode) {
+        Intent intent = getIntent();
+        mIsPeerToPeerMode = intent.getBooleanExtra(MessageUtil.INTENT_EXTRA_IS_PEER_MODE, true);
+        mUserId = intent.getStringExtra(MessageUtil.INTENT_EXTRA_USER_ID);
+        String targetName = intent.getStringExtra(MessageUtil.INTENT_EXTRA_TARGET_NAME);
+
+        mTitleTextView = findViewById(R.id.message_title);
+        if (mIsPeerToPeerMode) {
+            mPeerId = targetName;
+            mTitleTextView.setText(mPeerId);
+
+            // load history chat records
+            MessageListBean messageListBean = MessageUtil.getExistMessageListBean(mPeerId);
+            if (messageListBean != null) {
+                mMessageBeanList.addAll(messageListBean.getMessageBeanList());
+            }
+
+            // load offline messages since last chat with this peer.
+            // Then clear cached offline messages from message pool
+            // since they are already consumed.
+            MessageListBean offlineMessageBean = new MessageListBean(mPeerId, mChatManager);
+            mMessageBeanList.addAll(offlineMessageBean.getMessageBeanList());
+            mChatManager.removeAllOfflineMessages(mPeerId);
+        } else {
+            mChannelName = targetName;
+            mChannelMemberCount = 1;
+            mTitleTextView.setText(mChannelName + "(" + mChannelMemberCount + ")");
             createAndJoinChannel();
         }
+
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(OrientationHelper.VERTICAL);
+        mMessageAdapter = new MessageAdapter(this, mMessageBeanList);
+        mRecyclerView = findViewById(R.id.message_list);
+        mRecyclerView.setLayoutManager(layoutManager);
+        mRecyclerView.setAdapter(mMessageAdapter);
+
+        mMsgEditText = findViewById(R.id.message_edittiext);
     }
 
     @Override
@@ -138,17 +141,15 @@ public class MessageActivity extends Activity {
      * API CALL: send message to peer
      */
     private void sendPeerMessage(String content) {
-
         // step 1: create a message
         RtmMessage message = mRtmClient.createMessage();
         message.setText(content);
 
         // step 2: send message to peer
-        mRtmClient.sendMessageToPeer(mPeerId, message, new ResultCallback<Void>() {
-
+        mRtmClient.sendMessageToPeer(mPeerId, message, mChatManager.getSendMessageOptions(), new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
-
+                // do nothing
             }
 
             @Override
@@ -166,6 +167,9 @@ public class MessageActivity extends Activity {
                             case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_PEER_UNREACHABLE:
                                 showToast(getString(R.string.peer_offline));
                                 break;
+                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_CACHED_BY_SERVER:
+                                showToast(getString(R.string.message_cached));
+                                break;
                         }
                     }
                 });
@@ -177,7 +181,6 @@ public class MessageActivity extends Activity {
      * API CALL: create and join channel
     */
     private void createAndJoinChannel() {
-
         // step 1: create a channel instance
         mRtmChannel = mRtmClient.createChannel(mChannelName, new MyChannelListener());
         if (mRtmChannel == null) {
@@ -185,6 +188,8 @@ public class MessageActivity extends Activity {
             finish();
             return;
         }
+
+        Log.e("channel", mRtmChannel + "");
 
         // step 2: join the channel
         mRtmChannel.join(new ResultCallback<Void>() {
@@ -235,14 +240,14 @@ public class MessageActivity extends Activity {
      * API CALL: send message to a channel
      */
     private void sendChannelMessage(String content) {
-
         // step 1: create a message
         RtmMessage message = mRtmClient.createMessage();
         message.setText(content);
 
+        Log.e("channel", mRtmChannel + "");
+
         // step 2: send message to channel
         mRtmChannel.sendMessage(message, new ResultCallback<Void>() {
-
             @Override
             public void onSuccess(Void aVoid) {
 
@@ -277,7 +282,6 @@ public class MessageActivity extends Activity {
             mRtmChannel = null;
         }
     }
-
 
     /**
      * API CALLBACK: rtm event listener
@@ -332,6 +336,15 @@ public class MessageActivity extends Activity {
      * API CALLBACK: rtm channel event listener
      */
     class MyChannelListener implements RtmChannelListener {
+        @Override
+        public void onMemberCountUpdated(int i) {
+
+        }
+
+        @Override
+        public void onAttributesUpdated(List<RtmChannelAttribute> list) {
+
+        }
 
         @Override
         public void onMessageReceived(final RtmMessage message, final RtmChannelMember fromMember) {
