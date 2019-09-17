@@ -112,7 +112,7 @@ private extension ChatViewController {
         }
         
         rtmChannel.join { [weak self] (error) in
-            if error != .ok, let strongSelf = self {
+            if error != .channelErrorOk, let strongSelf = self {
                 strongSelf.showAlert("join channel error: \(error.rawValue)", handler: errorHandle)
             }
         }
