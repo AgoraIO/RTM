@@ -2,7 +2,7 @@
 #include <memory>
 #include <string>
 #include <exception>
-#include <unistd.h>
+//#include <unistd.h>
 
 #include "IAgoraService.h"
 #include "IAgoraRtmService.h"
@@ -30,34 +30,36 @@ const std::string APP_ID = "<your-appid>";
 #define BOLDCYAN    "\033[1m\033[36m"      /* Bold Cyan */
 #define BOLDWHITE   "\033[1m\033[37m"      /* Bold White */
 
+using namespace agora::rtm;
 
-class DemoRtmEventHandler : public agora::rtm::IRtmServiceEventHandler {
+class DemoRtmEventHandler : public IRtmServiceEventHandler {
 public:
   virtual void onLoginSuccess() override {
     cbPrint("on login success");
   }
 
-  virtual void onLoginFailure(agora::rtm::LOGIN_ERR_CODE errorCode) override {
+  virtual void onLoginFailure(LOGIN_ERR_CODE errorCode) override {
     cbPrint("on login failure: %d\n", errorCode);
   }
 
-  virtual void onLogout(agora::rtm::LOGOUT_ERR_CODE errorCode) override {
+  virtual void onLogout(LOGOUT_ERR_CODE errorCode) override {
     cbPrint("onLogout");
   }
 
-  virtual void onConnectionStateChanged(agora::rtm::CONNECTION_STATE state,
-                                    agora::rtm::CONNECTION_CHANGE_REASON reason)
+  virtual void onConnectionStateChanged(CONNECTION_STATE state,
+                                    CONNECTION_CHANGE_REASON reason)
                                     override{
     cbPrint("onConnectionStateChanged: %d", state);
   }
 
-  virtual void onSendMessageState(long long messageId, 
-                                agora::rtm::PEER_MESSAGE_STATE state) override {
-    cbPrint("onSendMessageState messageID: %lld state: %d", messageId, state);
+  virtual void onSendMessageResult(long long messageId, 
+                                PEER_MESSAGE_ERR_CODE errorCode) override {
+    cbPrint("onSendMessageResult messageID: %llderrorcode: %d",
+            messageId, errorCode);
   }
 
   void onMessageReceivedFromPeer(const char *peerId,
-                                 const agora::rtm::IMessage *message) override {
+                                 const IMessage *message) override {
     if (!peerId || !message) {
         return;
     }
@@ -76,7 +78,7 @@ public:
   }
 };
 
-class DemoChannelEventHandler : public agora::rtm::IChannelEventHandler
+class DemoChannelEventHandler : public IChannelEventHandler
 {
  public:
   DemoChannelEventHandler() {}
@@ -92,44 +94,44 @@ class DemoChannelEventHandler : public agora::rtm::IChannelEventHandler
     cbPrint("join channel succeed");
   }
 
-  virtual void onJoinFailure(agora::rtm::JOIN_CHANNEL_ERR errorCode)
+  virtual void onJoinFailure(JOIN_CHANNEL_ERR errorCode)
                              override {
     cbPrint("join channel failed errorcode: ", errorCode);
   }
 
 
-  virtual void onLeave(agora::rtm::LEAVE_CHANNEL_ERR errorCode) override {
+  virtual void onLeave(LEAVE_CHANNEL_ERR errorCode) override {
     cbPrint("leave channel reason code: ", errorCode);
   }
 
   virtual void onMessageReceived(const char* userId,
-                                 const agora::rtm::IMessage *message) override {
+                                 const IMessage *message) override {
     cbPrint("recived message from channel: %s srcuser:%s message: %s",
                                                             channel_.c_str(),
                                                             userId,
                                                             message->getText());
   }
 
-  virtual void onSendMessageState(long long messageId,
-                                  agora::rtm::CHANNEL_MESSAGE_STATE state)
+  virtual void onSendMessageResult(long long messageId,
+                                  CHANNEL_MESSAGE_ERR_CODE state)
                                   override {
-    cbPrint("channel message send state messageid:%d state:%d ", messageId,
+    cbPrint("channel message send result messageid:%d state:%d ", messageId,
              state);
   }
 
-  virtual void onMemberJoined(agora::rtm::IChannelMember *member) override {
+  virtual void onMemberJoined(IChannelMember *member) override {
     cbPrint("channel member joined channel:%s member:%s ",
              member->getChannelId(), member->getUserId());
   }
 
-  virtual void onMemberLeft(agora::rtm::IChannelMember *member) override {
+  virtual void onMemberLeft(IChannelMember *member) override {
     cbPrint("channel member left channel:%s member:%s ",
              member->getChannelId(), member->getUserId());
   }
 
-  virtual void onGetMembers(agora::rtm::IChannelMember **members,
+  virtual void onGetMembers(IChannelMember **members,
                             int userCount, 
-                            agora::rtm::GET_MEMBERS_ERR errorCode) override {
+                            GET_MEMBERS_ERR errorCode) override {
     cbPrint("show channel:%s members num:%d", channel_.c_str(), userCount);
     for (int index = 0; index < userCount; index++) {
       cbPrint(" member :%s", members[index]->getUserId());
@@ -155,7 +157,8 @@ public:
   DemoMessaging()
       : agoraService_(createAgoraService()),
         eventHandler_(new DemoRtmEventHandler()),
-        channelEvent_(new DemoChannelEventHandler()) { Init(); }
+        channelEvent_(new DemoChannelEventHandler()),
+        rtmService_(nullptr) { Init(); }
 
   void Init() {
     if (!agoraService_) {
@@ -168,8 +171,7 @@ public:
               << ret << std::endl;
     exit(0);
   }
-  agora::rtm::IRtmService* p_rs = agoraService_->createRtmService();
-  rtmService_.reset(p_rs);
+  rtmService_ = agoraService_->createRtmService();
   if (!rtmService_) {
     std::cout << RED <<"error creating rtm service!" << std::endl;
     exit(0);
@@ -209,19 +211,17 @@ public:
   }
 
   void sendMessageToPeer(std::string peerID, std::string message) {
-    std::unique_ptr<agora::rtm::IMessage> 
-        rtmMessage(agora::rtm::IMessage::createMessage());
+    IMessage* rtmMessage = rtmService_->createMessage();
     rtmMessage->setText(message.c_str());
-    int ret = rtmService_->sendMessageToPeer(peerID.c_str(), rtmMessage.get());
+    int ret = rtmService_->sendMessageToPeer(peerID.c_str(), rtmMessage);
     std::cout << BOLDBLUE << "sendMessageToPeer ret:" << ret << std::endl;
   }
 
-  void sendMessageToChannel(agora::rtm::IChannel * channelHandler,
+  void sendMessageToChannel(IChannel * channelHandler,
                             std::string& msg) {
-    std::unique_ptr<agora::rtm::IMessage> 
-        rtmMessage(agora::rtm::IMessage::createMessage());
+    IMessage* rtmMessage = rtmService_->createMessage();
     rtmMessage->setText(msg.c_str());
-    channelHandler->sendMessage(rtmMessage.get());
+    channelHandler->sendMessage(rtmMessage);
   }
 
   void mainMeun() {
@@ -285,7 +285,7 @@ public:
   void groupChat(const std::string& channel) {
     std::string message;
     channelEvent_->SetChannel(channel);
-    agora::rtm::IChannel * channelHandler =
+    IChannel * channelHandler =
         rtmService_->createChannel(channel.c_str(), channelEvent_.get());
     if (channelHandler == nullptr) {
       std::cout << RED << "err create channel failed." << std::endl;
@@ -311,9 +311,9 @@ public:
  private:
     std::unique_ptr<agora::base::IAgoraService> agoraService_;
     agora::base::AgoraServiceContext context_;
-    std::unique_ptr<agora::rtm::IRtmServiceEventHandler> eventHandler_;
+    std::unique_ptr<IRtmServiceEventHandler> eventHandler_;
     std::unique_ptr<DemoChannelEventHandler> channelEvent_;
-    std::unique_ptr<agora::rtm::IRtmService> rtmService_;
+    IRtmService* rtmService_;
 };
 
 int main(int argc, const char * argv[]) {
