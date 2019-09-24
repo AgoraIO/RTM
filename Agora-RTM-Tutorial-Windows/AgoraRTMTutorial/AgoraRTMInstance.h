@@ -38,8 +38,8 @@ public:
   bool LogOut();
 
   bool QueryIsOnline(const std::string &account);
-  bool sendInstantMsg(const std::string &account, const std::string &instanmsg);
-  bool sendChannelMsg(const std::string &channel, const std::string &ChannelMsg);
+  bool sendInstantMsg(const std::string &account, const std::string &instanmsg,bool bEnableOfflineMessage);
+  bool sendChannelMsg(const std::string &channel, const std::string &ChannelMsg,bool bEnableOfflineMessage);
   bool ChannelQueryNumResult(const std::string &channelID);
 
   bool JoinChannel(const std::string &channelID);
