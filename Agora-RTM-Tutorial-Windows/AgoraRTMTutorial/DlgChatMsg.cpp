@@ -128,16 +128,17 @@ void CDlgChatMsg::OnBnClickedButtonSend()
 {
 	CString sendMsg;
 	GetDlgItem(IDC_EDIT_SendMsg)->GetWindowTextW(sendMsg);
+	int bEnableOfflineMessage = ((CButton*)(GetDlgItem(IDC_CHECK_EnableOffLineMsg)))->GetCheck();
 	if (_T("") != sendMsg && m_pCurChat)
 	{
 		m_pCurChat->AddChatMessage(m_curAccount,sendMsg);
 		if (m_curOptionType == eType_Instance){
 
-			m_pSignalInstance->sendInstantMsg(m_pCurChat->getCurParam(), cs2s(sendMsg));
+			m_pSignalInstance->sendInstantMsg(m_pCurChat->getCurParam(), cs2s(sendMsg),bEnableOfflineMessage);
 		}
 		else if (eType_Channel == m_curOptionType){
 
-			m_pSignalInstance->sendChannelMsg(m_pCurChat->getCurParam(), cs2s(sendMsg));
+			m_pSignalInstance->sendChannelMsg(m_pCurChat->getCurParam(), cs2s(sendMsg),bEnableOfflineMessage);
 		}
 	}
 

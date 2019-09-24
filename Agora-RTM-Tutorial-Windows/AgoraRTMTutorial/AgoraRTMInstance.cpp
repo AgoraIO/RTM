@@ -136,11 +136,13 @@ bool CAgoraRTMInstance::QueryIsOnline(const std::string &account) {
   return true;
 }
 
-bool CAgoraRTMInstance::sendInstantMsg(const std::string &account, const std::string &msg) {
+bool CAgoraRTMInstance::sendInstantMsg(const std::string &account, const std::string &msg, bool bEnableOfflineMessage) {
   if (m_rtmService != nullptr){
     IMessage* rtmMessage(m_rtmService->createMessage());
     rtmMessage->setText(gbk2utf8(msg).c_str());
-    int nret = m_rtmService->sendMessageToPeer(account.c_str(), rtmMessage);
+	agora::rtm::SendMessageOptions smo;
+	smo.enableOfflineMessaging = bEnableOfflineMessage;
+    int nret = m_rtmService->sendMessageToPeer(account.c_str(), rtmMessage,smo);
     rtmMessage->release();
     return true;
   }
@@ -148,11 +150,13 @@ bool CAgoraRTMInstance::sendInstantMsg(const std::string &account, const std::st
   return false;
 }
 
-bool CAgoraRTMInstance::sendChannelMsg(const std::string &channel, const std::string &ChannelMsg) {
+bool CAgoraRTMInstance::sendChannelMsg(const std::string &channel, const std::string &ChannelMsg, bool bEnableOfflineMessage) {
   if (m_Channel != nullptr){
     IMessage* rtmMessage(m_rtmService->createMessage());
     rtmMessage->setText(gbk2utf8(ChannelMsg).c_str());
-    m_Channel->sendMessage(rtmMessage);
+	agora::rtm::SendMessageOptions smo;
+	smo.enableOfflineMessaging = bEnableOfflineMessage;
+    m_Channel->sendMessage(rtmMessage,smo);
     rtmMessage->release();
     return true;
   }
