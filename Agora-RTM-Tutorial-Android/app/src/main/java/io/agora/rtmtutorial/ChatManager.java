@@ -38,7 +38,7 @@ public class ChatManager {
 
                 @Override
                 public void onMessageReceived(RtmMessage rtmMessage, String peerId) {
-                    if (rtmMessage.isOfflineMessage() || mListenerList.isEmpty()) {
+                    if (mListenerList.isEmpty()) {
                         // If currently there is no callback to handle this
                         // message, this message is unread yet. Here we also
                         // take it as an offline message.
