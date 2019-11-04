@@ -2,6 +2,7 @@ package io.agora.mainClass;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 import java.util.Scanner;
 
 import io.agora.rtm.RtmClient;
@@ -14,6 +15,8 @@ import io.agora.rtm.RtmChannel;
 import io.agora.rtm.RtmChannelListener;
 import io.agora.rtm.RtmChannelMember;
 import io.agora.rtm.RtmStatusCode;
+import io.agora.rtm.RtmChannelAttribute;
+import io.agora.rtm.jni.PEER_ONLINE_STATE;
 
 class APPID {
     public static final String APP_ID = "";
@@ -25,6 +28,15 @@ class ChannelListener implements RtmChannelListener {
     public ChannelListener(String channel) {
             channel_ = channel;
     }
+
+    @Override
+    public void onMemberCountUpdated(int memberCount) {
+    }
+
+    @Override
+    public void onAttributesUpdated(List<RtmChannelAttribute> attribute) {
+    }
+
     @Override
     public void onMessageReceived(
             final RtmMessage message, final RtmChannelMember fromMember) {
@@ -75,6 +87,10 @@ public class RtmJavaDemo {
                 @Override
                 public void onTokenExpired() {
                 }
+
+		@Override
+		public void onPeersOnlineStatusChanged(Map<String, PEER_ONLINE_STATE> peersStatus) {
+		}
             });
         } catch (Exception e) {
             System.out.println("Rtm sdk init fatal error!");
