@@ -5,6 +5,7 @@ import android.util.Log;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.agora.rtm.RtmClient;
 import io.agora.rtm.RtmClientListener;
@@ -54,6 +55,10 @@ public class ChatManager {
                 public void onTokenExpired() {
 
                 }
+
+		@Override
+		public void onPeersOnlineStatusChanged(Map<String, Integer> status) {
+		}
             });
 
             if (BuildConfig.DEBUG) {

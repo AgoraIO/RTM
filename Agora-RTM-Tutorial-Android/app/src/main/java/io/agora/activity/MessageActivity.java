@@ -334,7 +334,7 @@ public class MessageActivity extends Activity {
         }
 
         @Override
-        public void onPeersOnlineStatusChanged(Map<String, PEER_ONLINE_STATE> map) {
+        public void onPeersOnlineStatusChanged(Map<String, Integer> map) {
 
         }
     }

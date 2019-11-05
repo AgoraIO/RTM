@@ -16,7 +16,6 @@ import io.agora.rtm.RtmChannelListener;
 import io.agora.rtm.RtmChannelMember;
 import io.agora.rtm.RtmStatusCode;
 import io.agora.rtm.RtmChannelAttribute;
-import io.agora.rtm.jni.PEER_ONLINE_STATE;
 
 class APPID {
     public static final String APP_ID = "";
@@ -89,7 +88,7 @@ public class RtmJavaDemo {
                 }
 
 		@Override
-		public void onPeersOnlineStatusChanged(Map<String, PEER_ONLINE_STATE> peersStatus) {
+		public void onPeersOnlineStatusChanged(Map<String, Integer> peersStatus) {
 		}
             });
         } catch (Exception e) {
