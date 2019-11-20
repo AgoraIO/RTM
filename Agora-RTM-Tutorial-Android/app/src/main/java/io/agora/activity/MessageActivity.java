@@ -14,6 +14,7 @@ import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import io.agora.adapter.MessageAdapter;
 import io.agora.model.MessageBean;
@@ -28,6 +29,7 @@ import io.agora.rtm.RtmClient;
 import io.agora.rtm.RtmClientListener;
 import io.agora.rtm.RtmMessage;
 import io.agora.rtm.RtmStatusCode;
+import io.agora.rtm.jni.PEER_ONLINE_STATE;
 import io.agora.rtmtutorial.AGApplication;
 import io.agora.rtmtutorial.R;
 import io.agora.rtmtutorial.ChatManager;
@@ -328,6 +330,11 @@ public class MessageActivity extends Activity {
 
         @Override
         public void onTokenExpired() {
+
+        }
+
+        @Override
+        public void onPeersOnlineStatusChanged(Map<String, Integer> map) {
 
         }
     }
