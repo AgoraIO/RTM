@@ -56,9 +56,10 @@ public class ChatManager {
 
                 }
 
-		@Override
-		public void onPeersOnlineStatusChanged(Map<String, Integer> status) {
-		}
+                @Override
+                public void onPeersOnlineStatusChanged(Map<String, Integer> status) {
+                    
+                }
             });
 
             if (BuildConfig.DEBUG) {
