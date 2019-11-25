@@ -38,6 +38,7 @@ class ChatViewController: UIViewController, ShowAlertProtocol {
     override func viewDidLoad() {
         addKeyboardObserver()
         updateViews()
+        ifLoadOfflineMessages()
         AgoraRtm.updateKit(delegate: self)
     }
     
@@ -78,7 +79,10 @@ private extension ChatViewController {
         
         switch type {
         case .peer(let name):
-            AgoraRtm.kit?.send(rtmMessage, toPeer: name, completion: { (error) in
+            let option = AgoraRtmSendMessageOptions()
+            option.enableOfflineMessaging = (AgoraRtm.oneToOneMessageType == .offline ? true : false)
+            
+            AgoraRtm.kit?.send(rtmMessage, toPeer: name, sendMessageOptions: option, completion: { (error) in
                 sent(error.rawValue)
             })
         case .group(_):
@@ -158,6 +162,24 @@ private extension ChatViewController {
     func updateViews() {
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 55
+    }
+    
+    func ifLoadOfflineMessages() {
+        switch type {
+        case .peer(let name):
+            guard let messages = AgoraRtm.getOfflineMessages(from: name) else {
+                return
+            }
+            
+            for item in messages {
+                appendMessage(user: name, content: item.text)
+            }
+            
+            tableView.reloadData()
+            AgoraRtm.removeOfflineMessages(from: name)
+        default:
+            break
+        }
     }
     
     func pressedReturnToSendText(_ text: String?) -> Bool {

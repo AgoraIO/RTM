@@ -54,4 +54,9 @@ extension ChannelViewController: AgoraRtmDelegate {
             }
         }
     }
+    
+    // Receive one to one offline messages
+    func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
+        AgoraRtm.add(offlineMessage: message, from: peerId)
+    }
 }
