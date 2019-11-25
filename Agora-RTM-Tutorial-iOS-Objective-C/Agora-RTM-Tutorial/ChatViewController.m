@@ -26,6 +26,7 @@
     [super viewDidLoad];
     [self addKeyboradObserver];
     [self updateViews];
+    [self ifLoadOfflineMessages];
     [AgoraRtm updateDelegate:self];
 }
 
@@ -61,13 +62,19 @@
     
     switch (self.mode.type) {
         case ChatTypePeer: {
-            [AgoraRtm.kit sendMessage:rtmMessage toPeer:self.mode.name completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
-                sent(errorCode);
+            AgoraRtmSendMessageOptions *option = [[AgoraRtmSendMessageOptions alloc] init];
+            option.enableOfflineMessaging = [AgoraRtm oneToOneMessageType] == OneToOneMessageTypeOffline ? YES : NO;
+            
+            [AgoraRtm.kit sendMessage:rtmMessage toPeer:self.mode.name
+                   sendMessageOptions:option
+                           completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
+                
+                sent((int)errorCode);
             }];
         }
         case ChatTypeGroup: {
             [self.rtmChannel sendMessage:rtmMessage completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
-                sent(errorCode);
+                sent((int)errorCode);
             }];
         }
     }
@@ -139,6 +146,22 @@
 }
 
 #pragma mark - UI
+- (void)ifLoadOfflineMessages {
+    switch (self.mode.type) {
+        case ChatTypePeer: {
+            NSArray *list = [AgoraRtm getOfflineMessagesFromUser:self.mode.name];
+            
+            for (AgoraRtmMessage *item in list) {
+                [self appendMessage:item.text user:self.mode.name];
+            }
+            
+            [AgoraRtm removeOfflineMessageFromUser:self.mode.name];
+        }
+        default:
+            break;
+    }
+}
+
 - (void)updateViews {
     self.tableView.rowHeight = UITableViewAutomaticDimension;
     self.tableView.estimatedRowHeight = 55;
@@ -178,20 +201,20 @@
 }
 
 - (void)appendMessage:(NSString *)text user:(NSString *)user {
-    Message *msg = [[Message alloc] init];
-    msg.userId = user;
-    msg.text = text;
-    [self.list addObject:msg];
-    
-    if (self.list.count > 300) {
-        [self.list removeObjectAtIndex:0];
-    }
-    
-    NSIndexPath *end = [NSIndexPath indexPathForRow:self.list.count - 1 inSection:0];
-    
     __weak ChatViewController *weakSelf = self;
     
     dispatch_async(dispatch_get_main_queue(), ^{
+        Message *msg = [[Message alloc] init];
+        msg.userId = user;
+        msg.text = text;
+        [weakSelf.list addObject:msg];
+        
+        if (weakSelf.list.count > 300) {
+            [weakSelf.list removeObjectAtIndex:0];
+        }
+        
+        NSIndexPath *end = [NSIndexPath indexPathForRow:weakSelf.list.count - 1 inSection:0];
+        
         [weakSelf.tableView reloadData];
         [weakSelf.tableView scrollToRowAtIndexPath:end atScrollPosition:UITableViewScrollPositionBottom animated:true];
     });
