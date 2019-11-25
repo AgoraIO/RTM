@@ -10,8 +10,9 @@
 #import "PeerChannelViewController.h"
 #import "AgoraRtm.h"
 
-@interface MainViewController () <PeerChannelVCDelegate>
+@interface MainViewController () <PeerChannelVCDelegate, AgoraRtmDelegate>
 @property (weak, nonatomic) IBOutlet NSTextField *accountTextField;
+@property (weak) IBOutlet NSButton *enableOneToOneBox;
 @end
 
 @implementation MainViewController
@@ -42,7 +43,9 @@
         return;
     }
     
+    [AgoraRtm updateDelegate:self];
     [AgoraRtm setCurrent:account];
+    [AgoraRtm setOneToOneMessageType:self.enableOneToOneBox.state == NSControlStateValueOn ? OneToOneMessageTypeOffline : OneToOneMessageTypeNormal];
     
     [AgoraRtm.kit loginByToken:nil user:account completion:^(AgoraRtmLoginErrorCode errorCode) {
         if (errorCode != AgoraRtmLoginErrorOk) {
@@ -76,6 +79,11 @@
 
 - (void)peerChannelVCWillClose:(PeerChannelViewController *)vc {
     vc.view.window.contentViewController = self;
+}
+
+// Receive one to one offline messages
+- (void)rtmKit:(AgoraRtmKit *)kit messageReceived:(AgoraRtmMessage *)message fromPeer:(NSString *)peerId {
+    [AgoraRtm addOfflineMessage:message fromUser:peerId];
 }
 
 @end

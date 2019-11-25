@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="14460.31" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="14460.31"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -620,7 +620,7 @@
                                         <menuItem title="Show Sidebar" keyEquivalent="s" id="kIP-vf-haE">
                                             <modifierMask key="keyEquivalentModifierMask" control="YES" command="YES"/>
                                             <connections>
-                                                <action selector="toggleSourceList:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
+                                                <action selector="toggleSidebar:" target="Ady-hI-5gd" id="iwa-gc-5KM"/>
                                             </connections>
                                         </menuItem>
                                         <menuItem title="Enter Full Screen" keyEquivalent="f" id="4J7-dP-txa">
@@ -675,7 +675,7 @@
                         <outlet property="delegate" destination="Voe-Tx-rLC" id="PrD-fu-P6m"/>
                     </connections>
                 </application>
-                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Agora_Rtm_Tutorial_Mac" customModuleProvider="target"/>
+                <customObject id="Voe-Tx-rLC" customClass="AppDelegate" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target"/>
                 <customObject id="YLy-65-1bz" customClass="NSFontManager"/>
                 <customObject id="Ady-hI-5gd" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -705,7 +705,7 @@
         <!--Tutorial-->
         <scene sceneID="hIz-AP-VOD">
             <objects>
-                <viewController title="Tutorial" id="XfG-lQ-9wD" customClass="MainViewController" customModule="Agora_Rtm_Tutorial_Mac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Tutorial" id="XfG-lQ-9wD" customClass="MainViewController" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" wantsLayer="YES" id="m2S-Jp-Qdl">
                         <rect key="frame" x="0.0" y="0.0" width="480" height="270"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -732,17 +732,37 @@
                                     <action selector="doLoginPressed:" target="XfG-lQ-9wD" id="DUE-wH-9xF"/>
                                 </connections>
                             </button>
+                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Zq-KT-rX9">
+                                <rect key="frame" x="128" y="145" width="152" height="14"/>
+                                <textFieldCell key="cell" lineBreakMode="clipping" title="Enable Offline 1to1 Message" id="kyL-j9-4v2">
+                                    <font key="font" metaFont="system" size="11"/>
+                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
+                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
+                                </textFieldCell>
+                            </textField>
+                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GxL-KG-zce">
+                                <rect key="frame" x="330" y="143" width="22" height="18"/>
+                                <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="MfB-zi-Z3h">
+                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
+                                    <font key="font" metaFont="system"/>
+                                </buttonCell>
+                            </button>
                         </subviews>
                         <constraints>
+                            <constraint firstItem="GxL-KG-zce" firstAttribute="trailing" secondItem="oJx-5g-OhE" secondAttribute="trailing" id="50T-7U-MSk"/>
+                            <constraint firstItem="1Zq-KT-rX9" firstAttribute="leading" secondItem="oJx-5g-OhE" secondAttribute="leading" id="9Ef-mf-Vjq"/>
                             <constraint firstItem="Z0z-Ci-87c" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="AFj-xj-Q4s"/>
                             <constraint firstItem="Z0z-Ci-87c" firstAttribute="top" secondItem="oJx-5g-OhE" secondAttribute="bottom" constant="60" id="Kud-7b-P4M"/>
                             <constraint firstItem="oJx-5g-OhE" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="65" id="Lde-UT-d4k"/>
+                            <constraint firstItem="1Zq-KT-rX9" firstAttribute="top" secondItem="oJx-5g-OhE" secondAttribute="bottom" constant="20" id="Lvd-3y-83c"/>
+                            <constraint firstItem="GxL-KG-zce" firstAttribute="centerY" secondItem="1Zq-KT-rX9" secondAttribute="centerY" id="YK2-wd-zhz"/>
                             <constraint firstItem="oJx-5g-OhE" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="fDI-N3-flf"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="accountTextField" destination="oJx-5g-OhE" id="7Fg-82-5Zc"/>
-                        <segue destination="5Qh-9T-BRk" kind="custom" identifier="mainToTab" customClass="ReplaceSegue" customModule="Agora_Rtm_Tutorial_Mac" customModuleProvider="target" id="oSC-xy-Jfy"/>
+                        <outlet property="enableOneToOneBox" destination="GxL-KG-zce" id="jYC-hp-E4T"/>
+                        <segue destination="5Qh-9T-BRk" kind="custom" identifier="mainToTab" customClass="ReplaceSegue" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target" id="oSC-xy-Jfy"/>
                     </connections>
                 </viewController>
                 <customObject id="rPt-NT-nkU" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -752,7 +772,7 @@
         <!--Peer&Channel-->
         <scene sceneID="idh-OU-DHM">
             <objects>
-                <viewController title="Peer&amp;Channel" id="5Qh-9T-BRk" customClass="PeerChannelViewController" customModule="Agora_Rtm_Tutorial_Mac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Peer&amp;Channel" id="5Qh-9T-BRk" customClass="PeerChannelViewController" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="EeN-m0-SUG">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -866,7 +886,7 @@
                     <connections>
                         <outlet property="channelTextField" destination="LMG-IN-jLM" id="oDP-tz-qoU"/>
                         <outlet property="peerTextField" destination="o0O-2f-2UD" id="SmX-et-1Nw"/>
-                        <segue destination="GNR-Di-jax" kind="custom" identifier="peerChannelToChat" customClass="ReplaceSegue" customModule="Agora_Rtm_Tutorial_Mac" customModuleProvider="target" id="j8C-Wn-BpK"/>
+                        <segue destination="GNR-Di-jax" kind="custom" identifier="peerChannelToChat" customClass="ReplaceSegue" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target" id="j8C-Wn-BpK"/>
                     </connections>
                 </viewController>
                 <customObject id="LyW-41-7Zg" userLabel="First Responder" customClass="NSResponder" sceneMemberID="firstResponder"/>
@@ -876,7 +896,7 @@
         <!--Chat-->
         <scene sceneID="40Q-hT-w8k">
             <objects>
-                <viewController title="Chat" id="GNR-Di-jax" customClass="ChatViewController" customModule="Agora_Rtm_Tutorial_Mac" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Chat" id="GNR-Di-jax" customClass="ChatViewController" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" id="tEo-MW-PzP">
                         <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -907,12 +927,12 @@
                                                     </textFieldCell>
                                                     <tableColumnResizingMask key="resizingMask" resizeWithTable="YES" userResizable="YES"/>
                                                     <prototypeCellViews>
-                                                        <tableCellView identifier="MessageCell" misplaced="YES" id="xiv-ih-dvr" customClass="MessageCell" customModule="Agora_Rtm_Tutorial_Mac" customModuleProvider="target">
+                                                        <tableCellView identifier="MessageCell" misplaced="YES" id="xiv-ih-dvr" customClass="MessageCell" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target">
                                                             <rect key="frame" x="1" y="1" width="445" height="41"/>
                                                             <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                                             <subviews>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="P6a-N5-Ocf">
-                                                                    <rect key="frame" x="14" y="6" width="36" height="17"/>
+                                                                    <rect key="frame" x="14" y="6" width="36" height="16"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="32" id="Rdq-0m-5vQ"/>
                                                                     </constraints>
@@ -923,7 +943,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="nhe-ir-24A">
-                                                                    <rect key="frame" x="62" y="6" width="37" height="17"/>
+                                                                    <rect key="frame" x="62" y="6" width="37" height="16"/>
                                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="il2-IV-FdH">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -931,7 +951,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="fgR-yF-Bn9">
-                                                                    <rect key="frame" x="395" y="6" width="36" height="17"/>
+                                                                    <rect key="frame" x="395" y="6" width="36" height="16"/>
                                                                     <constraints>
                                                                         <constraint firstAttribute="width" constant="32" id="xJA-Ce-dEk"/>
                                                                     </constraints>
@@ -942,7 +962,7 @@
                                                                     </textFieldCell>
                                                                 </textField>
                                                                 <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="vIO-nm-8Nl">
-                                                                    <rect key="frame" x="346" y="6" width="37" height="17"/>
+                                                                    <rect key="frame" x="346" y="6" width="37" height="16"/>
                                                                     <textFieldCell key="cell" lineBreakMode="clipping" title="Label" id="xSx-TP-TJ6">
                                                                         <font key="font" metaFont="system"/>
                                                                         <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
@@ -991,7 +1011,7 @@
                                 </scroller>
                             </scrollView>
                             <textField verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="ZFB-dc-9KL">
-                                <rect key="frame" x="16" y="14" width="418" height="22"/>
+                                <rect key="frame" x="16" y="15" width="418" height="21"/>
                                 <textFieldCell key="cell" scrollable="YES" lineBreakMode="clipping" selectable="YES" editable="YES" sendsActionOnEndEditing="YES" borderStyle="bezel" drawsBackground="YES" id="R41-Pa-Gh6">
                                     <font key="font" usesAppearanceFont="YES"/>
                                     <color key="textColor" name="controlTextColor" catalog="System" colorSpace="catalog"/>

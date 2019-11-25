@@ -38,6 +38,7 @@ class ChatViewController: UIViewController, ShowAlertProtocol {
     override func viewDidLoad() {
         addKeyboardObserver()
         updateViews()
+        ifLoadOfflineMessages()
         AgoraRtm.updateKit(delegate: self)
     }
     
@@ -78,7 +79,10 @@ private extension ChatViewController {
         
         switch type {
         case .peer(let name):
-            AgoraRtm.kit?.send(rtmMessage, toPeer: name, completion: { (error) in
+            let option = AgoraRtmSendMessageOptions()
+            option.enableOfflineMessaging = (AgoraRtm.oneToOneMessageType == .offline ? true : false)
+            
+            AgoraRtm.kit?.send(rtmMessage, toPeer: name, sendMessageOptions: option, completion: { (error) in
                 sent(error.rawValue)
             })
         case .group(_):
@@ -160,6 +164,23 @@ private extension ChatViewController {
         tableView.estimatedRowHeight = 55
     }
     
+    func ifLoadOfflineMessages() {
+        switch type {
+        case .peer(let name):
+            guard let messages = AgoraRtm.getOfflineMessages(from: name) else {
+                return
+            }
+            
+            for item in messages {
+                appendMessage(user: name, content: item.text)
+            }
+            
+            AgoraRtm.removeOfflineMessages(from: name)
+        default:
+            break
+        }
+    }
+    
     func pressedReturnToSendText(_ text: String?) -> Bool {
         guard let text = text, text.count > 0 else {
             return false
@@ -169,13 +190,14 @@ private extension ChatViewController {
     }
     
     func appendMessage(user: String, content: String) {
-        let msg = Message(userId: user, text: content)
-        list.append(msg)
-        if list.count > 300 {
-            list.removeFirst()
-        }
-        let end = IndexPath(row: list.count - 1, section: 0)
         DispatchQueue.main.async { [unowned self] in
+            let msg = Message(userId: user, text: content)
+            self.list.append(msg)
+            if self.list.count > 100 {
+                self.list.removeFirst()
+            }
+            let end = IndexPath(row: self.list.count - 1, section: 0)
+            
             self.tableView.reloadData()
             self.tableView.scrollToRow(at: end, at: .bottom, animated: true)
         }

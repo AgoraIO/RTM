@@ -9,8 +9,9 @@
 #import "MainViewController.h"
 #import "AgoraRtm.h"
 
-@interface MainViewController ()
+@interface MainViewController () <AgoraRtmDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *accountTextField;
+@property (weak, nonatomic) IBOutlet UISwitch *enableOneToOneSwitch;
 @end
 
 @implementation MainViewController
@@ -39,7 +40,9 @@
         return;
     }
     
+    [AgoraRtm updateDelegate:self];
     [AgoraRtm setCurrent:account];
+    [AgoraRtm setOneToOneMessageType:self.enableOneToOneSwitch.isOn ? OneToOneMessageTypeOffline : OneToOneMessageTypeNormal];
     
     [AgoraRtm.kit loginByToken:nil user:account completion:^(AgoraRtmLoginErrorCode errorCode) {
         if (errorCode != AgoraRtmLoginErrorOk) {
@@ -71,4 +74,9 @@
     }];
 }
 
+// Receive one to one offline messages
+- (void)rtmKit:(AgoraRtmKit *)kit messageReceived:(AgoraRtmMessage *)message fromPeer:(NSString *)peerId {
+    [AgoraRtm addOfflineMessage:message fromUser:peerId];
+}
+     
 @end
