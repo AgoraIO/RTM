@@ -80,6 +80,11 @@
     }];
 }
 
+// Receive one to one offline messages
+- (void)rtmKit:(AgoraRtmKit *)kit messageReceived:(AgoraRtmMessage *)message fromPeer:(NSString *)peerId {
+    [AgoraRtm addOfflineMessage:message fromUser:peerId];
+}
+
 - (void)chatVCWillClose:(ChatViewController *)vc {
     vc.view.window.contentViewController = self;
 }

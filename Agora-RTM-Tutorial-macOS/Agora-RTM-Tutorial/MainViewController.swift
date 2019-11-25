@@ -7,6 +7,7 @@
 //
 
 import Cocoa
+import AgoraRtmKit
 
 protocol ShowAlertProtocol: NSViewController {
     func showAlert(_ message: String, handler: ((NSApplication.ModalResponse) -> Void)?)
@@ -32,6 +33,7 @@ extension ShowAlertProtocol {
 
 class MainViewController: NSViewController, ShowAlertProtocol {
     @IBOutlet weak var accountTextField: NSTextField!
+    @IBOutlet weak var enableOneToOneBox: NSButton!
     
     override func viewWillAppear() {
         logout()
@@ -62,7 +64,9 @@ private extension MainViewController {
             return
         }
         
+        AgoraRtm.updateKit(delegate: self)
         AgoraRtm.current = account
+        AgoraRtm.oneToOneMessageType = enableOneToOneBox.state == .on ? .offline : .normal
 
         AgoraRtm.kit?.login(byToken: nil, user: account) { [unowned self] (errorCode) in
             guard errorCode == .ok else {
@@ -90,6 +94,13 @@ private extension MainViewController {
             
             AgoraRtm.status = .offline
         })
+    }
+}
+
+extension MainViewController: AgoraRtmDelegate {
+    // Receive one to one offline messages
+    func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
+        AgoraRtm.add(offlineMessage: message, from: peerId)
     }
 }
 

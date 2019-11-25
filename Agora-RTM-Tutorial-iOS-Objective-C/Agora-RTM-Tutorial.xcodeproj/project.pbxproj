@@ -29,6 +29,7 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A76C2717238BD0CE0047E150 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		A76F3888228D68EA00B91466 /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
 		A76F3889228D68EA00B91466 /* BasicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicViewController.m; sourceTree = "<group>"; };
 		A7EE1BDF221BFF8F007B835A /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
@@ -45,7 +46,7 @@
 		A7F23CB5221BD728003C46FB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A7F23CBE221BD826003C46FB /* AgoraRtm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		A7F23CBF221BD826003C46FB /* AgoraRtm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
-		A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = "../Agora-Rtm-Tutorial/AgoraRtmKit.framework"; sourceTree = "<group>"; };
+		A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtmKit.framework; sourceTree = "<group>"; };
 		A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A7F23CCA221BDB1B003C46FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -118,6 +119,7 @@
 				A7EE1D97221E914F007B835A /* Message.m */,
 				A7EE1BDF221BFF8F007B835A /* Main.storyboard */,
 				A7F23CC2221BD834003C46FB /* Support Files */,
+				A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */,
 			);
 			path = "Agora-RTM-Tutorial";
 			sourceTree = "<group>";
@@ -131,7 +133,6 @@
 				A7F23CB1221BD728003C46FB /* LaunchScreen.storyboard */,
 				A7F23CB4221BD728003C46FB /* Info.plist */,
 				A7F23CB5221BD728003C46FB /* main.m */,
-				A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */,
 			);
 			name = "Support Files";
 			sourceTree = "<group>";
@@ -139,6 +140,7 @@
 		A7F23CC3221BDB00003C46FB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				A76C2717238BD0CE0047E150 /* Metal.framework */,
 				A7F23CD6221BE087003C46FB /* libc++.tbd */,
 				A7F23CCA221BDB1B003C46FB /* libresolv.tbd */,
 				A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */,
@@ -408,7 +410,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-Rtm-Tutorial" */ = {
+		A7F23C9E221BD726003C46FB /* Build configuration list for PBXProject "Agora-RTM-Tutorial" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				A7F23CB7221BD728003C46FB /* Debug */,

@@ -175,7 +175,6 @@ private extension ChatViewController {
                 appendMessage(user: name, content: item.text)
             }
             
-            tableView.reloadData()
             AgoraRtm.removeOfflineMessages(from: name)
         default:
             break
@@ -191,13 +190,14 @@ private extension ChatViewController {
     }
     
     func appendMessage(user: String, content: String) {
-        let msg = Message(userId: user, text: content)
-        list.append(msg)
-        if list.count > 300 {
-            list.removeFirst()
-        }
-        let end = IndexPath(row: list.count - 1, section: 0)
         DispatchQueue.main.async { [unowned self] in
+            let msg = Message(userId: user, text: content)
+            self.list.append(msg)
+            if self.list.count > 100 {
+                self.list.removeFirst()
+            }
+            let end = IndexPath(row: self.list.count - 1, section: 0)
+            
             self.tableView.reloadData()
             self.tableView.scrollToRow(at: end, at: .bottom, animated: true)
         }
