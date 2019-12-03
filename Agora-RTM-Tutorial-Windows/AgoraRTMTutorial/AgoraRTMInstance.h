@@ -4,7 +4,6 @@
 #include <unordered_map>
 
 #include "IAgoraRtmService.h"
-#include "IAgoraService.h"
 #include "RTmWrap.h"
 
 using namespace agora::rtm;
@@ -64,8 +63,6 @@ private:
   std::string m_AppId;
   std::string m_AppCertificateId;
 
-  std::unique_ptr<agora::base::IAgoraService> m_agoraService;
-  agora::base::AgoraServiceContext context_;
   CRTMCallBack *m_RtmCallback;
   IRtmService* m_rtmService;
   IChannel* m_Channel;
