@@ -18,18 +18,11 @@ void CAgoraRTMInstance::ReleaseInstance() {
 }
 
 void CAgoraRTMInstance::InitRTMService() {
-  if (!m_agoraService) {
-    exit(0);
-  }
-  int ret = m_agoraService->initialize(context_);
-  if (ret) {
-    exit(0);
-  }
-  m_rtmService = m_agoraService->createRtmService();
+  m_rtmService = createRtmService();
   if (!m_rtmService) {
     exit(0);
   }
-  ret = m_rtmService->initialize(m_AppId.c_str(), m_RtmCallback);
+  int ret = m_rtmService->initialize(m_AppId.c_str(), m_RtmCallback);
   if (ret) {
     exit(0);
   }
@@ -44,7 +37,6 @@ m_Account(""),
 m_ChannelName(""),
 m_AppId(appId),
 m_AppCertificateId(""),
-m_agoraService(createAgoraService()),
 m_RtmCallback(callBack),
 m_rtmService(nullptr){
   InitRTMService();
@@ -196,6 +188,5 @@ bool CAgoraRTMInstance::LeaveChannel() {
 }
 
 std::string CAgoraRTMInstance::getSDKVersion() {
-  int build = 0;
-  return m_agoraService->getVersion(&build);
+  return getRtmSdkVersion();
 }
