@@ -18,7 +18,6 @@ void CAgoraRTMInstance::ReleaseInstance() {
 }
 
 void CAgoraRTMInstance::InitRTMService() {
-
   m_rtmService = createRtmService();
   if (!m_rtmService) {
     exit(0);
