@@ -10,6 +10,7 @@
 #include <map>
 #include <algorithm>
 
+#include "IAgoraService.h" 
 #include "IAgoraRtmService.h"
 
 using namespace std;
@@ -109,8 +110,19 @@ class ChannelEventHandler: public agora::rtm::IChannelEventHandler {
 class Demo {
   public:
     Demo() {
+        coreService_.reset(createAgoraService());
+        if (!coreService_) {
+            cout << "core service created failure!" << endl;
+            exit(0);
+        }
+
+        if (coreService_->initialize(context_)) {
+            cout << "core service initialize failure!" << endl;
+            exit(0);
+        }
+
         eventHandler_.reset(new RtmEventHandler());
-        agora::rtm::IRtmService* p_rs = agora::rtm::createRtmService();
+        agora::rtm::IRtmService* p_rs = coreService_->createRtmService();
         rtmService_.reset(p_rs, [](agora::rtm::IRtmService* p) {
             p->release();                                                           
         });                                                                         
@@ -209,6 +221,8 @@ class Demo {
     }
 
     private:
+        std::unique_ptr<agora::base::IAgoraService> coreService_;
+        agora::base::AgoraServiceContext context_;
         std::unique_ptr<agora::rtm::IRtmServiceEventHandler> eventHandler_;
         std::unique_ptr<ChannelEventHandler> channelEvent_;
         std::shared_ptr<agora::rtm::IRtmService> rtmService_;
