@@ -4,7 +4,6 @@
 #include <exception>
 //#include <unistd.h>
 
-#include "IAgoraService.h"
 #include "IAgoraRtmService.h"
 
 // if you want to use this demo. please modify into yourself appid.
@@ -155,23 +154,12 @@ class DemoChannelEventHandler : public IChannelEventHandler
 class DemoMessaging {
 public:
   DemoMessaging()
-      : agoraService_(createAgoraService()),
-        eventHandler_(new DemoRtmEventHandler()),
+      : eventHandler_(new DemoRtmEventHandler()),
         channelEvent_(new DemoChannelEventHandler()),
         rtmService_(nullptr) { Init(); }
 
   void Init() {
-    if (!agoraService_) {
-      std::cout << RED << "error creating agora service!" << std::endl;
-      exit(0);
-  }
-  int ret = agoraService_->initialize(context_);
-  if (ret) {
-    std::cout << RED << "error initializing agora service: "
-              << ret << std::endl;
-    exit(0);
-  }
-  rtmService_ = agoraService_->createRtmService();
+  rtmService_ = createRtmService();
   if (!rtmService_) {
     std::cout << RED <<"error creating rtm service!" << std::endl;
     exit(0);
@@ -309,8 +297,6 @@ public:
   }
 
  private:
-    std::unique_ptr<agora::base::IAgoraService> agoraService_;
-    agora::base::AgoraServiceContext context_;
     std::unique_ptr<IRtmServiceEventHandler> eventHandler_;
     std::unique_ptr<DemoChannelEventHandler> channelEvent_;
     IRtmService* rtmService_;
