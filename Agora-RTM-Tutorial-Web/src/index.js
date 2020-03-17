@@ -84,10 +84,10 @@ $(() => {
     try {
       rtm.init(params.appId);
       window.rtm = rtm;
-      rtm.login(params.accountName).then(() => {
+      rtm.login(params.accountName, params.token).then(() => {
         console.log('login')
         rtm._logined = true
-        Toast.notice("Login: " + params.accountName);
+        Toast.notice("Login: " + params.accountName, " token: ", params.token);
       }).catch((err) => {
         console.log(err)
       })
