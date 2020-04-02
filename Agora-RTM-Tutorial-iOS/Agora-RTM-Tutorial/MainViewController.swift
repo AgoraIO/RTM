@@ -96,4 +96,8 @@ extension MainViewController: AgoraRtmDelegate {
     func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
         AgoraRtm.add(offlineMessage: message, from: peerId)
     }
+    
+    func rtmKit(_ kit: AgoraRtmKit, imageMessageReceived message: AgoraRtmImageMessage, fromPeer peerId: String) {
+        AgoraRtm.add(offlineMessage: message, from: peerId)
+    }
 }

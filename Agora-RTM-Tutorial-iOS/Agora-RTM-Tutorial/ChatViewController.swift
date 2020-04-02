@@ -20,10 +20,7 @@ enum ChatType {
     }
 }
 
-struct Message {
-    var userId: String
-    var text: String
-}
+
 
 class ChatViewController: UIViewController, ShowAlertProtocol {
     @IBOutlet weak var inputTextField: UITextField!
@@ -49,6 +46,28 @@ class ChatViewController: UIViewController, ShowAlertProtocol {
         }
     }
     
+    @IBAction func sendImage(_ sender: Any) {
+        
+        guard let imagePath = Bundle.main.path(forResource: "image", ofType: "png") else {
+            return
+        }
+        
+        var requestId: Int64 = 0
+        AgoraRtm.kit?.createImageMessage(byUploading: imagePath, withRequest: &requestId, completion: {[weak self] (requestId, message, errorCode) in
+            
+            guard let `self` = self, let `message` = message else {
+                return
+            }
+            
+            if(errorCode != .ok) {
+                self.showAlert("send image message error: \(errorCode)")
+                return
+            }
+            
+            self.send(rtmMessage: message, type: self.type)
+        })
+    }
+    
     override func viewWillDisappear(_ animated: Bool) {
         leaveChannel()
     }
@@ -60,22 +79,32 @@ class ChatViewController: UIViewController, ShowAlertProtocol {
 
 // MARK: Send Message
 private extension ChatViewController {
-    func send(message: String, type: ChatType) {
-        let sent = { [unowned self] (state: Int) in
+    
+    func send(rtmMessage: AgoraRtmMessage, type: ChatType) {
+        
+        let sent = { [weak self] (state: Int) in
+            
+            guard let `self` = self else {
+                return
+            }
+            
             guard state == 0 else {
-                self.showAlert("send \(type.description) message error: \(state)", handler: { (_) in
-                    self.view.endEditing(true)
-                })
+                self.showAlert("send \(type.description) message error: \(state)")
                 return
             }
             
             guard let current = AgoraRtm.current else {
                 return
             }
-            self.appendMessage(user: current, content: message)
+            
+            if(rtmMessage.type == .text){
+                self.appendMessage(user: current, content: rtmMessage.text, mediaId: nil)
+            } else if(rtmMessage.type == .image){
+                if let imageMessage = rtmMessage as? AgoraRtmImageMessage {
+                    self.appendMessage(user: current, content: nil, mediaId: imageMessage.mediaId)
+                }
+            }
         }
-        
-        let rtmMessage = AgoraRtmMessage(text: message)
         
         switch type {
         case .peer(let name):
@@ -90,6 +119,11 @@ private extension ChatViewController {
                 sent(error.rawValue)
             }
         }
+    }
+    
+    func send(message: String, type: ChatType) {
+        let rtmMessage = AgoraRtmMessage(text: message)
+        send(rtmMessage: rtmMessage, type: type)
     }
 }
 
@@ -135,7 +169,11 @@ extension ChatViewController: AgoraRtmDelegate {
     }
     
     func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
-        appendMessage(user: peerId, content: message.text)
+        appendMessage(user: peerId, content: message.text, mediaId: nil)
+    }
+    
+    func rtmKit(_ kit: AgoraRtmKit, imageMessageReceived message: AgoraRtmImageMessage, fromPeer peerId: String) {
+        appendMessage(user: peerId, content: nil, mediaId: message.mediaId)
     }
 }
 
@@ -154,8 +192,13 @@ extension ChatViewController: AgoraRtmChannelDelegate {
     }
     
     func channel(_ channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
-        appendMessage(user: member.userId, content: message.text)
+        appendMessage(user: member.userId, content: message.text, mediaId: nil)
     }
+    
+    func channel(_ channel: AgoraRtmChannel, imageMessageReceived message: AgoraRtmImageMessage, from member: AgoraRtmMember) {
+        appendMessage(user: member.userId, content: nil, mediaId: message.mediaId)
+    }
+
 }
 
 private extension ChatViewController {
@@ -172,7 +215,13 @@ private extension ChatViewController {
             }
             
             for item in messages {
-                appendMessage(user: name, content: item.text)
+                if(item.type == .text){
+                    appendMessage(user: name, content: item.text, mediaId: nil)
+                } else if(item.type == .image){
+                    if let imageMessage = item as? AgoraRtmImageMessage {
+                        appendMessage(user: name, content: nil, mediaId: imageMessage.mediaId)
+                    }
+                }
             }
             
             AgoraRtm.removeOfflineMessages(from: name)
@@ -189,17 +238,19 @@ private extension ChatViewController {
         return true
     }
     
-    func appendMessage(user: String, content: String) {
+    func appendMessage(user: String, content: String?, mediaId: String?) {
+
         DispatchQueue.main.async { [unowned self] in
-            let msg = Message(userId: user, text: content)
+            let msg = Message(userId: user, text: content, mediaId: mediaId)
             self.list.append(msg)
             if self.list.count > 100 {
                 self.list.removeFirst()
             }
-            let end = IndexPath(row: self.list.count - 1, section: 0)
-            
+        
             self.tableView.reloadData()
-            self.tableView.scrollToRow(at: end, at: .bottom, animated: true)
+            
+            let end = IndexPath(row: self.list.count - 1, section: 0)
+             self.tableView.scrollToRow(at: end, at: .bottom, animated: true)
         }
     }
     
@@ -248,9 +299,17 @@ extension ChatViewController: UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let msg = list[indexPath.row]
         let type: CellType = msg.userId == AgoraRtm.current ? .right : .left
-        let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as! MessageCell
-        cell.update(type: type, message: msg)
-        return cell
+        
+        if let _ = msg.mediaId {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "ImageMessageCell", for: indexPath) as! ImageMessageCell
+            cell.update(type: type, message: msg)
+            return cell
+            
+        } else {
+            let cell = tableView.dequeueReusableCell(withIdentifier: "MessageCell", for: indexPath) as! MessageCell
+            cell.update(type: type, message: msg)
+            return cell
+        }
     }
 }
 

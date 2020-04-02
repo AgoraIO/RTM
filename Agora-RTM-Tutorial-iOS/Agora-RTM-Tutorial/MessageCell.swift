@@ -8,10 +8,6 @@
 
 import UIKit
 
-enum CellType {
-    case left, right
-}
-
 class MessageCell: UITableViewCell {
     @IBOutlet weak var rightUserLabel: UILabel!
     @IBOutlet weak var rightContentLabel: UILabel!

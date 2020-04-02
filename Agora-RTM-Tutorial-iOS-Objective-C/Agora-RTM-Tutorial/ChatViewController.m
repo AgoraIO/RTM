@@ -187,24 +187,22 @@
 }
 
 - (void)appendMessage:(NSString *)text mediaId:(NSString*)mediaId user:(NSString *)user {
-    __weak ChatViewController *weakSelf = self;
-    
+
     dispatch_async(dispatch_get_main_queue(), ^{
         Message *msg = [[Message alloc] init];
         msg.userId = user;
         msg.text = text;
         msg.mediaId = mediaId;
-        [weakSelf.list addObject:msg];
+        [self.list addObject:msg];
         
-        if (weakSelf.list.count > 300) {
-            [weakSelf.list removeObjectAtIndex:0];
+        if (self.list.count > 300) {
+            [self.list removeObjectAtIndex:0];
         }
+
+        [self.tableView reloadData];
         
-        NSIndexPath *end = [NSIndexPath indexPathForRow:weakSelf.list.count - 1 inSection:0];
-        
-        [weakSelf.tableView reloadData];
-        [weakSelf.tableView scrollToRowAtIndexPath:end
-                                  atScrollPosition:UITableViewScrollPositionBottom animated:true];
+        NSIndexPath *end = [NSIndexPath indexPathForRow:self.list.count - 1 inSection:0];
+        [self.tableView scrollToRowAtIndexPath:end atScrollPosition:UITableViewScrollPositionBottom animated:true];
     });
 }
 

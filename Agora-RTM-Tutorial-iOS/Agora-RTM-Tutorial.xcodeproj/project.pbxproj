@@ -10,6 +10,9 @@
 		38DF955B224249EC00A958D6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955A224249EC00A958D6 /* libc++.tbd */; };
 		38DF955D224249F800A958D6 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955C224249F800A958D6 /* libresolv.tbd */; };
 		38DF955F224249FC00A958D6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955E224249FB00A958D6 /* SystemConfiguration.framework */; };
+		78F096D22435D39700B6EA30 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 78F096D12435D39700B6EA30 /* image.png */; };
+		78F096D42435D46D00B6EA30 /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F096D32435D46D00B6EA30 /* Message.swift */; };
+		78F096D62435D4CF00B6EA30 /* ImageMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 78F096D52435D4CF00B6EA30 /* ImageMessageCell.swift */; };
 		A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340F21F02E0F00D6217B /* CoreTelephony.framework */; };
 		A706342121F047A600D6217B /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342021F047A600D6217B /* AgoraRtm.swift */; };
 		A706342421F04E3B00D6217B /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342321F04E3B00D6217B /* PeerViewController.swift */; };
@@ -29,6 +32,9 @@
 		38DF955A224249EC00A958D6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		38DF955C224249F800A958D6 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		38DF955E224249FB00A958D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		78F096D12435D39700B6EA30 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
+		78F096D32435D46D00B6EA30 /* Message.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
+		78F096D52435D4CF00B6EA30 /* ImageMessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageMessageCell.swift; sourceTree = "<group>"; };
 		A706340F21F02E0F00D6217B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		A706342021F047A600D6217B /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
 		A706342321F04E3B00D6217B /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
@@ -63,9 +69,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		78F096D02435D39700B6EA30 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				78F096D12435D39700B6EA30 /* image.png */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		A706344B21F6EC2000D6217B /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				78F096D02435D39700B6EA30 /* Resource */,
 				A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */,
 				A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */,
 				A7FD7DD121EF61E3005ACFD9 /* LaunchScreen.storyboard */,
@@ -100,7 +115,9 @@
 				A706342321F04E3B00D6217B /* PeerViewController.swift */,
 				A706342521F04E4A00D6217B /* ChannelViewController.swift */,
 				A706342721F050EC00D6217B /* ChatViewController.swift */,
+				78F096D32435D46D00B6EA30 /* Message.swift */,
 				A706343921F0818100D6217B /* MessageCell.swift */,
+				78F096D52435D4CF00B6EA30 /* ImageMessageCell.swift */,
 				A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */,
 				A706344B21F6EC2000D6217B /* Support Files */,
 				A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */,
@@ -181,6 +198,7 @@
 				A7FD7DDB21F025EB005ACFD9 /* Main.storyboard in Resources */,
 				A7FD7DD321EF61E3005ACFD9 /* LaunchScreen.storyboard in Resources */,
 				A7FD7DD021EF61E3005ACFD9 /* Assets.xcassets in Resources */,
+				78F096D22435D39700B6EA30 /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -194,9 +212,11 @@
 				A7FD7DE221F02709005ACFD9 /* AppId.swift in Sources */,
 				A7FD7DE021F02651005ACFD9 /* MainViewController.swift in Sources */,
 				A706342121F047A600D6217B /* AgoraRtm.swift in Sources */,
+				78F096D42435D46D00B6EA30 /* Message.swift in Sources */,
 				A7FD7DC921EF61E1005ACFD9 /* AppDelegate.swift in Sources */,
 				A706342621F04E4A00D6217B /* ChannelViewController.swift in Sources */,
 				A706342821F050EC00D6217B /* ChatViewController.swift in Sources */,
+				78F096D62435D4CF00B6EA30 /* ImageMessageCell.swift in Sources */,
 				A706342421F04E3B00D6217B /* PeerViewController.swift in Sources */,
 				A706343A21F0818100D6217B /* MessageCell.swift in Sources */,
 			);
