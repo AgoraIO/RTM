@@ -68,4 +68,8 @@
     [AgoraRtm addOfflineMessage:message fromUser:peerId];
 }
 
+- (void)rtmKit:(AgoraRtmKit *)kit imageMessageReceived:(AgoraRtmImageMessage *)message fromPeer:(NSString *)peerId {
+    [AgoraRtm addOfflineMessage:message fromUser:peerId];
+}
+
 @end

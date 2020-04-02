@@ -8,9 +8,10 @@
 
 #import "ChatViewController.h"
 #import "MessageCell.h"
+#import "ImageMessageCell.h"
 #import "AgoraRtm.h"
 
-@interface ChatViewController () <AgoraRtmDelegate, AgoraRtmChannelDelegate, UITextFieldDelegate, UITableViewDataSource>
+@interface ChatViewController () <AgoraRtmDelegate, AgoraRtmChannelDelegate, UITextFieldDelegate, UITableViewDataSource, UITableViewDelegate>
 @property (weak, nonatomic) IBOutlet UITextField *inputTextField;
 @property (weak, nonatomic) IBOutlet NSLayoutConstraint *inputViewBottom;
 @property (weak, nonatomic) IBOutlet UITableView *tableView;
@@ -45,39 +46,8 @@
 
 #pragma mark - Send Message
 - (void)sendMessage:(NSString *)message {
-    NSString *typeName = (self.mode.type == ChatTypePeer ? @"peer" : @"channel");
-    
-    __weak ChatViewController *weakSelf = self;
-    void(^sent)(int) = ^(int status) {
-        if (status != 0) {
-            NSString *alert = [NSString stringWithFormat:@"send %@ message error: %d", typeName, status];
-            [weakSelf showAlert:alert];
-            return;
-        }
-        
-        [weakSelf appendMessage:message user:AgoraRtm.current];
-    };
-    
     AgoraRtmMessage *rtmMessage = [[AgoraRtmMessage alloc] initWithText:message];
-    
-    switch (self.mode.type) {
-        case ChatTypePeer: {
-            AgoraRtmSendMessageOptions *option = [[AgoraRtmSendMessageOptions alloc] init];
-            option.enableOfflineMessaging = [AgoraRtm oneToOneMessageType] == OneToOneMessageTypeOffline ? YES : NO;
-            
-            [AgoraRtm.kit sendMessage:rtmMessage toPeer:self.mode.name
-                   sendMessageOptions:option
-                           completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
-                
-                sent((int)errorCode);
-            }];
-        }
-        case ChatTypeGroup: {
-            [self.rtmChannel sendMessage:rtmMessage completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
-                sent((int)errorCode);
-            }];
-        }
-    }
+    [self sendRtmMessage:rtmMessage];
 }
 
 #pragma mark - Channel
@@ -125,8 +95,14 @@
 }
 
 - (void)rtmKit:(AgoraRtmKit *)kit messageReceived:(AgoraRtmMessage *)message fromPeer:(NSString *)peerId {
-    [self appendMessage:message.text user:peerId];
+    [self appendMessage:message.text mediaId:nil user:peerId];
 }
+
+- (void)rtmKit:(AgoraRtmKit *)kit imageMessageReceived:(AgoraRtmImageMessage *)message fromPeer:(NSString *)peerId {
+    [self appendMessage:nil mediaId:message.mediaId user:peerId];
+}
+
+
 
 #pragma mark - AgoraRtmChannelDelegate
 - (void)channel:(AgoraRtmChannel *)channel memberJoined:(AgoraRtmMember *)member {
@@ -142,8 +118,13 @@
 }
 
 - (void)channel:(AgoraRtmChannel *)channel messageReceived:(AgoraRtmMessage *)message fromMember:(AgoraRtmMember *)member {
-    [self appendMessage:message.text user:member.userId];
+    [self appendMessage:message.text mediaId:nil user:member.userId];
 }
+
+-(void)channel:(AgoraRtmChannel *)channel imageMessageReceived:(AgoraRtmImageMessage *)message fromMember:(AgoraRtmMember *)member {
+    [self appendMessage:nil mediaId:message.mediaId user:member.userId];
+}
+
 
 #pragma mark - UI
 - (void)ifLoadOfflineMessages {
@@ -152,7 +133,12 @@
             NSArray *list = [AgoraRtm getOfflineMessagesFromUser:self.mode.name];
             
             for (AgoraRtmMessage *item in list) {
-                [self appendMessage:item.text user:self.mode.name];
+                if(item.type == AgoraRtmMessageTypeText){
+                    [self appendMessage:item.text mediaId:nil user:self.mode.name];
+                } else if(item.type == AgoraRtmMessageTypeImage){
+                    AgoraRtmImageMessage *imageMessage = (AgoraRtmImageMessage*)item;
+                    [self appendMessage:nil mediaId:imageMessage.mediaId user:self.mode.name];
+                }
             }
             
             [AgoraRtm removeOfflineMessageFromUser:self.mode.name];
@@ -200,13 +186,14 @@
     }];
 }
 
-- (void)appendMessage:(NSString *)text user:(NSString *)user {
+- (void)appendMessage:(NSString *)text mediaId:(NSString*)mediaId user:(NSString *)user {
     __weak ChatViewController *weakSelf = self;
     
     dispatch_async(dispatch_get_main_queue(), ^{
         Message *msg = [[Message alloc] init];
         msg.userId = user;
         msg.text = text;
+        msg.mediaId = mediaId;
         [weakSelf.list addObject:msg];
         
         if (weakSelf.list.count > 300) {
@@ -216,7 +203,8 @@
         NSIndexPath *end = [NSIndexPath indexPathForRow:weakSelf.list.count - 1 inSection:0];
         
         [weakSelf.tableView reloadData];
-        [weakSelf.tableView scrollToRowAtIndexPath:end atScrollPosition:UITableViewScrollPositionBottom animated:true];
+        [weakSelf.tableView scrollToRowAtIndexPath:end
+                                  atScrollPosition:UITableViewScrollPositionBottom animated:true];
     });
 }
 
@@ -234,13 +222,78 @@
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    
     Message *msg = self.list[indexPath.row];
     CellType type = [msg.userId isEqualToString:AgoraRtm.current] ? CellTypeRight : CellTypeLeft;
+
+    if(msg.mediaId != nil) {
+
+        ImageMessageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"ImageMessageCell" forIndexPath:indexPath];
+        [cell updateType:type message:msg];
+        return cell;
+    } else {
+        MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MessageCell" forIndexPath:indexPath];
+        [cell updateType:type message:msg];
+        return cell;
+    }
+}
+
+- (IBAction)sendImage:(id)sender {
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"png"];
+    long long requestId;
     
-    MessageCell *cell = [tableView dequeueReusableCellWithIdentifier:@"MessageCell" forIndexPath:indexPath];
-    [cell updateType:type message:msg];
+    __weak ChatViewController *weakSelf = self;
+    [AgoraRtm.kit createImageMessageByUploading:imagePath withRequest:&requestId completion:^(long long requestId, AgoraRtmMessage *message, AgoraRtmUploadMediaErrorCode errorCode) {
+        
+        if(errorCode != AgoraRtmUploadMediaErrorOk) {
+            NSString *alert = [NSString stringWithFormat:@"send image message error: %ld", (long)errorCode];
+            [weakSelf showAlert:alert];
+            return;
+        }
+
+        [weakSelf sendRtmMessage:message];
+    }];
+}
+
+- (void)sendRtmMessage:(AgoraRtmMessage *)rtmMessage {
     
-    return cell;
+    NSString *typeName = (self.mode.type == ChatTypePeer ? @"peer" : @"channel");
+    
+    __weak ChatViewController *weakSelf = self;
+    void(^sent)(int) = ^(int status) {
+        if (status != 0) {
+            NSString *alert = [NSString stringWithFormat:@"send %@ message error: %d", typeName, status];
+            [weakSelf showAlert:alert];
+            return;
+        }
+        
+        if(rtmMessage.type == AgoraRtmMessageTypeText) {
+            [weakSelf appendMessage:rtmMessage.text mediaId:nil user:AgoraRtm.current];
+            
+        } else if(rtmMessage.type == AgoraRtmMessageTypeImage) {
+            AgoraRtmImageMessage *imageMessage = (AgoraRtmImageMessage*)rtmMessage;
+            [weakSelf appendMessage:nil mediaId:imageMessage.mediaId user:AgoraRtm.current];
+        }
+    };
+
+    switch (self.mode.type) {
+        case ChatTypePeer: {
+            AgoraRtmSendMessageOptions *option = [[AgoraRtmSendMessageOptions alloc] init];
+            option.enableOfflineMessaging = [AgoraRtm oneToOneMessageType] == OneToOneMessageTypeOffline ? YES : NO;
+           
+            [AgoraRtm.kit sendMessage:rtmMessage toPeer:self.mode.name
+                   sendMessageOptions:option
+                           completion:^(AgoraRtmSendPeerMessageErrorCode errorCode) {
+                
+                sent((int)errorCode);
+            }];
+        }
+        case ChatTypeGroup: {
+            [self.rtmChannel sendMessage:rtmMessage completion:^(AgoraRtmSendChannelMessageErrorCode errorCode) {
+                sent((int)errorCode);
+            }];
+        }
+    }
 }
 
 #pragma mark - UITextFieldDelegate

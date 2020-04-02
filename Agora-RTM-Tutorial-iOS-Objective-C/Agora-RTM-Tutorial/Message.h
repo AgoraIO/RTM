@@ -8,7 +8,19 @@
 
 #import <Foundation/Foundation.h>
 
+typedef NS_ENUM(NSInteger, CellType) {
+    CellTypeLeft,
+    CellTypeRight
+};
+
 @interface Message : NSObject
+
 @property (nonatomic, copy) NSString *userId;
+
+// for text message
 @property (nonatomic, copy) NSString *text;
+
+// for image message
+@property (nonatomic, copy) NSString *mediaId;
+
 @end
