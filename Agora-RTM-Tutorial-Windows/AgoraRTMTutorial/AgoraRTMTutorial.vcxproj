@@ -228,7 +228,7 @@
     <ResourceCompile Include="AgoraRTMTutorial.rc" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Debug\AgoraSignal.ini" />
+    <None Include="..\Debug\AgoraRTM.ini" />
     <None Include="res\AgoraRTMTutorial.rc2" />
   </ItemGroup>
   <ItemGroup>
