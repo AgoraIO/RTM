@@ -24,14 +24,13 @@ const cssLoader = {
   ],
 };
 
-const scssLoader = {
-  test: /\.scss$/,
-  use: [
-    styleLoader,
-    "css-loader",
-    "sass-loader",
-  ]
-}
+const eslintLoader = {
+  test: /\.js$/,
+  include: /src/,
+  use: {
+    loader: "eslint-loader"
+  }
+};
 
 const fileLoader = {
   test: /\.(png|svg|jpg|gif)$/,
@@ -46,7 +45,7 @@ const fontLoader = {
 module.exports = {
   rules: [
     cssLoader,
-    scssLoader,
+    eslintLoader,
     fileLoader,
     fontLoader,
     babelLoader
