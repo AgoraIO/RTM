@@ -45,9 +45,9 @@ const fontLoader = {
 module.exports = {
   rules: [
     cssLoader,
-    eslintLoader,
     fileLoader,
     fontLoader,
-    babelLoader
+    babelLoader,
+    eslintLoader,
   ],
 };
