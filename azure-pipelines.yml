@@ -1,0 +1,18 @@
+trigger:
+- master
+
+variables:
+  #WindowsRTCSDK: 'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows(x86)_v2_9_3_FULL.zip'
+  WindowsRTCSDK: 'https://download.agora.io/sdk/release/Agora_Native_SDK_for_Windows(x86)_v3_0_0_FULL.zip'
+jobs:
+#Windows Demo
+- template: cicd/templates/build-Windows.yml
+  parameters:
+    displayName: 'AgoraRTMTutorialWindows'
+    workingDirectory: 'Agora-RTM-Tutorial-Windows'
+    scheme: 'Agora-RTM-Tutorial-Windows'
+    sdkurl: $(WindowsRTCSDK)
+    solutionName: 'AgoraRTMTutorial.sln'
+    sdkVersion: '1.2.2'
+    sdkFolderVersion: '1.2.2'
+    Machine: x86
