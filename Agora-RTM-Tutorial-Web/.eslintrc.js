@@ -1,17 +1,36 @@
 module.exports = {
-  "parser": "babel-eslint",
-  "extends": "airbnb-base",
-  "rules": {
-    "linebreak-style": 0,
-    "no-new": 0,
-    "no-plusplus": 0,
-    "no-use-before-define": 0,
-    "import/no-unresolved": 0,
-    "import/extensions": 0
-  },
-  "globals": {
-    "document": true,
-    "window": true,
-    "location": true
-  }
-};
+	'env': {
+		'browser': true,
+		'es6': true,
+		'node': true,
+		'jquery': true,
+	},
+	'extends': 'eslint:recommended',
+	'globals': {
+		'Atomics': 'readonly',
+		'SharedArrayBuffer': 'readonly'
+	},
+	'parserOptions': {
+		'ecmaVersion': 2018,
+		'sourceType': 'module'
+	},
+	'rules': {
+		'indent': [
+			'warn',
+			2
+		],
+		'linebreak-style': [
+			'warn',
+			'unix'
+		],
+		'quotes': [
+			'warn',
+			'single'
+		],
+		'semi': [
+			'warn',
+			'never'
+		],
+		'no-unused-vars': 0,
+	}
+}

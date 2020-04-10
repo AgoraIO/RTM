@@ -1,259 +1,257 @@
-import './assets/styles.scss';
-import * as $ from 'jquery';
-import * as M from 'materialize-css';
+import './assets/styles.css'
+import * as $ from 'jquery'
+import * as M from 'materialize-css'
 
-import RtmClient from './rtm-client';
+import RtmClient from './rtm-client'
 import {
   Toast,
   validator,
-  serializeFormData,
-} from './common';
+  serializeFormData
+} from './common'
 
 $(() => {
-  M.AutoInit();
+  M.AutoInit()
 
-  let rtm = new RtmClient();
+  const rtm = new RtmClient()
 
-  rtm.on("ConnectionStateChanged", (newState, reason) => {
-    console.log("reason", reason);
-    const view = $("<div/>",{
-      text: ["newState: " + newState, ", reason: ", reason].join(""),
+  rtm.on('ConnectionStateChanged', (newState, reason) => {
+    console.log('reason', reason)
+    const view = $('<div/>', {
+      text: ['newState: ' + newState, ', reason: ', reason].join('')
     })
-    $("#log").append(view)
-    if (newState == "ABORTED") {
-      if (reason == "REMOTE_LOGIN") {
-        Toast.error("You have already been kicked off!");
-        $("#accountName").text('Agora Chatroom');
+    $('#log').append(view)
+    if (newState === 'ABORTED') {
+      if (reason === 'REMOTE_LOGIN') {
+        Toast.error('You have already been kicked off!')
+        $('#accountName').text('Agora Chatroom')
 
-        rtm.clearState();
-        $("#dialogue-list")[0].innerHTML = '';
-        $("#chat-message")[0].innerHTML = '';
+        rtm.clearState()
+        $('#dialogue-list')[0].innerHTML = ''
+        $('#chat-message')[0].innerHTML = ''
       }
     }
   })
 
-  rtm.on("MessageFromPeer", (message, peerId) => {
-    console.log("message "+ message.text + " peerId" + peerId);
-    const view = $("<div/>",{
-      text: ["message.text: " + message.text, ", peer: ", peerId].join(""),
+  rtm.on('MessageFromPeer', (message, peerId) => {
+    console.log('message ' + message.text + ' peerId' + peerId)
+    const view = $('<div/>', {
+      text: ['message.text: ' + message.text, ', peer: ', peerId].join('')
     })
-    $("#log").append(view)
-  });
+    $('#log').append(view)
+  })
 
-  rtm.on("MemberJoined", ({channelName, args}) => {
-    const memberId = args[0];
-    console.log("channel ", channelName, " member: ", memberId, " joined");
-    const view = $("<div/>",{
-      text: ["event: MemberJoined ", ", channel: ", channelName, ", memberId: ", memberId].join(""),
+  rtm.on('MemberJoined', ({ channelName, args }) => {
+    const memberId = args[0]
+    console.log('channel ', channelName, ' member: ', memberId, ' joined')
+    const view = $('<div/>', {
+      text: ['event: MemberJoined ', ', channel: ', channelName, ', memberId: ', memberId].join('')
     })
-    $("#log").append(view);
-  });
+    $('#log').append(view)
+  })
 
-  rtm.on("MemberLeft", ({channelName, args}) => {
-    const memberId = args[0];
-    console.log("channel ", channelName, " member: ", memberId, " joined");
-    const view = $("<div/>",{
-      text: ["event: MemberLeft ", ", channel: ", channelName, ", memberId: ", memberId].join(""),
+  rtm.on('MemberLeft', ({ channelName, args }) => {
+    const memberId = args[0]
+    console.log('channel ', channelName, ' member: ', memberId, ' joined')
+    const view = $('<div/>', {
+      text: ['event: MemberLeft ', ', channel: ', channelName, ', memberId: ', memberId].join('')
     })
-    $("#log").append(view);
-  });
+    $('#log').append(view)
+  })
 
-  rtm.on("ChannelMessage", ({channelName, args}) => {
-    const [message, memberId] = args;
-    console.log("channel ", channelName, ", messsage: ", message.text, ", memberId: ", memberId);
-    const view = $("<div/>",{
-      text: ["event: ChannelMessage ", "channel: " , channelName, ", message: ", message.text, ", memberId: ", memberId].join(""),
+  rtm.on('ChannelMessage', ({ channelName, args }) => {
+    const [message, memberId] = args
+    console.log('channel ', channelName, ', messsage: ', message.text, ', memberId: ', memberId)
+    const view = $('<div/>', {
+      text: ['event: ChannelMessage ', 'channel: ', channelName, ', message: ', message.text, ', memberId: ', memberId].join('')
     })
-    $("#log").append(view);
-  });
+    $('#log').append(view)
+  })
 
-  $("#login").on("click", function (e) {
-    e.preventDefault();
+  $('#login').on('click', function (e) {
+    e.preventDefault()
 
     if (rtm._logined) {
-      Toast.error("You already logined");
-      return;
+      Toast.error('You already logined')
+      return
     }
 
-    const params = serializeFormData("loginForm");
+    const params = serializeFormData('loginForm')
 
     if (!validator(params, ['appId', 'accountName'])) {
-      return;
+      return
     }
 
     try {
-      rtm.init(params.appId);
-      window.rtm = rtm;
+      rtm.init(params.appId)
+      window.rtm = rtm
       rtm.login(params.accountName, params.token).then(() => {
         console.log('login')
         rtm._logined = true
-        Toast.notice("Login: " + params.accountName, " token: ", params.token);
+        Toast.notice('Login: ' + params.accountName, ' token: ', params.token)
       }).catch((err) => {
         console.log(err)
       })
-    } catch(err) {
-      Toast.error("Login failed, please open console see more details");
-      console.error(err);
+    } catch (err) {
+      Toast.error('Login failed, please open console see more details')
+      console.error(err)
     }
   })
 
-  $("#logout").on("click", function (e) {
-    e.preventDefault();
+  $('#logout').on('click', function (e) {
+    e.preventDefault()
     if (!rtm._logined) {
-      Toast.error("You already logout");
-      return;
+      Toast.error('You already logout')
+      return
     }
     rtm.logout().then(() => {
       console.log('logout')
       rtm._logined = false
-      Toast.notice("Logout: " + rtm.accountName);
+      Toast.notice('Logout: ' + rtm.accountName)
     }).catch((err) => {
-      Toast.error("Logout failed, please open console see more details");
+      Toast.error('Logout failed, please open console see more details')
       console.log(err)
     })
   })
 
-  $("#join").on("click", function (e) {
-    e.preventDefault();
+  $('#join').on('click', function (e) {
+    e.preventDefault()
     if (!rtm._logined) {
-      Toast.error("Please Login First");
-      return;
+      Toast.error('Please Login First')
+      return
     }
 
-    const params = serializeFormData("loginForm");
+    const params = serializeFormData('loginForm')
 
     if (!validator(params, ['appId', 'accountName', 'channelName'])) {
-      return;
+      return
     }
 
     if (rtm.channels[params.channelName] ||
         (rtm.channels[params.channelName] && rtm.channels[params.channelName].joined)) {
-      Toast.error("You already joined");
-      return;
+      Toast.error('You already joined')
+      return
     }
 
     rtm.joinChannel(params.channelName).then(() => {
-      const view = $("<div/>", {
-        text: rtm.accountName + " join channel success"
-      });
-      $("#log").append(view);
-      rtm.channels[params.channelName].joined = true;
+      const view = $('<div/>', {
+        text: rtm.accountName + ' join channel success'
+      })
+      $('#log').append(view)
+      rtm.channels[params.channelName].joined = true
     }).catch((err) => {
-      Toast.error("Join channel failed, please open console see more details.")
+      Toast.error('Join channel failed, please open console see more details.')
       console.error(err)
     })
   })
 
-  $("#leave").on("click", function (e) {
-    e.preventDefault();
+  $('#leave').on('click', function (e) {
+    e.preventDefault()
     if (!rtm._logined) {
-      Toast.error("Please Login First");
-      return;
+      Toast.error('Please Login First')
+      return
     }
 
-    const params = serializeFormData("loginForm");
+    const params = serializeFormData('loginForm')
 
     if (!validator(params, ['appId', 'accountName', 'channelName'])) {
-      return;
+      return
     }
 
-    if (!rtm.channels[params.channelName] || 
-      (rtm.channels[params.channelName] && !rtm.channels[params.channelName].joined )
+    if (!rtm.channels[params.channelName] ||
+      (rtm.channels[params.channelName] && !rtm.channels[params.channelName].joined)
     ) {
-      Toast.error("You already leave");
+      Toast.error('You already leave')
     }
 
     rtm.leaveChannel(params.channelName).then(() => {
-      const view = $("<div/>", {
-        text: rtm.accountName + " leave channel success"
-      });
-      $("#log").append(view)
+      const view = $('<div/>', {
+        text: rtm.accountName + ' leave channel success'
+      })
+      $('#log').append(view)
       if (rtm.channels[params.channelName]) {
-        rtm.channels[params.channelName].joined = false;
-        rtm.channels[params.channelName] = null;
+        rtm.channels[params.channelName].joined = false
+        rtm.channels[params.channelName] = null
       }
     }).catch((err) => {
-      Toast.error("Leave channel failed, please open console see more details.")
+      Toast.error('Leave channel failed, please open console see more details.')
       console.error(err)
     })
-
   })
 
-  $("#send_channel_message").on("click", function (e) {
-    e.preventDefault();
+  $('#send_channel_message').on('click', function (e) {
+    e.preventDefault()
     if (!rtm._logined) {
-      Toast.error("Please Login First");
-      return;
+      Toast.error('Please Login First')
+      return
     }
 
-    const params = serializeFormData("loginForm");
+    const params = serializeFormData('loginForm')
 
     if (!validator(params, ['appId', 'accountName', 'channelName', 'channelMessage'])) {
-      return;
+      return
     }
 
-    if (!rtm.channels[params.channelName] || 
-      (rtm.channels[params.channelName] && !rtm.channels[params.channelName].joined )
+    if (!rtm.channels[params.channelName] ||
+      (rtm.channels[params.channelName] && !rtm.channels[params.channelName].joined)
     ) {
-      Toast.error("Please Join first");
+      Toast.error('Please Join first')
     }
 
     rtm.sendChannelMessage(params.channelMessage, params.channelName).then(() => {
-      const view = $("<div/>", {
-        text: "account: " + rtm.accountName + " send : " + params.channelMessage + " channel: " + params.channelName
-      });
-      $("#log").append(view)
+      const view = $('<div/>', {
+        text: 'account: ' + rtm.accountName + ' send : ' + params.channelMessage + ' channel: ' + params.channelName
+      })
+      $('#log').append(view)
     }).catch((err) => {
-      Toast.error("Send message to channel " + params.channelName + " failed, please open console see more details.")
+      Toast.error('Send message to channel ' + params.channelName + ' failed, please open console see more details.')
       console.error(err)
     })
-
   })
 
-  $("#send_peer_message").on("click", function (e) {
-    e.preventDefault();
+  $('#send_peer_message').on('click', function (e) {
+    e.preventDefault()
     if (!rtm._logined) {
-      Toast.error("Please Login First");
-      return;
+      Toast.error('Please Login First')
+      return
     }
 
-    const params = serializeFormData("loginForm");
+    const params = serializeFormData('loginForm')
 
     if (!validator(params, ['appId', 'accountName', 'peerId', 'peerMessage'])) {
-      return;
+      return
     }
 
     rtm.sendPeerMessage(params.peerMessage, params.peerId).then(() => {
-      const view = $("<div/>", {
-        text: "account: " + rtm.accountName + " send : " + params.peerMessage + " peerId: " + params.peerId
-      });
-      $("#log").append(view)
+      const view = $('<div/>', {
+        text: 'account: ' + rtm.accountName + ' send : ' + params.peerMessage + ' peerId: ' + params.peerId
+      })
+      $('#log').append(view)
     }).catch((err) => {
-      Toast.error("Send message to peer " + params.peerId + " failed, please open console see more details.")
+      Toast.error('Send message to peer ' + params.peerId + ' failed, please open console see more details.')
       console.error(err)
     })
   })
 
-  $("#query_peer").on("click", function (e) {
-    e.preventDefault();
+  $('#query_peer').on('click', function (e) {
+    e.preventDefault()
     if (!rtm._logined) {
-      Toast.error("Please Login First");
-      return;
+      Toast.error('Please Login First')
+      return
     }
 
-    const params = serializeFormData("loginForm");
+    const params = serializeFormData('loginForm')
 
     if (!validator(params, ['appId', 'accountName', 'memberId'])) {
-      return;
+      return
     }
 
     rtm.queryPeersOnlineStatus(params.memberId).then((res) => {
-      const view = $("<div/>", {
-        text: "memberId: " + params.memberId + ", online: " + res[params.memberId]
-      });
-      $("#log").append(view)
+      const view = $('<div/>', {
+        text: 'memberId: ' + params.memberId + ', online: ' + res[params.memberId]
+      })
+      $('#log').append(view)
     }).catch((err) => {
-      Toast.error("query peer online status failed, please open console see more details.")
+      Toast.error('query peer online status failed, please open console see more details.')
       console.error(err)
     })
   })
