@@ -14,6 +14,7 @@ public:
     m_channeId = channelId;
   }
 
+  void SetImagePath(std::string imagepath) { imageMessagepath = imagepath; }
 protected:
   // Inherited from |agora::rtm::IRtmServiceEventHandler|
   void onLoginSuccess() override;
@@ -44,13 +45,16 @@ protected:
   void onMemberLeft(IChannelMember *member) override;
 
   void onGetMembers(IChannelMember **members, int userCount, GET_MEMBERS_ERR errorCode) override;
-
+  void onMediaUploadResult(long long requestId, IMessage* mediaMessage, UPLOAD_MEDIA_ERR_CODE code) override;
+  virtual void onImageMessageReceivedFromPeer(const char *peerId, const IImageMessage* message) override;
+  virtual  void onFileMessageReceivedFromPeer(const char *peerId, const IFileMessage* message) override;
 private:
   inline void postMsg(UINT msg, WPARAM wParam = NULL, LPARAM lParam = NULL);
 
 private:
   HWND m_MsgWnd;
   std::string m_channeId;
+  std::string imageMessagepath;
 };
 
 

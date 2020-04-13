@@ -80,6 +80,20 @@ CString s2cs(const std::string &str)
 	return CString(str.c_str());
 }
 
+std::string cs2Utf8(const CString & str)
+{
+    char szFile[MAX_PATH] = { 0 };
+    WideCharToMultiByte(CP_UTF8, 0, str, str.GetLength(), szFile, MAX_PATH, 0, 0);
+   return szFile;
+}
+
+CString utf82cs(std::string str)
+{
+    TCHAR szFile[MAX_PATH] = { 0 };
+    MultiByteToWideChar(CP_UTF8, 0, str.c_str(), str.length(), szFile, MAX_PATH);
+    return szFile;
+}
+
 std::string cs2s(const CString &str)
 {
 	CString sTemp(str);

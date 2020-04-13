@@ -4,6 +4,29 @@
 
 CAgoraRTMInstance* CAgoraRTMInstance::m_pAgoraRTMInstance = NULL;
 
+std::string _generateObjectId()
+{
+    GUID guid;
+    std::string objId = "";
+    if (S_OK == CoCreateGuid(&guid)) {
+        char buf[33] = { 0 };
+
+        _snprintf_s(buf, sizeof(buf)
+            , "%08X%04X%04x%02X%02X%02X%02X%02X%02X%02X%02X"
+            , guid.Data1
+            , guid.Data2
+            , guid.Data3
+            , guid.Data4[0], guid.Data4[1]
+            , guid.Data4[2], guid.Data4[3], guid.Data4[4], guid.Data4[5]
+            , guid.Data4[6], guid.Data4[7]
+        );
+        objId = buf;
+    }
+    return objId;
+}
+
+
+
 CAgoraRTMInstance* CAgoraRTMInstance::getSignalInstance(const std::string &appId, CRTMCallBack* callBack)
 {
   if (NULL == m_pAgoraRTMInstance){
@@ -189,4 +212,60 @@ bool CAgoraRTMInstance::LeaveChannel() {
 
 std::string CAgoraRTMInstance::getSDKVersion() {
   return getRtmSdkVersion();
+}
+
+
+bool CAgoraRTMInstance::SendImageMsg(const std::string &account, std::string fileName, std::string filePath)
+{
+    std::string mediaId = _generateObjectId();
+    if (m_rtmService != nullptr) {
+        //IFileMessage* fileMsg = m_rtmService->createFileMediaMessageByMediaId(mediaId.c_str());
+        IImageMessage* imageMsg = m_rtmService->createImageMediaMessageByMediaId(mediaId.c_str());
+        if (!imageMsg)
+            return false;
+
+
+        FILE* fp = NULL;
+        fopen_s(&fp, filePath.c_str(), "rb");
+        if (!fp)
+            return false;
+
+        fseek(fp, 0, SEEK_END);
+        long size = ftell(fp);
+       
+        if (size > 32 * 1024) {
+            AfxMessageBox(_T("image file is larger than 32k"));
+            return false;
+        }
+        fseek(fp, 0, SEEK_SET);
+        uint8_t* data = new uint8_t[size];
+        fread(data, 1, size, fp);
+        imageMsg->setFileName(fileName.c_str());
+        imageMsg->setThumbnailWidth(210);
+        imageMsg->setThumbnailHeight(173);
+        imageMsg->setThumbnail(data, size);
+    
+        SendMessageOptions options;
+        options.enableOfflineMessaging = true;
+        int ret = m_rtmService->sendMessageToPeer(account.c_str(), imageMsg, options);
+
+        fclose(fp);
+        fp = NULL;
+        delete[] data;
+        data = nullptr;
+        return true;
+    }
+    return false;
+}
+
+
+bool CAgoraRTMInstance::uploadImage(std::string filePath)
+{
+    if (m_rtmService != nullptr) {
+       
+        //int ret = m_rtmService->createImageMessageByUploading(filePath.c_str(), requestId);
+        int ret = m_rtmService->createImageMessageByUploading(filePath.c_str(), requestId);
+        return true;
+    }
+    return false;
 }

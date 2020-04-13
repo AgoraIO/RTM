@@ -204,6 +204,7 @@ void CAgoraRTMDlg::initResource()
 	}
 
   m_pRTMCallBack = new CRTMCallBack(m_hWnd);
+  m_pRTMCallBack->SetImagePath(theApp.recvfilePath);
   m_pRTMInstance = CAgoraRTMInstance::getSignalInstance(AppId, m_pRTMCallBack);
 	std::string appCertificateID = gConfigSignal.getAppCertificatedId();
 	m_pRTMInstance->setAppCertificateId(appCertificateID);

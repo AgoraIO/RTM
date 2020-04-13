@@ -44,6 +44,8 @@ public:
   bool JoinChannel(const std::string &channelID);
   bool LeaveChannel();
 
+  bool uploadImage(std::string filePath);
+  bool SendImageMsg(const std::string &account, std::string fileName, std::string filePath);
   std::string getSDKVersion();
 
 protected:
@@ -69,4 +71,5 @@ private:
 
   HWND m_loginWnd;
   HWND m_ChatMsg;
+  long long requestId = 0;
 };

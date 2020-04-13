@@ -43,7 +43,9 @@
 #else
 #pragma comment(lib,"agora_rtm_sdk.lib")
 #endif
-
+#include <GdiPlus.h> 
+#pragma comment(lib, "gdiplus.lib")
+using namespace Gdiplus;
 using namespace agora::rtm;
 #define MAXPATHLEN 1024
 
@@ -89,8 +91,10 @@ namespace SingleDesc
     WM_QueryUserStatusResult,
     WM_Dbg,
     WM_BCCall_result,
-
-    WM_UNKWOWN = WM_USER + 0xff
+    WM_ImageMessageUploadResult,
+    WM_ImageMessageRecvFromPeer = 255,
+    
+    WM_UNKWOWN = WM_USER + 0xfff
   };
 
   enum eTagMsgtype
@@ -304,11 +308,32 @@ namespace SingleDesc
     std::string desc;
   }AG_SIGNAL_ERROR, *PAG_SIGNAL_ERROR, *LPAG_SIGNAL_ERROR;
 
+  typedef struct AgTagUploadImageResult {
+      std::string mediaId;
+      std::string messageId;
+  }AG_UPLOAD_IMAGE_RESULT, *PAG_UPLOAD_IMAGE_RESULT, *LPAG_UPLOAD_IMAGE_RESULT;
+
   typedef struct AGTagQueryUserStatusResult
   {
     std::string name;
     std::string status;
   }AG_SIGNAL_QUERYUSERSTATUSRESULT, *PAG_SIGNAL_QUERYUSERSTATUSRESULT, *LPAG_SIGNAL_QUERYUSERSTATUSRESULT;
+
+  typedef struct AgTagImageMessage{
+      std::string filePath;
+      std::string peerId;
+      /*
+      std::string mediaId;
+      std::string messageId;
+      int width;
+      int height;
+      int thumbnailWidth;
+      int thumbnailHeight;
+      int size;
+      long long thumbmailSize;
+      char* thumbnailData;
+      char* data;*/
+  }AG_IMAGE_MESSAGE, *PAG_IMAGE_MESSAGE, *LPAG_IMAGE_MESSAGE;
 }
 
 

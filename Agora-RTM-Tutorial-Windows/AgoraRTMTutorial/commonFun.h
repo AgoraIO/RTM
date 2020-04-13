@@ -18,7 +18,8 @@ int str2int(const std::string &str);
 float str2float(const std::string &str);
 CString s2cs(const std::string &str);
 std::string cs2s(const CString &str);
-
+std::string cs2Utf8(const CString & str);
+CString utf82cs(std::string str);
 bool isContailSpace(CString str);
 void initlog();
 void uninitLog();

@@ -11,6 +11,7 @@
 #include "DlgInput.h"
 #include "RTMWrap.h"
 
+
 #define TIMER_IDEVENT_QUERYISONLINE 1
 #define TIMER_IDEVENT_QUERYISONLINE_INTERVAL  1000
 
@@ -37,7 +38,14 @@ CDlgChatMsg::~CDlgChatMsg()
 
 void CDlgChatMsg::DoDataExchange(CDataExchange* pDX)
 {
-	CDialogEx::DoDataExchange(pDX);
+    CDialogEx::DoDataExchange(pDX);
+    DDX_Control(pDX, IDC_LISTIMAGE, m_lstImage);
+    DDX_Control(pDX, IDC_EDIT_UID, m_edtUID);
+
+    DDX_Control(pDX, IDC_STATIC_SHOW, m_staImage);
+    DDX_Control(pDX, IDC_STATIC_SHOW_SEND, m_sta);
+    DDX_Control(pDX, IDC_STATIC_SENDIMAGE, m_staSendImage);
+    DDX_Control(pDX, IDC_STATIC_IMAGE_INFO, m_staRecvImageinfo);
 }
 
 
@@ -54,6 +62,9 @@ BEGIN_MESSAGE_MAP(CDlgChatMsg, CDialogEx)
 	ON_MESSAGE(WM_QueryUserStatusResult, onQueryUserStatusResult)
 	ON_MESSAGE(WM_MessageSendError, onMessageSendError)
 	ON_MESSAGE(WM_MessageSendSuccess, onMessageSendSuccess)
+    ON_MESSAGE(WM_ImageMessageUploadResult, onMediaUploadResult)
+    ON_MESSAGE(WM_ImageMessageRecvFromPeer, onMediaRecvMsgfromPeer)
+     
 	ON_MESSAGE(WM_MessageInstantReceive, onMessageInstantReceive)
 	ON_MESSAGE(WM_MessageChannelReceive, onMessageChannelReceive)
 	ON_MESSAGE(WM_ChannelJoined, onChannelJoined)
@@ -61,6 +72,7 @@ BEGIN_MESSAGE_MAP(CDlgChatMsg, CDialogEx)
 	ON_MESSAGE(WM_ChannelLeaved, onChannelLeaved)
 	ON_MESSAGE(WM_ChannelUserList,onChannelUserList)
 	ON_MESSAGE(WM_ChannelQueryUserNumResult, onChannelQueryUserNumResult)
+    ON_BN_CLICKED(IDC_BUTTON1, &CDlgChatMsg::OnBnClickedSendImage)
 END_MESSAGE_MAP()
 
 BOOL CDlgChatMsg::OnInitDialog()
@@ -70,7 +82,8 @@ BOOL CDlgChatMsg::OnInitDialog()
 	initResource();
 	initCtrl();
 	SetTimer(TIMER_IDEVENT_QUERYISONLINE, TIMER_IDEVENT_QUERYISONLINE_INTERVAL, NULL);
-
+    m_ImageListThumb.Create(THUMBWIDTH, THUMBHEIGHT, ILC_COLOR24, 0, 1);
+    m_lstImage.SetImageList(&m_ImageListThumb, LVSIL_NORMAL);
 	return TRUE;
 }
 
@@ -159,12 +172,14 @@ void CDlgChatMsg::OnBnClickedButtonP2pmsg()
 {
 	m_curOptionType = eType_Instance;
 	m_pDlgInput->showWindow(eType_Instance);
+    
 }
 
 void CDlgChatMsg::OnBnClickedButtonChannelmsg()
 {
 	m_curOptionType = eType_Channel;
 	m_pDlgInput->showWindow(eType_Channel);
+   
 }
 
 LRESULT CDlgChatMsg::onUpdateInputParam(WPARAM wParam, LPARAM lParam)
@@ -181,7 +196,7 @@ LRESULT CDlgChatMsg::onUpdateInputParam(WPARAM wParam, LPARAM lParam)
 	default:break;
 	}
 
-	delete lpData; lpData = NULL;
+	//delete lpData; lpData = NULL;
 
 	return TRUE;
 }
@@ -210,6 +225,11 @@ LRESULT CDlgChatMsg::onQueryUserStatusResult(WPARAM wParam, LPARAM lParam)
 	return TRUE;
 }
 
+LRESULT CDlgChatMsg::onMediaUploadResult(WPARAM wParam, LPARAM lParam)
+{
+ 
+    return 0;
+}
 
 LRESULT CDlgChatMsg::onMessageSendSuccess(WPARAM wParam, LPARAM lParam)
 {
@@ -411,6 +431,7 @@ void CDlgChatMsg::chooseInstance(const std::string &userAccount)
 		it->second->ShowWindow(SW_SHOW);
 		it->second->Invalidate(TRUE);
 		m_pCurChat = it->second;
+
 	}
 	else
 	{
@@ -478,4 +499,82 @@ BOOL CDlgChatMsg::PreTranslateMessage(MSG* pMsg)
 	}
 
 	return CDialogEx::PreTranslateMessage(pMsg);
+}
+
+void CDlgChatMsg::OnBnClickedSendImage()
+{
+    TCHAR szFilters[] = _T("MyType Files (*.*)|*.*|All Files (*.*)|*.*||");
+
+    // Create an Open dialog; the default file name extension is ".my".
+    CFileDialog fileDlg(TRUE, _T("All Files"), _T("*.*"),
+        OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters);
+    CString strUid;
+    m_edtUID.GetWindowText(strUid);
+    if (strUid.IsEmpty()) {
+        AfxMessageBox(_T("Send P2P message, please Input Uid"));
+        return;
+    }
+    // Display the file dialog. When user clicks OK, fileDlg.DoModal() 
+    // returns IDOK.
+    if (fileDlg.DoModal() == IDOK)
+    {
+        CString pathName = fileDlg.GetPathName();
+
+        // Implement opening and reading file in here.
+
+        //Change the window's title to the opened file's title.
+        CString fileName = fileDlg.GetPathName();
+        Image image(fileName);
+
+        Gdiplus::Graphics graphics(::GetDC(m_sta.GetSafeHwnd()));
+        Rect rc;
+        RECT rect;
+        m_sta.GetWindowRect(&rect);
+
+        graphics.DrawImage(&image, rc);
+
+        std::string filePath = cs2s(fileName);
+        std::string file = cs2Utf8(fileDlg.GetFileName());
+       
+        m_pSignalInstance->SendImageMsg(cs2s(strUid), file, filePath);
+
+    }
+  
+}
+
+
+LRESULT CDlgChatMsg::onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam)
+{
+    PAG_IMAGE_MESSAGE lpData = (PAG_IMAGE_MESSAGE)wParam;
+
+    if (!lpData) {
+        goto end;
+    }
+
+    TCHAR szFile[MAX_PATH] = { 0 };
+    MultiByteToWideChar(CP_UTF8, 0, lpData->filePath.c_str(), lpData->filePath.length(), szFile, MAX_PATH);
+
+    if (PathFileExists(szFile)) {
+        Image image(szFile);
+
+        Graphics graphics(::GetDC(m_staImage.GetSafeHwnd()));
+        Rect rc;
+        RECT rect;
+        m_staImage.GetWindowRect(&rect);
+
+        rc.X = 0;
+        rc.Y = 0;
+        rc.Width = rect.right - rect.left;
+        rc.Height = rect.bottom - rect.top;
+
+        graphics.DrawImage(&image, rc);
+
+        CString strInfo;
+        strInfo.Format(_T("Recv Image from:%s"), utf82cs(lpData->peerId));
+        m_staRecvImageinfo.SetWindowText(strInfo);
+    }
+end:
+    delete lpData;
+    lpData = NULL;
+    return 0;
 }

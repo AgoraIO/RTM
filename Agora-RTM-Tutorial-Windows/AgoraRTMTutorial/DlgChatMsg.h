@@ -10,6 +10,8 @@ class CChatDlg;
 class CAgoraSignalInstance;
 class CSingleCallBack;
 class CDlgInput;
+#define THUMBWIDTH   100
+#define THUMBHEIGHT  90
 class CDlgChatMsg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CDlgChatMsg)
@@ -53,6 +55,9 @@ public:
 	LRESULT onUpdateInputParam(WPARAM wParam, LPARAM lParam);
 	LRESULT onQueryUserStatusResult(WPARAM wParam, LPARAM lParam);
 	LRESULT onMessageSendSuccess(WPARAM wParam, LPARAM lParam);
+    LRESULT onMediaUploadResult(WPARAM wParam, LPARAM lParam);
+    LRESULT onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam);
+
 	LRESULT onMessageSendError(WPARAM wParam, LPARAM lParam);
 	LRESULT onMessageInstantReceive(WPARAM wParam, LPARAM lParam);
 	LRESULT onMessageChannelReceive(WPARAM wParam, LPARAM lParam);
@@ -74,5 +79,16 @@ private:
 	CRTMCallBack *m_pSignalCallBack;
 	CDlgInput* m_pDlgInput;
 	eTagMsgtype m_curOptionType;
+
+    std::string recvUid;
+public:
+    CListCtrl m_lstImage;
+    afx_msg void OnBnClickedSendImage();
+    CEdit m_edtUID;
+    CImageList m_ImageListThumb;
+    CStatic m_staImage;
+    CStatic m_sta;
+    CStatic m_staSendImage;
+    CStatic m_staRecvImageinfo;
 };
 

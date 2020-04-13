@@ -10,6 +10,7 @@
 
 #include "resource.h"
 
+#include <string>
 
 // CAgoraRTMTutorialApp: 
 // AgoraRTMTutorial.cpp
@@ -19,7 +20,7 @@ class CAgoraRTMTutorialApp : public CWinApp
 {
 public:
 	CAgoraRTMTutorialApp();
-
+    std::string recvfilePath;
 // override
 public:
 	virtual BOOL InitInstance();

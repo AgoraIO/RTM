@@ -12,6 +12,8 @@
 
 
 // CAgoraRTMTutorialApp
+Gdiplus::GdiplusStartupInput m_gdiplusStartupInput;
+ULONG_PTR m_gdiplusToken;
 
 BEGIN_MESSAGE_MAP(CAgoraRTMTutorialApp, CWinApp)
 	ON_COMMAND(ID_HELP, &CWinApp::OnHelp)
@@ -36,6 +38,17 @@ CFileIO gLogSignal;
 
 BOOL CAgoraRTMTutorialApp::InitInstance()
 {
+    TCHAR path[MAXPATHLEN] = { 0 };
+    GetModuleFileName(nullptr, path, MAXPATHLEN);
+    CString filePath = path;
+    filePath = filePath.Mid(0, filePath.ReverseFind(_T('\\')) + 1);
+    filePath += _T("agoraImageMessage");
+    if (!PathFileExists(filePath)) {
+        CreateDirectory(filePath, NULL);
+    }
+   
+    recvfilePath = cs2Utf8(filePath);
+    GdiplusStartup(&m_gdiplusToken, &m_gdiplusStartupInput, NULL);
 	INITCOMMONCONTROLSEX InitCtrls;
 	InitCtrls.dwSize = sizeof(InitCtrls);
 	InitCtrls.dwICC = ICC_WIN95_CLASSES;
@@ -72,7 +85,7 @@ BOOL CAgoraRTMTutorialApp::InitInstance()
 	{
 		delete pShellManager;
 	}
-
+    GdiplusShutdown(m_gdiplusToken);
 	return FALSE;
 }
 

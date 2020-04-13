@@ -44,6 +44,7 @@ void CRTMCallBack::onConnectionStateChanged(CONNECTION_STATE state, CONNECTION_C
 }
 
 void CRTMCallBack::onSendMessageResult(long long messageId, PEER_MESSAGE_ERR_CODE errorCode) {
+    
 }
 
 void CRTMCallBack::onMessageReceivedFromPeer(const char *peerId, const IMessage *message) {
@@ -108,4 +109,50 @@ void CRTMCallBack::onGetMembers(IChannelMember **members, int userCount, GET_MEM
 void CRTMCallBack::postMsg(UINT msg, WPARAM wParam /*= NULL*/, LPARAM lParam /*= NULL*/)
 {
   ::PostMessage(m_MsgWnd, msg, wParam, lParam);
+}
+
+void CRTMCallBack::onMediaUploadResult(long long requestId, IMessage* mediaMessage, UPLOAD_MEDIA_ERR_CODE code)
+{
+    if (mediaMessage && mediaMessage->getMessageType() == MESSAGE_TYPE_IMAGE) {
+        IImageMessage* pImageMsg = (IImageMessage*)mediaMessage;
+        PAG_UPLOAD_IMAGE_RESULT lpData = new AgTagUploadImageResult;
+        lpData->mediaId = pImageMsg->getMediaId();
+        lpData->messageId = mediaMessage->getMessageId();
+        postMsg(WM_ImageMessageUploadResult, (WPARAM)lpData, 0);
+    }
+}
+
+void CRTMCallBack::onImageMessageReceivedFromPeer(const char *peerId, const IImageMessage* message)
+{
+    if (message) {
+        PAG_IMAGE_MESSAGE imageMsg = new AG_IMAGE_MESSAGE;
+     /*   memset(imageMsg, 0, sizeof(AG_IMAGE_MESSAGE));
+
+        imageMsg->messageId = message->getMessageId();
+        imageMsg->mediaId   = message->getMediaId();
+        imageMsg->width     = message->getWidth();
+        imageMsg->size      = message->getSize();
+        
+        imageMsg->thumbnailWidth  = message->getThumbnailWidth();
+        imageMsg->thumbnailHeight = message->getThumbnailHeight();
+        imageMsg->thumbmailSize   = message->getThumbnailLength();*/
+
+        if (message->getThumbnailLength() > 0 && message->getThumbnailData()) {
+            std::string filepath = imageMessagepath + message->getFileName();
+            FILE* fp = nullptr;
+            fopen_s(&fp, filepath.c_str(), "wb");
+            if (fp) {
+                fwrite(message->getThumbnailData(), 1, message->getThumbnailLength(), fp);
+                fclose(fp);
+            }
+            imageMsg->filePath = filepath;
+        }
+        imageMsg->peerId = peerId;
+        postMsg(WM_ImageMessageRecvFromPeer, (WPARAM)imageMsg, 0);
+    }
+}
+
+void CRTMCallBack::onFileMessageReceivedFromPeer(const char *peerId, const IFileMessage* message)
+{
+ 
 }

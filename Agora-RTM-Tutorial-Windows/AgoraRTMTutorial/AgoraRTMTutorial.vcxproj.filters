@@ -91,10 +91,10 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\Debug\AgoraSignal.ini" />
     <None Include="res\AgoraRTMTutorial.rc2">
       <Filter>Resource</Filter>
     </None>
+    <None Include="..\Debug\AgoraRTM.ini" />
   </ItemGroup>
   <ItemGroup>
     <Image Include="res\AgoraRTMTutorial.ico">
