@@ -23,4 +23,7 @@ typedef NS_ENUM(NSInteger, CellType) {
 // for image message
 @property (nonatomic, copy) NSString *mediaId;
 
+// for thumbnail imagedata
+@property (nonatomic, copy) NSData *thumbnail;
+
 @end

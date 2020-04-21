@@ -54,9 +54,18 @@ class ChatViewController: UIViewController, ShowAlertProtocol {
         
         var requestId: Int64 = 0
         AgoraRtm.kit?.createImageMessage(byUploading: imagePath, withRequest: &requestId, completion: {[weak self] (requestId, message, errorCode) in
-            
+
             guard let `self` = self, let `message` = message else {
                 return
+            }
+            
+            // thumbnailImage 5KB
+            if let thumbnailImage = self.generateThumbnail(imagePath: imagePath, toByte: 5 * 1024) {
+                if let imageData = thumbnailImage.jpegData(compressionQuality: 1.0) {
+                    message.thumbnail = imageData
+                    message.thumbnailWidth = Int32(thumbnailImage.size.width)
+                    message.thumbnailHeight = Int32(thumbnailImage.size.height)
+                }
             }
             
             if(errorCode != .ok) {
@@ -68,6 +77,49 @@ class ChatViewController: UIViewController, ShowAlertProtocol {
         })
     }
     
+    func generateThumbnail(imagePath: String, toByte maxLength: UInt) -> UIImage? {
+        
+        guard let image = UIImage(contentsOfFile: imagePath),
+            var imageData = image.jpegData(compressionQuality: 1.0) else {
+            return nil
+        }
+        
+        // If the original image is already small, no thumbnail is needed
+        if(imageData.count <= maxLength) {
+            return nil
+        }
+
+        var resultImage = image
+        var lastDataLength = 0
+        
+        while (imageData.count > maxLength && imageData.count != lastDataLength) {
+            lastDataLength = imageData.count
+            let ratio: CGFloat = CGFloat(maxLength) / CGFloat(imageData.count)
+            let size: CGSize = CGSize(width: Int(resultImage.size.width * sqrt(ratio)), height: Int(resultImage.size.height * sqrt(ratio)))// Use Int to prevent white blank
+            UIGraphicsBeginImageContext(size)
+            // Use image to draw (drawInRect:), image is larger but more compression time
+            // Use result image to draw, image is smaller but less compression time
+            resultImage.draw(in: CGRect(x: 0, y: 0, width: size.width, height: size.height))
+            
+            if let _resultImage = UIGraphicsGetImageFromCurrentImageContext() {
+                resultImage = _resultImage
+                UIGraphicsEndImageContext()
+                
+                if let _imageData = image.jpegData(compressionQuality: 1.0) {
+                    imageData = _imageData
+                } else {
+                    return nil
+                }
+
+            } else {
+                UIGraphicsEndImageContext()
+                return nil
+            }
+        }
+
+        return resultImage
+    }
+
     override func viewWillDisappear(_ animated: Bool) {
         leaveChannel()
     }
@@ -98,10 +150,10 @@ private extension ChatViewController {
             }
             
             if(rtmMessage.type == .text){
-                self.appendMessage(user: current, content: rtmMessage.text, mediaId: nil)
+                self.appendMessage(user: current, content: rtmMessage.text, mediaId: nil, thumbnail: nil)
             } else if(rtmMessage.type == .image){
                 if let imageMessage = rtmMessage as? AgoraRtmImageMessage {
-                    self.appendMessage(user: current, content: nil, mediaId: imageMessage.mediaId)
+                    self.appendMessage(user: current, content: nil, mediaId: imageMessage.mediaId, thumbnail: imageMessage.thumbnail)
                 }
             }
         }
@@ -169,11 +221,11 @@ extension ChatViewController: AgoraRtmDelegate {
     }
     
     func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
-        appendMessage(user: peerId, content: message.text, mediaId: nil)
+        appendMessage(user: peerId, content: message.text, mediaId: nil, thumbnail: nil)
     }
     
     func rtmKit(_ kit: AgoraRtmKit, imageMessageReceived message: AgoraRtmImageMessage, fromPeer peerId: String) {
-        appendMessage(user: peerId, content: nil, mediaId: message.mediaId)
+        appendMessage(user: peerId, content: nil, mediaId: message.mediaId, thumbnail: message.thumbnail)
     }
 }
 
@@ -192,11 +244,11 @@ extension ChatViewController: AgoraRtmChannelDelegate {
     }
     
     func channel(_ channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
-        appendMessage(user: member.userId, content: message.text, mediaId: nil)
+        appendMessage(user: member.userId, content: message.text, mediaId: nil, thumbnail: nil)
     }
     
     func channel(_ channel: AgoraRtmChannel, imageMessageReceived message: AgoraRtmImageMessage, from member: AgoraRtmMember) {
-        appendMessage(user: member.userId, content: nil, mediaId: message.mediaId)
+        appendMessage(user: member.userId, content: nil, mediaId: message.mediaId, thumbnail: message.thumbnail)
     }
 
 }
@@ -216,10 +268,10 @@ private extension ChatViewController {
             
             for item in messages {
                 if(item.type == .text){
-                    appendMessage(user: name, content: item.text, mediaId: nil)
+                    appendMessage(user: name, content: item.text, mediaId: nil, thumbnail: nil)
                 } else if(item.type == .image){
                     if let imageMessage = item as? AgoraRtmImageMessage {
-                        appendMessage(user: name, content: nil, mediaId: imageMessage.mediaId)
+                        appendMessage(user: name, content: nil, mediaId: imageMessage.mediaId, thumbnail: imageMessage.thumbnail)
                     }
                 }
             }
@@ -238,10 +290,10 @@ private extension ChatViewController {
         return true
     }
     
-    func appendMessage(user: String, content: String?, mediaId: String?) {
+    func appendMessage(user: String, content: String?, mediaId: String?, thumbnail: Data?) {
 
         DispatchQueue.main.async { [unowned self] in
-            let msg = Message(userId: user, text: content, mediaId: mediaId)
+            let msg = Message(userId: user, text: content, mediaId: mediaId, thumbnail: thumbnail)
             self.list.append(msg)
             if self.list.count > 100 {
                 self.list.removeFirst()

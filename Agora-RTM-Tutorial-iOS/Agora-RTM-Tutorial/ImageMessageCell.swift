@@ -54,9 +54,10 @@ class ImageMessageCell: UITableViewCell {
         self.type = type
         self.user = message.userId
         
+        
+        
         // complete down
         if(self.mediaId != nil && self.mediaId == message.mediaId && self.imageData != nil){
-            
             self.updateImageData(imageData: self.imageData!)
             return
         }
@@ -71,16 +72,24 @@ class ImageMessageCell: UITableViewCell {
         // stop last download
         if(self.requestId > 0){
             AgoraRtm.kit?.cancelMediaDownload(self.requestId, completion: nil)
-            self.requestId = 0
+        }
+        
+        self.requestId = 0
+        if let imageData = message.thumbnail {
+            self.updateImageData(imageData: imageData)
         }
         
         if let currentMediaId = message.mediaId {
             AgoraRtm.kit?.downloadMedia(toMemory: currentMediaId, withRequest: &self.requestId, completion: {[weak self] (requestId, data, errorCode) in
                 
-                guard let `self` = self, let `data` = data else {
+                guard let `self` = self else {
                     return
                 }
+                self.requestId = 0
                 
+                guard let `data` = data else {
+                    return
+                }
                 if(errorCode == .ok) {
                     self.updateImageData(imageData: data)
                 }

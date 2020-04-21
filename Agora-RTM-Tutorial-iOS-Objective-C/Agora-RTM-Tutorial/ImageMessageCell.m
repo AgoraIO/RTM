@@ -71,19 +71,26 @@
     if(self.mediaId != nil && [self.mediaId isEqualToString: message.mediaId] && self.requestId > 0){
         return;
     }
-    
-    self.mediaId = message.mediaId;
-    
-    // stop last download
+        
+    // stop download
     if(self.requestId > 0){
         [AgoraRtm.kit cancelMediaDownload:self.requestId completion:nil];
-        self.requestId = 0;
     }
+
+    // start download
+    self.requestId = 0;
+    if (message.thumbnail != nil) {
+        [self updateImageData:message.thumbnail];
+    }
+    
     if(message.mediaId != nil) {
         
         long long requestId;
         __weak ImageMessageCell *weakSelf = self;
         [AgoraRtm.kit downloadMediaToMemory:message.mediaId withRequest:&requestId completion:^(long long requestId, NSData *data, AgoraRtmDownloadMediaErrorCode errorCode) {
+            
+            // complete down
+            weakSelf.requestId = 0;
             if(errorCode == AgoraRtmDownloadMediaErrorOk) {
                 [weakSelf updateImageData:data];
             }
@@ -91,6 +98,8 @@
         
         self.requestId = requestId;
     }
+    
+    self.mediaId = message.mediaId;
 }
 
 - (void)updateImageData:(NSData *)imageData {

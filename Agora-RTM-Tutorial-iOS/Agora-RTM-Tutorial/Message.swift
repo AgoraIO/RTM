@@ -21,4 +21,7 @@ struct Message {
     
     // for image message
     var mediaId: String?
+    
+    // for thumbnail imagedata
+    var thumbnail: Data?
 }
