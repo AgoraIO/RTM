@@ -51,49 +51,52 @@ using namespace agora::rtm;
 
 namespace SingleDesc
 {
-  enum SingleMsg
-  {
-    WM_Default = WM_USER,
-    WM_Reconnecting,
-    WM_Reconnected,
-    WM_LoginSuccess,
-    WM_LogOut,
-    WM_LoginFailed,
-    WM_ChannelJoined,
-    WM_ChannelJoinedFailed,
-    WM_ChannelLeaved,
-    WM_ChannelUserJoined,
-    WM_ChannelUserLeaved,
-    WM_ChannelUserList,
-    WM_ChannelQueryUserNumResult,
-    WM_ChannelQueryUserIsIn,
-    WM_ChannelAttrUpdated,
-    WM_InviteReceived,
-    WM_InviteReceivedByPeer,
-    WM_InviteAcceptedByPeer,
-    WM_InviteRefusedByPeer,
-    WM_InviteFailed,
-    WM_InviteEndByPeer,
-    WM_InviteEndByMyself,
-    WM_InviteMsg,
-    WM_MessageSendError,
-    WM_MessageSendProgress,
-    WM_MessageSendSuccess,
-    WM_MessageAppReceived,
-    WM_MessageInstantReceive,
-    WM_MessageChannelReceive,
-    WM_Log,
-    WM_InvokeRet,
-    WM_Msg,
-    WM_UserAttrResult,
-    WM_UserAttrAllResult,
-    WM_Error,
-    WM_QueryUserStatusResult,
-    WM_Dbg,
-    WM_BCCall_result,
-    WM_ImageMessageUploadResult,
-    WM_ImageMessageRecvFromPeer = 255,
-    
+    enum SingleMsg
+    {
+        WM_Default = WM_USER,
+        WM_Reconnecting,
+        WM_Reconnected,
+        WM_LoginSuccess,
+        WM_LogOut,
+        WM_LoginFailed,
+        WM_ChannelJoined,
+        WM_ChannelJoinedFailed,
+        WM_ChannelLeaved,
+        WM_ChannelUserJoined,
+        WM_ChannelUserLeaved,
+        WM_ChannelUserList,
+        WM_ChannelQueryUserNumResult,
+        WM_ChannelQueryUserIsIn,
+        WM_ChannelAttrUpdated,
+        WM_InviteReceived,
+        WM_InviteReceivedByPeer,
+        WM_InviteAcceptedByPeer,
+        WM_InviteRefusedByPeer,
+        WM_InviteFailed,
+        WM_InviteEndByPeer,
+        WM_InviteEndByMyself,
+        WM_InviteMsg,
+        WM_MessageSendError,
+        WM_MessageSendProgress,
+        WM_MessageSendSuccess,
+        WM_MessageAppReceived,
+        WM_MessageInstantReceive,
+        WM_MessageChannelReceive,
+        WM_Log,
+        WM_InvokeRet,
+        WM_Msg,
+        WM_UserAttrResult,
+        WM_UserAttrAllResult,
+        WM_Error,
+        WM_QueryUserStatusResult,
+        WM_Dbg,
+        WM_BCCall_result,
+        WM_ImageMessageUploadResult,
+        WM_ImageMessageRecvFromPeer = 255,
+        WM_ImageMessageRecvChannel,
+        WM_ImageMessageDownloadResult,
+        WM_MediaUploadingProgress,
+        WM_MediaDownloadingProgress=260,
     WM_UNKWOWN = WM_USER + 0xfff
   };
 
@@ -321,7 +324,16 @@ namespace SingleDesc
 
   typedef struct AgTagImageMessage{
       std::string filePath;
+      std::string thumbFile;
       std::string peerId;
+      std::string mediaId;
+      std::string messageId;
+      int width;
+      int height;
+      int thumbnailWidth;
+      int thumbnailHeight;
+      int size;
+      long long thumbmailSize;
       /*
       std::string mediaId;
       std::string messageId;
@@ -334,12 +346,26 @@ namespace SingleDesc
       char* thumbnailData;
       char* data;*/
   }AG_IMAGE_MESSAGE, *PAG_IMAGE_MESSAGE, *LPAG_IMAGE_MESSAGE;
+
+  typedef struct _UploadMediaProgress {
+      long long requestId;
+      long long totalSize;
+      long long currentSize;
+  }MediaProgress, *PMediaProgress,*LPMediaProgress;
+
+  typedef struct _tagImageMediaUploadResult {
+      long long requestId;
+      IImageMessage* imageMessage;
+      UPLOAD_MEDIA_ERR_CODE err;
+  }ImageMediaUploadResult, *PImageMediaUploadResult, *LPImageMediaUploadResult;
 }
 
 
 using namespace SingleDesc;
 
 #include "FileIO.h"
+#include <afxcontrolbars.h>
+#include <afxcontrolbars.h>
 extern CConfigSignal gConfigSignal;
 extern CFileIO gLogSignal;
 

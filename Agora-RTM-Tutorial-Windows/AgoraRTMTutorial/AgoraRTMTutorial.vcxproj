@@ -207,6 +207,7 @@
     <ClInclude Include="commonFun.h" />
     <ClInclude Include="DlgChatMsg.h" />
     <ClInclude Include="DlgInput.h" />
+    <ClInclude Include="DlgImageSettings.h" />
     <ClInclude Include="FileIO.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="AgoraRTMInstance.h" />
@@ -217,6 +218,7 @@
   <ItemGroup>
     <ClCompile Include="AgoraRTMTutorial.cpp" />
     <ClCompile Include="AgoraRTMlDlg.cpp" />
+    <ClCompile Include="DlgImagSettings.cpp" />
     <ClCompile Include="ChatDlg.cpp" />
     <ClCompile Include="commonFun.cpp" />
     <ClCompile Include="DlgChatMsg.cpp" />

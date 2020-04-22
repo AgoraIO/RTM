@@ -215,57 +215,60 @@ std::string CAgoraRTMInstance::getSDKVersion() {
 }
 
 
-bool CAgoraRTMInstance::SendImageMsg(const std::string &account, std::string fileName, std::string filePath)
+bool CAgoraRTMInstance::SendImageMsg(const std::string &account, IImageMessage* message, bool bP2P)
 {
-    std::string mediaId = _generateObjectId();
     if (m_rtmService != nullptr) {
-        //IFileMessage* fileMsg = m_rtmService->createFileMediaMessageByMediaId(mediaId.c_str());
-        IImageMessage* imageMsg = m_rtmService->createImageMediaMessageByMediaId(mediaId.c_str());
-        if (!imageMsg)
-            return false;
-
-
-        FILE* fp = NULL;
-        fopen_s(&fp, filePath.c_str(), "rb");
-        if (!fp)
-            return false;
-
-        fseek(fp, 0, SEEK_END);
-        long size = ftell(fp);
-       
-        if (size > 32 * 1024) {
-            AfxMessageBox(_T("image file is larger than 32k"));
-            return false;
-        }
-        fseek(fp, 0, SEEK_SET);
-        uint8_t* data = new uint8_t[size];
-        fread(data, 1, size, fp);
-        imageMsg->setFileName(fileName.c_str());
-        imageMsg->setThumbnailWidth(210);
-        imageMsg->setThumbnailHeight(173);
-        imageMsg->setThumbnail(data, size);
-    
         SendMessageOptions options;
-        options.enableOfflineMessaging = true;
-        int ret = m_rtmService->sendMessageToPeer(account.c_str(), imageMsg, options);
-
-        fclose(fp);
-        fp = NULL;
-        delete[] data;
-        data = nullptr;
-        return true;
+        int ret = -1;
+        if (bP2P)
+            ret = m_rtmService->sendMessageToPeer(account.c_str(), message, options);
+        else
+            ret = m_Channel->sendMessage(message);
+        return ret == 0 ? true : false;
     }
     return false;
 }
 
 
-bool CAgoraRTMInstance::uploadImage(std::string filePath)
+bool CAgoraRTMInstance::uploadImage(std::string filePath, long long& requestId)
 {
     if (m_rtmService != nullptr) {
-       
-        //int ret = m_rtmService->createImageMessageByUploading(filePath.c_str(), requestId);
         int ret = m_rtmService->createImageMessageByUploading(filePath.c_str(), requestId);
-        return true;
+        return ret == 0 ? true : false;
     }
     return false;
+}
+
+bool CAgoraRTMInstance::downloadImage(std::string filePath, std::string mediaId, long long& requestId)
+{
+    if (m_rtmService != nullptr) {
+        int ret = m_rtmService->downloadMediaToFile(mediaId.c_str(), filePath.c_str(), requestId);
+        return ret == 0 ? true : false;
+    }
+    return false;
+}
+
+bool CAgoraRTMInstance::CancelMediaUpload(long long requestId)
+{
+    if (m_rtmService != nullptr) {
+        
+        int ret = m_rtmService->cancelMediaUpload(requestId);
+        return ret == 0 ? true : false;
+    }
+    return false;
+}
+
+bool CAgoraRTMInstance::CancelMediaDownload(long long requestId)
+{
+    if (m_rtmService != nullptr) {
+
+        int ret = m_rtmService->cancelMediaDownload(requestId);
+        return ret == 0 ? true : false;
+    }
+    return false;
+}
+
+void CAgoraRTMInstance::SetImageInfo(int w, int h, int tw, int th)
+{
+    m_RtmCallback->SetImageInfo(w, h, tw, th);
 }

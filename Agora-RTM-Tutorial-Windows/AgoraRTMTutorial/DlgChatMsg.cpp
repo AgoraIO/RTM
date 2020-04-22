@@ -10,8 +10,8 @@
 #include "AgoraRTMInstance.h"
 #include "DlgInput.h"
 #include "RTMWrap.h"
-
-
+#include <io.h>
+#include "DlgImageSettings.h"
 #define TIMER_IDEVENT_QUERYISONLINE 1
 #define TIMER_IDEVENT_QUERYISONLINE_INTERVAL  1000
 
@@ -40,12 +40,14 @@ void CDlgChatMsg::DoDataExchange(CDataExchange* pDX)
 {
     CDialogEx::DoDataExchange(pDX);
     DDX_Control(pDX, IDC_LISTIMAGE, m_lstImage);
-    DDX_Control(pDX, IDC_EDIT_UID, m_edtUID);
+    //DDX_Control(pDX, IDC_EDIT_UID, m_edtUID);
 
     DDX_Control(pDX, IDC_STATIC_SHOW, m_staImage);
     DDX_Control(pDX, IDC_STATIC_SHOW_SEND, m_sta);
     DDX_Control(pDX, IDC_STATIC_SENDIMAGE, m_staSendImage);
     DDX_Control(pDX, IDC_STATIC_IMAGE_INFO, m_staRecvImageinfo);
+    DDX_Control(pDX, IDC_BUTTON1, m_btnSendImage);
+    DDX_Control(pDX, IDC_BUTTON_CANCEL, m_btnCancel);
 }
 
 
@@ -62,9 +64,17 @@ BEGIN_MESSAGE_MAP(CDlgChatMsg, CDialogEx)
 	ON_MESSAGE(WM_QueryUserStatusResult, onQueryUserStatusResult)
 	ON_MESSAGE(WM_MessageSendError, onMessageSendError)
 	ON_MESSAGE(WM_MessageSendSuccess, onMessageSendSuccess)
-    ON_MESSAGE(WM_ImageMessageUploadResult, onMediaUploadResult)
+    ON_MESSAGE(WM_ImageMessageUploadResult, onImageMediaUploadResult)
+    ON_MESSAGE(WM_ImageMessageDownloadResult, onImageMediaDownloadResult)
+
+    
     ON_MESSAGE(WM_ImageMessageRecvFromPeer, onMediaRecvMsgfromPeer)
-     
+    ON_MESSAGE(WM_ImageMessageRecvChannel, onMediaRecvMsgfromChannel)
+
+    
+    ON_MESSAGE(WM_MediaUploadingProgress, onMediaUploadProgress)
+    ON_MESSAGE(WM_MediaDownloadingProgress, onMediaDownloadloadProgress)
+
 	ON_MESSAGE(WM_MessageInstantReceive, onMessageInstantReceive)
 	ON_MESSAGE(WM_MessageChannelReceive, onMessageChannelReceive)
 	ON_MESSAGE(WM_ChannelJoined, onChannelJoined)
@@ -73,6 +83,10 @@ BEGIN_MESSAGE_MAP(CDlgChatMsg, CDialogEx)
 	ON_MESSAGE(WM_ChannelUserList,onChannelUserList)
 	ON_MESSAGE(WM_ChannelQueryUserNumResult, onChannelQueryUserNumResult)
     ON_BN_CLICKED(IDC_BUTTON1, &CDlgChatMsg::OnBnClickedSendImage)
+    ON_BN_CLICKED(IDC_BUTTON_CANCEL, &CDlgChatMsg::OnBnClickedButtonCancel)
+    ON_STN_CLICKED(IDC_STATIC_SHOW, &CDlgChatMsg::OnStnClickedStaticShow)
+    ON_BN_CLICKED(IDC_BUTTON_CANCEL2, &CDlgChatMsg::OnBnClickedButtonCancel2)
+    ON_BN_CLICKED(IDC_BUTTON_IMG_SET, &CDlgChatMsg::OnBnClickedButtonImgSet)
 END_MESSAGE_MAP()
 
 BOOL CDlgChatMsg::OnInitDialog()
@@ -223,12 +237,6 @@ LRESULT CDlgChatMsg::onQueryUserStatusResult(WPARAM wParam, LPARAM lParam)
 
 	delete lpData; lpData = nullptr;
 	return TRUE;
-}
-
-LRESULT CDlgChatMsg::onMediaUploadResult(WPARAM wParam, LPARAM lParam)
-{
- 
-    return 0;
 }
 
 LRESULT CDlgChatMsg::onMessageSendSuccess(WPARAM wParam, LPARAM lParam)
@@ -503,56 +511,94 @@ BOOL CDlgChatMsg::PreTranslateMessage(MSG* pMsg)
 
 void CDlgChatMsg::OnBnClickedSendImage()
 {
+   /* CDlgImageSettings dlgSettings;
+    if (IDOK != dlgSettings.DoModal()) {
+        return;
+    }
+    P2PImageMsg  = dlgSettings.bP2P;
+    imageUID     = dlgSettings.strUID;
+    imageChannel = dlgSettings.strChannel;*/
+    CString str = m_pDlgInput->GetInputString();
+    if (m_curOptionType == eType_Instance) {
+        if (str.IsEmpty()) {
+            AfxMessageBox(_T("Input UID by clicking Peer-to-Peer message"));
+            return;
+        }
+    }
+    else if (m_curOptionType == eType_Channel) {
+        if (str.IsEmpty()) {
+            AfxMessageBox(_T("Input UID by clicking In-Channel message"));
+            return;
+        }
+    }
+
+    P2PImageMsg = m_curOptionType == eType_Instance;
+    if (P2PImageMsg) {
+        imageUID = str;
+    }
+    else {
+        imageChannel = str;
+    }
     TCHAR szFilters[] = _T("MyType Files (*.*)|*.*|All Files (*.*)|*.*||");
 
     // Create an Open dialog; the default file name extension is ".my".
     CFileDialog fileDlg(TRUE, _T("All Files"), _T("*.*"),
         OFN_FILEMUSTEXIST | OFN_HIDEREADONLY, szFilters);
-    CString strUid;
-    m_edtUID.GetWindowText(strUid);
-    if (strUid.IsEmpty()) {
-        AfxMessageBox(_T("Send P2P message, please Input Uid"));
-        return;
-    }
-    // Display the file dialog. When user clicks OK, fileDlg.DoModal() 
-    // returns IDOK.
+
     if (fileDlg.DoModal() == IDOK)
     {
         CString pathName = fileDlg.GetPathName();
-
-        // Implement opening and reading file in here.
-
+        m_sta.SetWindowText(_T(""));
+       
         //Change the window's title to the opened file's title.
         CString fileName = fileDlg.GetPathName();
         Image image(fileName);
+        std::string filePath = cs2Utf8(fileName);
+        FILE* fp = NULL;
+        fopen_s(&fp, filePath.c_str(), "rb");
+        fseek(fp, 0, SEEK_END);
+        long size = ftell(fp);
+        if (size > 32 * 1024 * 1024) {
+            AfxMessageBox(_T("Image size larger than 32MB"));
+            return;
+        }
 
         Gdiplus::Graphics graphics(::GetDC(m_sta.GetSafeHwnd()));
         Rect rc;
         RECT rect;
         m_sta.GetWindowRect(&rect);
-
+        rc.X = 0;
+        rc.Y = 0;
+        rc.Width  = rect.right - rect.left;
+        rc.Height = rect.bottom - rect.top;
         graphics.DrawImage(&image, rc);
 
-        std::string filePath = cs2s(fileName);
+       
         std::string file = cs2Utf8(fileDlg.GetFileName());
        
-        m_pSignalInstance->SendImageMsg(cs2s(strUid), file, filePath);
+        long long requestId = 0;
+        
+        if (m_pSignalInstance->uploadImage(filePath, requestId)) {
+            ImageMsgInfo info;
+            info.fileName    = cs2Utf8(fileDlg.GetFileName());
+            info.userAccount = cs2Utf8(imageUID);
+            info.imageMsg    = nullptr;
+            m_mapImageMsg.insert(std::make_pair(requestId, info));
+            m_btnSendImage.EnableWindow(FALSE);
+            currentImageMsgRequestId = requestId;
 
+        }
     }
-  
 }
-
 
 LRESULT CDlgChatMsg::onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam)
 {
     PAG_IMAGE_MESSAGE lpData = (PAG_IMAGE_MESSAGE)wParam;
 
-    if (!lpData) {
-        goto end;
-    }
-
+    if (!lpData)
+        return 0;
     TCHAR szFile[MAX_PATH] = { 0 };
-    MultiByteToWideChar(CP_UTF8, 0, lpData->filePath.c_str(), lpData->filePath.length(), szFile, MAX_PATH);
+    MultiByteToWideChar(CP_UTF8, 0, lpData->thumbFile.c_str(), lpData->thumbFile.length(), szFile, MAX_PATH);
 
     if (PathFileExists(szFile)) {
         Image image(szFile);
@@ -569,12 +615,256 @@ LRESULT CDlgChatMsg::onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam)
 
         graphics.DrawImage(&image, rc);
 
-        CString strInfo;
-        strInfo.Format(_T("Recv Image from:%s"), utf82cs(lpData->peerId));
-        m_staRecvImageinfo.SetWindowText(strInfo);
     }
-end:
+    CString strInfo;
+    strInfo.Format(_T("Recv Image from:%s"), utf82cs(lpData->peerId));
+    m_staRecvImageinfo.SetWindowText(strInfo);
+  
+    CString fileName = utf82cs(lpData->filePath);
+    {
+        long long requestId = -1;
+        if (m_pSignalInstance->downloadImage(lpData->filePath.c_str(), lpData->mediaId.c_str(), requestId)) {
+            ImageMsgInfo info;
+            info.fileName    = lpData->filePath;
+            info.userAccount = lpData->peerId;
+            info.imageMsg    = nullptr;
+            currentDownloadImageMsgRequestId = requestId;
+            m_mapRecvImageMsg.insert(std::make_pair(requestId, info));
+        }
+
+    }
+   
     delete lpData;
     lpData = NULL;
     return 0;
+}
+
+LRESULT CDlgChatMsg::onMediaRecvMsgfromChannel(WPARAM wParam, LPARAM lParam)
+{
+    PAG_IMAGE_MESSAGE lpData = (PAG_IMAGE_MESSAGE)wParam;
+
+    if (!lpData)
+        return 0;
+    TCHAR szFile[MAX_PATH] = { 0 };
+    MultiByteToWideChar(CP_UTF8, 0, lpData->thumbFile.c_str(), lpData->thumbFile.length(), szFile, MAX_PATH);
+
+    if (PathFileExists(szFile)) {
+        Image image(szFile);
+
+        Graphics graphics(::GetDC(m_staImage.GetSafeHwnd()));
+        Rect rc;
+        RECT rect;
+        m_staImage.GetWindowRect(&rect);
+
+        rc.X = 0;
+        rc.Y = 0;
+        rc.Width = rect.right - rect.left;
+        rc.Height = rect.bottom - rect.top;
+
+        graphics.DrawImage(&image, rc);
+
+    }
+    CString strInfo;
+    strInfo.Format(_T("Recv Image from:%s"), utf82cs(lpData->peerId));
+    m_staRecvImageinfo.SetWindowText(strInfo);
+
+    CString fileName = utf82cs(lpData->filePath);
+    {
+        long long requestId = -1;
+        if (m_pSignalInstance->downloadImage(lpData->filePath.c_str(), lpData->mediaId.c_str(), requestId)) {
+            ImageMsgInfo info;
+            info.fileName = lpData->filePath;
+            info.userAccount = lpData->peerId;
+            info.imageMsg = nullptr;
+            currentDownloadImageMsgRequestId = requestId;
+            m_mapRecvImageMsg.insert(std::make_pair(requestId, info));
+        }
+
+    }
+
+    delete lpData;
+    lpData = NULL;
+    return 0;
+}
+
+LRESULT CDlgChatMsg::onMediaUploadProgress(WPARAM wParam, LPARAM lParam)
+{
+    PMediaProgress uploadProgress = (PMediaProgress)wParam;
+
+    CString strInfo;
+  
+    strInfo.Format(_T("Upload %.2f"), 100 * ((float)uploadProgress->currentSize / (float)uploadProgress->totalSize));
+    strInfo += "%";
+    m_staSendImage.SetWindowText(strInfo);
+
+    if (uploadProgress) {
+        delete uploadProgress;
+        uploadProgress = nullptr;
+    }
+    return 0;
+}
+LRESULT CDlgChatMsg::onMediaDownloadloadProgress(WPARAM wParam, LPARAM lParam)
+{
+    PMediaProgress downloadProgress = (PMediaProgress)wParam;
+    ImageMsgInfo info = m_mapRecvImageMsg[currentDownloadImageMsgRequestId];
+    CString strInfo;
+    strInfo.Format(_T("Recv Image from %s:download %.2f"), utf82cs( info.userAccount.c_str()), 100 * ((float)downloadProgress->currentSize / (float)downloadProgress->totalSize));
+    strInfo += "%";
+    m_staRecvImageinfo.SetWindowText(strInfo);
+
+    if (downloadProgress) {
+        delete downloadProgress;
+        downloadProgress = nullptr;
+    }
+    return 0;
+}
+
+LRESULT CDlgChatMsg::onImageMediaDownloadResult(WPARAM wParam, LPARAM lParam)
+{
+    long long requestId = (long long)wParam;
+    DOWNLOAD_MEDIA_ERR_CODE code = (DOWNLOAD_MEDIA_ERR_CODE)lParam;
+    ImageMsgInfo info = m_mapRecvImageMsg[requestId];
+
+    if (code == DOWNLOAD_MEDIA_ERR_OK) {
+        TCHAR szFile[MAX_PATH] = { 0 };
+        MultiByteToWideChar(CP_UTF8, 0, info.fileName.c_str(), info.fileName.length(), szFile, MAX_PATH);
+
+        if (PathFileExists(szFile)) {
+            Image image(szFile);
+
+            Graphics graphics(::GetDC(m_staImage.GetSafeHwnd()));
+            Rect rc;
+            RECT rect;
+            m_staImage.GetWindowRect(&rect);
+
+            rc.X = 0;
+            rc.Y = 0;
+            rc.Width = rect.right - rect.left;
+            rc.Height = rect.bottom - rect.top;
+
+            graphics.DrawImage(&image, rc);
+
+            CString strInfo;
+            strInfo.Format(_T("Recv Image from:%s"), utf82cs(info.userAccount.c_str()));
+            // m_staRecvImageinfo.SetWindowText(strInfo);
+        }
+    }
+    else {
+        CString strInfo;
+        switch (code)
+        {
+        case DOWNLOAD_MEDIA_ERR_FAILURE:
+            strInfo = _T("Unknown common failure");
+            break;
+        case DOWNLOAD_MEDIA_ERR_INVALID_ARGUMENT:
+            strInfo = _T("invalid argument");
+            break;
+        case DOWNLOAD_MEDIA_ERR_TIMEOUT:
+            strInfo = _T("download timeout");
+            break;
+        case DOWNLOAD_MEDIA_ERR_NOT_EXIST:
+            strInfo = _T(" The size of image to upload exceeds 30 MB.");
+            break;
+        case DOWNLOAD_MEDIA_ERR_CONCURRENCY_LIMIT_EXCEEDED:
+            strInfo = _T(" exceeded the upper limit for file upload.");
+            break;
+        case DOWNLOAD_MEDIA_ERR_INTERRUPTED:
+            strInfo = _T("cancelled the upload task");
+            break;
+        case DOWNLOAD_MEDIA_ERR_NOT_INITIALIZED:
+            strInfo = _T("IRtmService is not initialized");
+            break;
+        case DOWNLOAD_MEDIA_ERR_NOT_LOGGED_IN:
+            strInfo = _T("not call IRtmService::login");
+            break;
+        default:
+            break;
+        }
+        m_staRecvImageinfo.SetWindowTextW(strInfo);
+    }
+   
+    return 0;
+}
+
+LRESULT CDlgChatMsg::onImageMediaUploadResult(WPARAM wParam, LPARAM lParam)
+{
+    PImageMediaUploadResult imageMsg = (PImageMediaUploadResult)wParam;
+
+    if (imageMsg) {
+        ImageMsgInfo info = m_mapImageMsg[imageMsg->requestId];
+        if (imageMsg->err == UPLOAD_MEDIA_ERR_OK) {
+            imageMsg->imageMessage->setFileName(info.fileName.c_str());
+            m_pSignalInstance->SendImageMsg(info.userAccount, imageMsg->imageMessage, P2PImageMsg);
+ 
+        }
+        else {
+            CString strInfo;
+            switch (imageMsg->err)
+            {
+            case UPLOAD_MEDIA_ERR_FAILURE:
+                strInfo = _T("Unknown common failure");
+                break;
+            case UPLOAD_MEDIA_ERR_INVALID_ARGUMENT:
+                strInfo = _T("invalid argument");
+                break;
+            case UPLOAD_MEDIA_ERR_TIMEOUT:
+                strInfo = _T("upload timeout");
+                break;
+            case UPLOAD_MEDIA_ERR_SIZE_OVERFLOW:
+                strInfo = _T(" The size of image to upload exceeds 30 MB.");
+                break;
+            case UPLOAD_MEDIA_ERR_CONCURRENCY_LIMIT_EXCEEDED:
+                strInfo = _T(" exceeded the upper limit for file upload.");
+                break;
+            case UPLOAD_MEDIA_ERR_INTERRUPTED:
+                strInfo = _T("cancelled the upload task");
+                break;
+            case UPLOAD_MEDIA_ERR_NOT_INITIALIZED:
+                strInfo = _T("IRtmService is not initialized");
+                break;
+            case UPLOAD_MEDIA_ERR_NOT_LOGGED_IN:
+                strInfo = _T("not call IRtmService::login");
+                break;
+            default:
+                break;
+            }
+            m_staSendImage.SetWindowTextW(strInfo);
+        }
+
+        delete imageMsg;
+        imageMsg = nullptr;
+    }
+    currentImageMsgRequestId = -1;
+    m_btnSendImage.EnableWindow(TRUE);
+    return 0;
+}
+
+void CDlgChatMsg::OnBnClickedButtonCancel()
+{
+    if (currentImageMsgRequestId != -1) {
+        m_pSignalInstance->CancelMediaUpload(currentImageMsgRequestId);
+    }
+}
+
+
+void CDlgChatMsg::OnStnClickedStaticShow()
+{
+    
+}
+
+
+void CDlgChatMsg::OnBnClickedButtonCancel2()
+{
+    if (currentDownloadImageMsgRequestId != -1) {
+        m_pSignalInstance->CancelMediaDownload(currentDownloadImageMsgRequestId);
+    }
+}
+
+
+void CDlgChatMsg::OnBnClickedButtonImgSet()
+{
+    CDlgImageSettings dlg;
+    if (IDOK == dlg.DoModal()) {
+        m_pSignalCallBack->SetImageInfo(dlg.width, dlg.height, dlg.thumb_width, dlg.thumb_height);
+    }
 }

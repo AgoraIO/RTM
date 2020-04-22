@@ -42,7 +42,7 @@ BOOL CAgoraRTMTutorialApp::InitInstance()
     GetModuleFileName(nullptr, path, MAXPATHLEN);
     CString filePath = path;
     filePath = filePath.Mid(0, filePath.ReverseFind(_T('\\')) + 1);
-    filePath += _T("agoraImageMessage");
+    filePath += _T("agoraImageMessage\\");
     if (!PathFileExists(filePath)) {
         CreateDirectory(filePath, NULL);
     }

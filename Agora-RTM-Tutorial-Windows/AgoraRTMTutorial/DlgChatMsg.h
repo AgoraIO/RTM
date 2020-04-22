@@ -55,8 +55,12 @@ public:
 	LRESULT onUpdateInputParam(WPARAM wParam, LPARAM lParam);
 	LRESULT onQueryUserStatusResult(WPARAM wParam, LPARAM lParam);
 	LRESULT onMessageSendSuccess(WPARAM wParam, LPARAM lParam);
-    LRESULT onMediaUploadResult(WPARAM wParam, LPARAM lParam);
+    LRESULT onImageMediaUploadResult(WPARAM wParam, LPARAM lParam);
+    LRESULT onImageMediaDownloadResult(WPARAM wParam, LPARAM lParam);
     LRESULT onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam);
+    LRESULT onMediaRecvMsgfromChannel(WPARAM wParam, LPARAM lParam);
+    LRESULT onMediaUploadProgress(WPARAM wParam, LPARAM lParam);
+    LRESULT onMediaDownloadloadProgress(WPARAM wParam, LPARAM lParam);
 
 	LRESULT onMessageSendError(WPARAM wParam, LPARAM lParam);
 	LRESULT onMessageInstantReceive(WPARAM wParam, LPARAM lParam);
@@ -81,14 +85,28 @@ private:
 	eTagMsgtype m_curOptionType;
 
     std::string recvUid;
+    std::map<long long, ImageMsgInfo> m_mapImageMsg;
+    std::map<long long, ImageMsgInfo> m_mapRecvImageMsg;
+
+    long long currentImageMsgRequestId = -1;
+    long long currentDownloadImageMsgRequestId = -1;
+    bool P2PImageMsg = false;
+    CString imageUID;
+    CString imageChannel;
 public:
     CListCtrl m_lstImage;
     afx_msg void OnBnClickedSendImage();
-    CEdit m_edtUID;
+   //CEdit m_edtUID;
     CImageList m_ImageListThumb;
     CStatic m_staImage;
     CStatic m_sta;
     CStatic m_staSendImage;
     CStatic m_staRecvImageinfo;
+    CButton m_btnSendImage;
+    CButton m_btnCancel;
+    afx_msg void OnBnClickedButtonCancel();
+    afx_msg void OnStnClickedStaticShow();
+    afx_msg void OnBnClickedButtonCancel2();
+    afx_msg void OnBnClickedButtonImgSet();
 };
 

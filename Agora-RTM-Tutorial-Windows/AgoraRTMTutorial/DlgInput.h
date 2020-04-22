@@ -14,7 +14,7 @@ public:
 	void showWindow(eTagMsgtype type);
 // Dialog Data
 	enum { IDD = IDD_DIALOG_INPUT };
-
+    CString GetInputString();
 protected:
 	virtual void DoDataExchange(CDataExchange* pDX);    //DDX/DDV Support
 	virtual BOOL OnInitDialog();

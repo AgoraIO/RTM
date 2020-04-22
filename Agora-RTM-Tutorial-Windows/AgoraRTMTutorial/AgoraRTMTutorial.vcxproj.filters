@@ -57,6 +57,9 @@
     <ClInclude Include="RTMWrap.h">
       <Filter>AgoraSDK</Filter>
     </ClInclude>
+    <ClInclude Include="DlgImageSettings.h">
+      <Filter>Header</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="stdafx.cpp">
@@ -88,6 +91,9 @@
     </ClCompile>
     <ClCompile Include="RTMWrap.cpp">
       <Filter>AgoraSDK</Filter>
+    </ClCompile>
+    <ClCompile Include="DlgImagSettings.cpp">
+      <Filter>Source</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

@@ -74,3 +74,10 @@ BOOL CDlgInput::PreTranslateMessage(MSG* pMsg)
 
 	return CDialogEx::PreTranslateMessage(pMsg);
 }
+
+CString CDlgInput::GetInputString()
+{
+    CString InputParam;
+    GetDlgItem(IDC_EDIT_INPUT_PARAM)->GetWindowTextW(InputParam);
+    return InputParam;
+}

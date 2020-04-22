@@ -111,22 +111,59 @@ void CRTMCallBack::postMsg(UINT msg, WPARAM wParam /*= NULL*/, LPARAM lParam /*=
   ::PostMessage(m_MsgWnd, msg, wParam, lParam);
 }
 
-void CRTMCallBack::onMediaUploadResult(long long requestId, IMessage* mediaMessage, UPLOAD_MEDIA_ERR_CODE code)
+void CRTMCallBack::onFileMediaUploadResult(long long requestId, IFileMessage* fileMessage, UPLOAD_MEDIA_ERR_CODE code)
 {
-    if (mediaMessage && mediaMessage->getMessageType() == MESSAGE_TYPE_IMAGE) {
-        IImageMessage* pImageMsg = (IImageMessage*)mediaMessage;
-        PAG_UPLOAD_IMAGE_RESULT lpData = new AgTagUploadImageResult;
-        lpData->mediaId = pImageMsg->getMediaId();
-        lpData->messageId = mediaMessage->getMessageId();
-        postMsg(WM_ImageMessageUploadResult, (WPARAM)lpData, 0);
+
+}
+
+void CRTMCallBack::onImageMediaUploadResult(long long requestId, IImageMessage* imageMessage, UPLOAD_MEDIA_ERR_CODE code)
+{
+    PImageMediaUploadResult imageMsg = new ImageMediaUploadResult;
+    if (imageWidth != 0 && imageHeight != 0) {
+        imageMessage->setWidth(imageWidth);
+        imageMessage->setWidth(imageHeight);
     }
+    if (thumbWidth != 0 && thumbHeight != 0) {
+        imageMessage->setThumbnailWidth(thumbWidth);
+        imageMessage->setThumbnailHeight(thumbHeight);
+    }
+    
+    imageMsg->err          = code;
+    imageMsg->requestId    = requestId;
+    imageMsg->imageMessage = imageMessage;
+
+    postMsg(WM_ImageMessageUploadResult, (WPARAM)imageMsg, 0);
+}
+
+void CRTMCallBack::onMediaDownloadToFileResult(long long requestId, DOWNLOAD_MEDIA_ERR_CODE code)
+{
+    postMsg(WM_ImageMessageDownloadResult, (WPARAM)requestId, (LPARAM)code);
+}
+
+void CRTMCallBack::onMediaUploadingProgress(long long requestId, const MediaOperationProgress &progress)
+{
+    PMediaProgress uploadProgress = new MediaProgress;
+    uploadProgress->requestId   = requestId;
+    uploadProgress->currentSize = progress.currentSize;
+    uploadProgress->totalSize   = progress.totalSize;
+    postMsg(WM_MediaUploadingProgress, (WPARAM)uploadProgress, 0);
+   
+}
+
+void CRTMCallBack::onMediaDownloadingProgress(long long requestId, const MediaOperationProgress &progress)
+{
+    PMediaProgress downloadProgress = new MediaProgress;
+    downloadProgress->requestId   = requestId;
+    downloadProgress->currentSize = progress.currentSize;
+    downloadProgress->totalSize   = progress.totalSize;
+    postMsg(WM_MediaDownloadingProgress, (WPARAM)downloadProgress, 0);
 }
 
 void CRTMCallBack::onImageMessageReceivedFromPeer(const char *peerId, const IImageMessage* message)
 {
     if (message) {
         PAG_IMAGE_MESSAGE imageMsg = new AG_IMAGE_MESSAGE;
-     /*   memset(imageMsg, 0, sizeof(AG_IMAGE_MESSAGE));
+        imageMsg->peerId  = peerId;
 
         imageMsg->messageId = message->getMessageId();
         imageMsg->mediaId   = message->getMediaId();
@@ -135,24 +172,67 @@ void CRTMCallBack::onImageMessageReceivedFromPeer(const char *peerId, const IIma
         
         imageMsg->thumbnailWidth  = message->getThumbnailWidth();
         imageMsg->thumbnailHeight = message->getThumbnailHeight();
-        imageMsg->thumbmailSize   = message->getThumbnailLength();*/
+        imageMsg->thumbmailSize   = message->getThumbnailLength();
 
         if (message->getThumbnailLength() > 0 && message->getThumbnailData()) {
-            std::string filepath = imageMessagepath + message->getFileName();
+            imageMsg->thumbFile = imageMessagepath + "thumbnail" + message->getFileName();        
             FILE* fp = nullptr;
-            fopen_s(&fp, filepath.c_str(), "wb");
+            fopen_s(&fp, imageMsg->thumbFile.c_str(), "wb");
             if (fp) {
                 fwrite(message->getThumbnailData(), 1, message->getThumbnailLength(), fp);
                 fclose(fp);
             }
-            imageMsg->filePath = filepath;
+            
         }
-        imageMsg->peerId = peerId;
+        imageMsg->filePath = imageMessagepath + message->getFileName();
         postMsg(WM_ImageMessageRecvFromPeer, (WPARAM)imageMsg, 0);
+    }
+}
+
+void CRTMCallBack::onImageMessageReceived(const char *userId, const IImageMessage* message)
+{
+    if (message) {
+        PAG_IMAGE_MESSAGE imageMsg = new AG_IMAGE_MESSAGE;
+        imageMsg->peerId = userId;
+
+        imageMsg->messageId = message->getMessageId();
+        imageMsg->mediaId = message->getMediaId();
+        imageMsg->width = message->getWidth();
+        imageMsg->size = message->getSize();
+
+        imageMsg->thumbnailWidth = message->getThumbnailWidth();
+        imageMsg->thumbnailHeight = message->getThumbnailHeight();
+        imageMsg->thumbmailSize = message->getThumbnailLength();
+
+        if (message->getThumbnailLength() > 0 && message->getThumbnailData()) {
+            imageMsg->thumbFile = imageMessagepath + "thumbnail" + message->getFileName();
+            FILE* fp = nullptr;
+            fopen_s(&fp, imageMsg->thumbFile.c_str(), "wb");
+            if (fp) {
+                fwrite(message->getThumbnailData(), 1, message->getThumbnailLength(), fp);
+                fclose(fp);
+            }
+
+        }
+        imageMsg->filePath = imageMessagepath + message->getFileName();
+        postMsg(WM_ImageMessageRecvChannel, (WPARAM)imageMsg, 0);
     }
 }
 
 void CRTMCallBack::onFileMessageReceivedFromPeer(const char *peerId, const IFileMessage* message)
 {
- 
+   
+}
+
+void CRTMCallBack::onMediaCancelResult(long long requestId, CANCEL_MEDIA_ERR_CODE code)
+{
+
+}
+
+void CRTMCallBack::SetImageInfo(int w, int h, int tw, int th)
+{
+    imageWidth  = w;
+    imageHeight = h;
+    thumbWidth  = tw;
+    thumbHeight = th;
 }

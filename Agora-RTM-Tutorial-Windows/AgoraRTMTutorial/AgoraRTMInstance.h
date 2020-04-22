@@ -44,10 +44,13 @@ public:
   bool JoinChannel(const std::string &channelID);
   bool LeaveChannel();
 
-  bool uploadImage(std::string filePath);
-  bool SendImageMsg(const std::string &account, std::string fileName, std::string filePath);
+  bool uploadImage(std::string filePath, long long& requestId);
+  bool downloadImage(std::string filePath, std::string mediaId, long long& requestId);
+  bool CancelMediaUpload(long long requestId);
+  bool CancelMediaDownload(long long requestId);
+  bool SendImageMsg(const std::string &account, IImageMessage* message, bool bP2P);
   std::string getSDKVersion();
-
+  void SetImageInfo(int w, int h, int tw, int th);
 protected:
   CAgoraRTMInstance(const std::string appId, CRTMCallBack* callBack);
   void InitRTMService();
