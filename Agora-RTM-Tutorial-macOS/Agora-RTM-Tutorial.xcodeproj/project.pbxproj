@@ -12,6 +12,9 @@
 		38DF956422424B4600A958D6 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF956322424B4600A958D6 /* libresolv.tbd */; };
 		38DF956622424B4B00A958D6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF956522424B4B00A958D6 /* libc++.tbd */; };
 		38DF956822424B5A00A958D6 /* CoreWLAN.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF956722424B5A00A958D6 /* CoreWLAN.framework */; };
+		782797F724344F8000AF4C98 /* image.png in Resources */ = {isa = PBXBuildFile; fileRef = 782797F624344F8000AF4C98 /* image.png */; };
+		7881033B2435F8ED007580BB /* ImageMessageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 788103392435F8ED007580BB /* ImageMessageCell.swift */; };
+		7881033C2435F8ED007580BB /* Message.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7881033A2435F8ED007580BB /* Message.swift */; };
 		A7EE1D9E221E9C49007B835A /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1D9A221E9C48007B835A /* AppDelegate.swift */; };
 		A7EE1D9F221E9C49007B835A /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7EE1D9C221E9C48007B835A /* Assets.xcassets */; };
 		A7F23AAB2202B4BC003C46FB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7F23AA92202B4BC003C46FB /* Main.storyboard */; };
@@ -29,6 +32,9 @@
 		38DF956322424B4600A958D6 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libresolv.tbd; sourceTree = DEVELOPER_DIR; };
 		38DF956522424B4B00A958D6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/usr/lib/libc++.tbd"; sourceTree = DEVELOPER_DIR; };
 		38DF956722424B5A00A958D6 /* CoreWLAN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreWLAN.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreWLAN.framework; sourceTree = DEVELOPER_DIR; };
+		782797F624344F8000AF4C98 /* image.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = image.png; sourceTree = "<group>"; };
+		788103392435F8ED007580BB /* ImageMessageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ImageMessageCell.swift; sourceTree = "<group>"; };
+		7881033A2435F8ED007580BB /* Message.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Message.swift; sourceTree = "<group>"; };
 		A706342021F047A600D6217B /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
 		A706342721F050EC00D6217B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A706343921F0818100D6217B /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
@@ -60,9 +66,18 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		782797F524344F8000AF4C98 /* Resource */ = {
+			isa = PBXGroup;
+			children = (
+				782797F624344F8000AF4C98 /* image.png */,
+			);
+			path = Resource;
+			sourceTree = "<group>";
+		};
 		A7EE1DBA221EA54D007B835A /* Support Files */ = {
 			isa = PBXGroup;
 			children = (
+				782797F524344F8000AF4C98 /* Resource */,
 				A7EE1D9A221E9C48007B835A /* AppDelegate.swift */,
 				A7EE1D9C221E9C48007B835A /* Assets.xcassets */,
 				A7EE1D9D221E9C49007B835A /* Info.plist */,
@@ -97,6 +112,8 @@
 				A706342721F050EC00D6217B /* ChatViewController.swift */,
 				A706343921F0818100D6217B /* MessageCell.swift */,
 				A7F23ACD2202CEDF003C46FB /* ReplaceSegue.swift */,
+				788103392435F8ED007580BB /* ImageMessageCell.swift */,
+				7881033A2435F8ED007580BB /* Message.swift */,
 				A7F23AA92202B4BC003C46FB /* Main.storyboard */,
 				A7EE1DBA221EA54D007B835A /* Support Files */,
 				A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */,
@@ -180,6 +197,7 @@
 			files = (
 				A7EE1D9F221E9C49007B835A /* Assets.xcassets in Resources */,
 				A7F23AAB2202B4BC003C46FB /* Main.storyboard in Resources */,
+				782797F724344F8000AF4C98 /* image.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -191,11 +209,13 @@
 			buildActionMask = 2147483647;
 			files = (
 				A7EE1D9E221E9C49007B835A /* AppDelegate.swift in Sources */,
+				7881033B2435F8ED007580BB /* ImageMessageCell.swift in Sources */,
 				A7F23AD72202D523003C46FB /* ChatViewController.swift in Sources */,
 				A7F23ACE2202CEDF003C46FB /* ReplaceSegue.swift in Sources */,
 				A7F23AC82202BDB3003C46FB /* AppId.swift in Sources */,
 				A7F23ABD2202BCE3003C46FB /* AgoraRtm.swift in Sources */,
 				A7F23ABC2202BC09003C46FB /* MainViewController.swift in Sources */,
+				7881033C2435F8ED007580BB /* Message.swift in Sources */,
 				A7F23AD62202D2FC003C46FB /* PeerChannelViewController.swift in Sources */,
 				A7F23AE6220302F2003C46FB /* MessageCell.swift in Sources */,
 			);

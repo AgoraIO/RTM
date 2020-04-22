@@ -20,11 +20,6 @@ enum ChatType {
     }
 }
 
-struct Message {
-    var userId: String
-    var text: String
-}
-
 protocol ChatVCDelegate: NSObjectProtocol {
     func chatVCWillClose(_ vc: ChatViewController)
     func chatVCBackToRootVC(_ vc: ChatViewController)
@@ -65,12 +60,97 @@ class ChatViewController: NSViewController, ShowAlertProtocol {
     @IBAction func doBackPressed(_ sender: NSButton) {
         self.delegate?.chatVCWillClose(self)
     }
+    
+    @IBAction func sendImage(_ sender: Any) {
+        guard let imagePath = Bundle.main.path(forResource: "image", ofType: "png") else {
+            return
+        }
+        
+        var requestId: Int64 = 0
+        AgoraRtm.kit?.createImageMessage(byUploading: imagePath, withRequest: &requestId, completion: {[weak self] (requestId, message, errorCode) in
+            
+            guard let `self` = self, let `message` = message else {
+                return
+            }
+            
+            // thumbnailImage 8KB
+            if let thumbnailImage = self.generateThumbnail(imagePath: imagePath, toByte: 8 * 1024) {
+                
+                if let imageData = self.getJPGImageData(image: thumbnailImage) {
+                    message.thumbnail = imageData
+                    message.thumbnailWidth = Int32(thumbnailImage.size.width)
+                    message.thumbnailHeight = Int32(thumbnailImage.size.height)
+                }  
+            }
+            
+            if(errorCode != .ok) {
+                self.showAlert("send image message error: \(errorCode)")
+                return
+            }
+            self.send(rtmMessage: message, type: self.type)
+        })
+    }
+    
+    func getJPGImageData(image: NSImage) -> Data? {
+        
+        guard let data = image.tiffRepresentation else {
+            return nil
+        }
+        
+        let imageRep = NSBitmapImageRep(data: data)
+        let imageProps: [NSBitmapImageRep.PropertyKey: Any] = [.compressionFactor: 1]
+        return imageRep?.representation(using: .jpeg, properties: imageProps)
+    }
+    
+    func generateThumbnail(imagePath: String, toByte maxLength: UInt) -> NSImage? {
+        
+        guard let image = NSImage(contentsOfFile: imagePath), var imageData = self.getJPGImageData(image: image) else {
+            return nil
+        }
+        
+        // If the original image is already small, no thumbnail is needed
+        if(imageData.count <= maxLength) {
+            return nil
+        }
+
+        var resultImage = image
+        var lastDataLength = 0
+        
+        while (imageData.count > maxLength && imageData.count != lastDataLength) {
+            lastDataLength = imageData.count
+            let ratio: CGFloat = CGFloat(maxLength) / CGFloat(imageData.count)
+            let size: CGSize = CGSize(width: Int(resultImage.size.width * sqrt(ratio)), height: Int(resultImage.size.height * sqrt(ratio)))// Use Int to prevent white blank
+            
+            let newImage = NSImage(size: size)
+            newImage.lockFocus()
+            let fromRect = NSRect(x: 0, y: 0, width: resultImage.size.width, height: resultImage.size.height)
+            let toRect = NSRect(x: 0, y: 0, width: size.width, height: size.height)
+            resultImage.draw(in: toRect, from: fromRect, operation: .copy, fraction: 1.0)
+            newImage.unlockFocus()
+            
+            if let _imageData = self.getJPGImageData(image: newImage) {
+                imageData = _imageData
+            } else {
+                return nil
+            }
+            
+            resultImage = newImage;
+        }
+
+        return resultImage
+    }
 }
 
 // MARK: Send Message
 private extension ChatViewController {
-    func send(message: String, type: ChatType) {
-        let sent = { [unowned self] (state: Int) in
+    func send(rtmMessage: AgoraRtmMessage, type: ChatType) {
+        
+        let sent = { [weak self] (state: Int) in
+            
+            guard let `self` = self else {
+                return
+            }
+            
             guard state == 0 else {
                 self.showAlert("send \(type.description) message error: \(state)")
                 return
@@ -79,10 +159,15 @@ private extension ChatViewController {
             guard let current = AgoraRtm.current else {
                 return
             }
-            self.appendMessage(user: current, content: message)
+            
+            if(rtmMessage.type == .text){
+                self.appendMessage(user: current, content: rtmMessage.text, mediaId: nil, thumbnail: nil)
+            } else if(rtmMessage.type == .image){
+                if let imageMessage = rtmMessage as? AgoraRtmImageMessage {
+                    self.appendMessage(user: current, content: nil, mediaId: imageMessage.mediaId, thumbnail:imageMessage.thumbnail)
+                }
+            }
         }
-        
-        let rtmMessage = AgoraRtmMessage(text: message)
         
         switch type {
         case .peer(let name):
@@ -97,6 +182,11 @@ private extension ChatViewController {
                 sent(error.rawValue)
             }
         }
+    }
+    
+    func send(message: String, type: ChatType) {
+        let rtmMessage = AgoraRtmMessage(text: message)
+        send(rtmMessage: rtmMessage, type: type)
     }
 }
 
@@ -134,6 +224,9 @@ private extension ChatViewController {
 // MARK: AgoraRtmDelegate
 extension ChatViewController: AgoraRtmDelegate {
     func rtmKit(_ kit: AgoraRtmKit, connectionStateChanged state: AgoraRtmConnectionState, reason: AgoraRtmConnectionChangeReason) {
+        if(state.rawValue == 4){
+            
+        }
         showAlert("connection state changed: \(state.rawValue)") { [weak self] (_) in
             if reason == .remoteLogin, let strongSelf = self {
                 strongSelf.delegate?.chatVCBackToRootVC(strongSelf)
@@ -142,7 +235,11 @@ extension ChatViewController: AgoraRtmDelegate {
     }
     
     func rtmKit(_ kit: AgoraRtmKit, messageReceived message: AgoraRtmMessage, fromPeer peerId: String) {
-        appendMessage(user: peerId, content: message.text)
+        appendMessage(user: peerId, content: message.text, mediaId: nil, thumbnail:nil)
+    }
+    
+    func rtmKit(_ kit: AgoraRtmKit, imageMessageReceived message: AgoraRtmImageMessage, fromPeer peerId: String) {
+        appendMessage(user: peerId, content: nil, mediaId: message.mediaId, thumbnail: message.thumbnail)
     }
 }
 
@@ -161,7 +258,11 @@ extension ChatViewController: AgoraRtmChannelDelegate {
     }
     
     func channel(_ channel: AgoraRtmChannel, messageReceived message: AgoraRtmMessage, from member: AgoraRtmMember) {
-        appendMessage(user: member.userId, content: message.text)
+        appendMessage(user: member.userId, content: message.text, mediaId: nil, thumbnail:nil)
+    }
+    
+    func channel(_ channel: AgoraRtmChannel, imageMessageReceived message: AgoraRtmImageMessage, from member: AgoraRtmMember) {
+        appendMessage(user: member.userId, content: nil, mediaId: message.mediaId, thumbnail:message.thumbnail)
     }
 }
 
@@ -174,7 +275,13 @@ private extension ChatViewController {
             }
             
             for item in messages {
-                appendMessage(user: name, content: item.text)
+                if(item.type == .text){
+                    appendMessage(user: name, content: item.text, mediaId: nil, thumbnail: nil)
+                } else if(item.type == .image){
+                    if let imageMessage = item as? AgoraRtmImageMessage {
+                        appendMessage(user: name, content: nil, mediaId: imageMessage.mediaId, thumbnail:imageMessage.thumbnail)
+                    }
+                }
             }
             
             AgoraRtm.removeOfflineMessages(from: name)
@@ -191,13 +298,15 @@ private extension ChatViewController {
         return true
     }
     
-    func appendMessage(user: String, content: String) {
+    func appendMessage(user: String, content: String?, mediaId: String?, thumbnail: Data?) {
         DispatchQueue.main.async { [unowned self] in
-            let msg = Message(userId: user, text: content)
+            
+            let msg = Message(userId: user, text: content, mediaId: mediaId, thumbnail: thumbnail)
             self.list.append(msg)
             if self.list.count > 100 {
                 self.list.removeFirst()
             }
+
             let end = self.list.count - 1
             
             self.tableView.reloadData()
@@ -214,12 +323,30 @@ extension ChatViewController: NSTableViewDelegate, NSTableViewDataSource {
     func tableView(_ tableView: NSTableView, viewFor tableColumn: NSTableColumn?, row: Int) -> NSView? {
         let msg = list[row]
         let type: CellType = msg.userId == AgoraRtm.current ? .right : .left
-        let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "MessageCell"), owner: nil) as! MessageCell
-        cell.update(type: type, message: msg)
-        return cell
+
+        if let _ = msg.mediaId {
+            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "ImageMessageCell"), owner: nil) as! ImageMessageCell
+            cell.update(type: type, message: msg)
+            return cell
+            
+        } else {
+            let cell = tableView.makeView(withIdentifier: NSUserInterfaceItemIdentifier(rawValue: "MessageCell"), owner: nil) as! MessageCell
+            cell.update(type: type, message: msg)
+            return cell
+        }
     }
     
     func tableView(_ tableView: NSTableView, heightOfRow row: Int) -> CGFloat {
+        let msg = list[row]
+        if let _ = msg.mediaId {
+            return 212
+        }
+       
         return 36
+    }
+    
+    func tableViewSelectionDidChange(_ notification: Notification) {
+        let row = self.tableView.selectedRow
+        self.tableView.deselectRow(row)
     }
 }

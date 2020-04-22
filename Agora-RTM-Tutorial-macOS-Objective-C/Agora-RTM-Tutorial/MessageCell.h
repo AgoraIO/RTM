@@ -9,11 +9,6 @@
 #import <Cocoa/Cocoa.h>
 #import "Message.h"
 
-typedef NS_ENUM(NSInteger, CellType) {
-    CellTypeLeft,
-    CellTypeRight
-};
-
 @interface MessageCell : NSTableCellView
 - (void)updateType:(CellType)type message:(Message *)message;
 @end

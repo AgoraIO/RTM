@@ -49,6 +49,58 @@
     AgoraRtmMessage *rtmMessage = [[AgoraRtmMessage alloc] initWithText:message];
     [self sendRtmMessage:rtmMessage];
 }
+- (IBAction)sendImage:(id)sender {
+    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"png"];
+    long long requestId;
+    
+    __weak ChatViewController *weakSelf = self;
+    [AgoraRtm.kit createImageMessageByUploading:imagePath withRequest:&requestId completion:^(long long requestId, AgoraRtmImageMessage *message, AgoraRtmUploadMediaErrorCode errorCode) {
+        
+        if(errorCode != AgoraRtmUploadMediaErrorOk) {
+            NSString *alert = [NSString stringWithFormat:@"send image message error: %ld", (long)errorCode];
+            [weakSelf showAlert:alert];
+            return;
+        }
+        
+        // thumbnailImage 5KB
+        UIImage *thumbnailImage = [weakSelf generateThumbnail:imagePath toByte:5 * 1024];
+        if(thumbnailImage != nil) {
+            NSData *imageData = UIImageJPEGRepresentation(thumbnailImage, 1);
+            message.thumbnail = imageData;
+            message.thumbnailWidth = thumbnailImage.size.width;
+            message.thumbnailHeight = thumbnailImage.size.height;
+        }
+    
+        [weakSelf sendRtmMessage:message];
+    }];
+}
+
+- (UIImage *)generateThumbnail:(NSString *)imagePath toByte:(NSUInteger)maxLength {
+    UIImage *image = [UIImage imageWithContentsOfFile: imagePath];
+    NSData *data = UIImageJPEGRepresentation(image, 1);
+    
+    // If the original image is already small, no thumbnail is needed
+    if(data.length <= maxLength) {
+        return nil;
+    }
+    
+    UIImage *resultImage = image;
+    NSUInteger lastDataLength = 0;
+    while (data.length > maxLength && data.length != lastDataLength) {
+        lastDataLength = data.length;
+        CGFloat ratio = (CGFloat)maxLength / data.length;
+        CGSize size = CGSizeMake((NSUInteger)(resultImage.size.width * sqrtf(ratio)),
+                                 (NSUInteger)(resultImage.size.height * sqrtf(ratio)));// Use NSUInteger to prevent white blank
+        UIGraphicsBeginImageContext(size);
+        // Use image to draw (drawInRect:), image is larger but more compression time
+        // Use result image to draw, image is smaller but less compression time
+        [resultImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
+        resultImage = UIGraphicsGetImageFromCurrentImageContext();
+        UIGraphicsEndImageContext();
+        data = UIImageJPEGRepresentation(resultImage, 1);
+    }
+    return resultImage;
+}
 
 #pragma mark - Channel
 - (void)createChannel:(NSString *)channel {
@@ -235,59 +287,6 @@
         [cell updateType:type message:msg];
         return cell;
     }
-}
-
-- (IBAction)sendImage:(id)sender {
-    NSString *imagePath = [[NSBundle mainBundle] pathForResource:@"image" ofType:@"png"];
-    long long requestId;
-    
-    __weak ChatViewController *weakSelf = self;
-    [AgoraRtm.kit createImageMessageByUploading:imagePath withRequest:&requestId completion:^(long long requestId, AgoraRtmImageMessage *message, AgoraRtmUploadMediaErrorCode errorCode) {
-        
-        // thumbnailImage 5KB
-        UIImage *thumbnailImage = [weakSelf generateThumbnail:imagePath toByte:5 * 1024];
-        if(thumbnailImage != nil) {
-            NSData *imageData = UIImageJPEGRepresentation(thumbnailImage, 1);
-            message.thumbnail = imageData;
-            message.thumbnailWidth = thumbnailImage.size.width;
-            message.thumbnailHeight = thumbnailImage.size.height;
-        }
-        
-        if(errorCode != AgoraRtmUploadMediaErrorOk) {
-            NSString *alert = [NSString stringWithFormat:@"send image message error: %ld", (long)errorCode];
-            [weakSelf showAlert:alert];
-            return;
-        }
-
-        [weakSelf sendRtmMessage:message];
-    }];
-}
-
-- (UIImage *)generateThumbnail:(NSString *)imagePath toByte:(NSUInteger)maxLength {
-    UIImage *image = [UIImage imageWithContentsOfFile: imagePath];
-    NSData *data = UIImageJPEGRepresentation(image, 1);
-    
-    // If the original image is already small, no thumbnail is needed
-    if(data.length <= maxLength) {
-        return nil;
-    }
-    
-    UIImage *resultImage = image;
-    NSUInteger lastDataLength = 0;
-    while (data.length > maxLength && data.length != lastDataLength) {
-        lastDataLength = data.length;
-        CGFloat ratio = (CGFloat)maxLength / data.length;
-        CGSize size = CGSizeMake((NSUInteger)(resultImage.size.width * sqrtf(ratio)),
-                                 (NSUInteger)(resultImage.size.height * sqrtf(ratio)));// Use NSUInteger to prevent white blank
-        UIGraphicsBeginImageContext(size);
-        // Use image to draw (drawInRect:), image is larger but more compression time
-        // Use result image to draw, image is smaller but less compression time
-        [resultImage drawInRect:CGRectMake(0, 0, size.width, size.height)];
-        resultImage = UIGraphicsGetImageFromCurrentImageContext();
-        UIGraphicsEndImageContext();
-        data = UIImageJPEGRepresentation(resultImage, 1);
-    }
-    return resultImage;
 }
 
 - (void)sendRtmMessage:(AgoraRtmMessage *)rtmMessage {

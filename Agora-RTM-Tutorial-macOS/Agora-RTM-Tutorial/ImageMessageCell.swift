@@ -6,37 +6,28 @@
 //  Copyright © 2020 Agora. All rights reserved.
 //
 
-import UIKit
+import Cocoa
 
-class ImageMessageCell: UITableViewCell {
+class ImageMessageCell: NSTableCellView {
     
-    @IBOutlet weak var leftUserLabel: UILabel!
-    @IBOutlet weak var leftUserBgView: UIView!
-    @IBOutlet weak var leftContentImage: UIImageView!
+    @IBOutlet weak var leftUserLabel: NSTextField!
+    @IBOutlet weak var leftContentImage: NSImageView!
     
-    @IBOutlet weak var rightUserLabel: UILabel!
-    @IBOutlet weak var rightUserBgView: UIView!
-    @IBOutlet weak var rightContentImage: UIImageView!
+    @IBOutlet weak var rightUserLabel: NSTextField!
+    @IBOutlet weak var rightContentImage: NSImageView!
     
     fileprivate var requestId: Int64 = 0
     fileprivate var mediaId: String?
     fileprivate var imageData: Data?
-    
-    override func awakeFromNib() {
-        rightUserBgView.layer.cornerRadius = 20
-        leftUserBgView.layer.cornerRadius = 20
-    }
     
     private var type: CellType = .right {
         didSet {
             let rightHidden = type == .left ? true : false
             
             rightUserLabel.isHidden = rightHidden;
-            rightUserBgView.isHidden = rightHidden;
             rightContentImage.isHidden = rightHidden;
             
             leftUserLabel.isHidden = !rightHidden;
-            leftUserBgView.isHidden = !rightHidden;
             leftContentImage.isHidden = !rightHidden;
         }
     }
@@ -44,8 +35,8 @@ class ImageMessageCell: UITableViewCell {
     private var user: String? {
         didSet {
             switch type {
-            case .left:  leftUserLabel.text = user
-            case .right: rightUserLabel.text = user
+            case .left:  leftUserLabel.stringValue = user!
+            case .right: rightUserLabel.stringValue = user!
             }
         }
     }
@@ -53,9 +44,7 @@ class ImageMessageCell: UITableViewCell {
     func update(type: CellType, message: Message) {
         self.type = type
         self.user = message.userId
-        
-        
-        
+
         // complete down
         if(self.mediaId != nil && self.mediaId == message.mediaId && self.imageData != nil){
             self.updateImageData(imageData: self.imageData!)
@@ -99,7 +88,8 @@ class ImageMessageCell: UITableViewCell {
     }
     
     fileprivate func updateImageData(imageData: Data) {
-        if let image = UIImage(data: imageData) {
+
+        if let image = NSImage(data: imageData) {
             switch (self.type) {
             case .left:
                 self.leftContentImage.isHidden = false

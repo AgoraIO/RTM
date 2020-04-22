@@ -8,10 +8,6 @@
 
 import Cocoa
 
-enum CellType {
-    case left, right
-}
-
 class MessageCell: NSTableCellView {
     @IBOutlet weak var rightUserLabel: NSTextField!
     @IBOutlet weak var rightContentLabel: NSTextField!
