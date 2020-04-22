@@ -334,6 +334,7 @@ namespace SingleDesc
       int thumbnailHeight;
       int size;
       long long thumbmailSize;
+     
       /*
       std::string mediaId;
       std::string messageId;

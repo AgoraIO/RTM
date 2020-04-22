@@ -8,6 +8,9 @@ typedef struct _ImageMsgInfo {
     IImageMessage* imageMsg;
     std::string fileName;
     std::string userAccount;
+    CString fullPath;
+    int expectedThumbWidth;
+    int expectedThumbHeight;
 }ImageMsgInfo;
 
 class CRTMCallBack :public agora::rtm::IRtmServiceEventHandler,

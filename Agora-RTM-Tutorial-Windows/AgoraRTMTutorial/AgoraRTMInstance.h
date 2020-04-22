@@ -49,6 +49,7 @@ public:
   bool CancelMediaUpload(long long requestId);
   bool CancelMediaDownload(long long requestId);
   bool SendImageMsg(const std::string &account, IImageMessage* message, bool bP2P);
+  bool SendImageMsg(const std::string &account, std::string mediaId, bool bP2P);
   std::string getSDKVersion();
   void SetImageInfo(int w, int h, int tw, int th);
 protected:

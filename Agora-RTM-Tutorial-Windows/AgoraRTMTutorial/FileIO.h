@@ -81,10 +81,11 @@ protected:
 	CFileIni *pIniInstance_;
 };
 
-#define INI_BASEINFO							"BaseInfo"
+#define INI_BASEINFO					"BaseInfo"
 #define INI_BASEINFO_APPID				"AppID"
-#define INI_BASEINFO_CERTID			"AppCertificatedId"
-
+#define INI_BASEINFO_CERTID			    "AppCertificatedId"
+#define INI_BASEINFO_UPLOADMEDIAID		"LastUploadMediaId"
+#define INI_BASEINFO_DOWNLOADMEDIAID	"LastDownloadMediaId"
 class CConfigSignal:public CIniBase
 {
 public:
@@ -96,7 +97,8 @@ public:
 
 	__DECLARE_INICONFIG_FUN(AppID)
 	__DECLARE_INICONFIG_FUN(AppCertificatedId)
-
+    __DECLARE_INICONFIG_FUN(LastUploadMediaId)
+    __DECLARE_INICONFIG_FUN(LastDownloadMediaId)
 private:
 
 };

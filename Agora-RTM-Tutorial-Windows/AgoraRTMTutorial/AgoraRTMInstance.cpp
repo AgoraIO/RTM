@@ -229,6 +229,22 @@ bool CAgoraRTMInstance::SendImageMsg(const std::string &account, IImageMessage* 
     return false;
 }
 
+bool CAgoraRTMInstance::SendImageMsg(const std::string &account, std::string mediaId, bool bP2P)
+{
+    if (m_rtmService != nullptr) {
+        IImageMessage* message = m_rtmService->createImageMessageByMediaId(mediaId.c_str());
+        if (!message)
+            return false;
+        SendMessageOptions options;
+        int ret = -1;
+        if (bP2P)
+            ret = m_rtmService->sendMessageToPeer(account.c_str(), message, options);
+        else
+            ret = m_Channel->sendMessage(message);
+        return ret == 0 ? true : false;
+    }
+    return false;
+}
 
 bool CAgoraRTMInstance::uploadImage(std::string filePath, long long& requestId)
 {

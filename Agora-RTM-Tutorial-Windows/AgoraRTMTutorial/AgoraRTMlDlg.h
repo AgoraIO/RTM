@@ -56,4 +56,5 @@ private:
 
   CAgoraRTMInstance* m_pRTMInstance;
   CRTMCallBack* m_pRTMCallBack;
+  
 };

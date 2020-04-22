@@ -57,8 +57,8 @@ public:
 	LRESULT onMessageSendSuccess(WPARAM wParam, LPARAM lParam);
     LRESULT onImageMediaUploadResult(WPARAM wParam, LPARAM lParam);
     LRESULT onImageMediaDownloadResult(WPARAM wParam, LPARAM lParam);
-    LRESULT onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam);
-    LRESULT onMediaRecvMsgfromChannel(WPARAM wParam, LPARAM lParam);
+    LRESULT onRecvImageMsgfromPeer(WPARAM wParam, LPARAM lParam);
+    LRESULT onRecvImageMsgfromChannel(WPARAM wParam, LPARAM lParam);
     LRESULT onMediaUploadProgress(WPARAM wParam, LPARAM lParam);
     LRESULT onMediaDownloadloadProgress(WPARAM wParam, LPARAM lParam);
 
@@ -93,6 +93,9 @@ private:
     bool P2PImageMsg = false;
     CString imageUID;
     CString imageChannel;
+
+    std::string lastUploadMediaId;
+    std::string lastDownloadMediaId;
 public:
     CListCtrl m_lstImage;
     afx_msg void OnBnClickedSendImage();
@@ -108,5 +111,7 @@ public:
     afx_msg void OnStnClickedStaticShow();
     afx_msg void OnBnClickedButtonCancel2();
     afx_msg void OnBnClickedButtonImgSet();
+    afx_msg void OnBnClickedButtonMediaId();
+    CButton m_sendImageByMediaId;
 };
 

@@ -48,6 +48,7 @@ void CDlgChatMsg::DoDataExchange(CDataExchange* pDX)
     DDX_Control(pDX, IDC_STATIC_IMAGE_INFO, m_staRecvImageinfo);
     DDX_Control(pDX, IDC_BUTTON1, m_btnSendImage);
     DDX_Control(pDX, IDC_BUTTON_CANCEL, m_btnCancel);
+    DDX_Control(pDX, IDC_BUTTON_MEDIA_ID, m_sendImageByMediaId);
 }
 
 
@@ -68,8 +69,8 @@ BEGIN_MESSAGE_MAP(CDlgChatMsg, CDialogEx)
     ON_MESSAGE(WM_ImageMessageDownloadResult, onImageMediaDownloadResult)
 
     
-    ON_MESSAGE(WM_ImageMessageRecvFromPeer, onMediaRecvMsgfromPeer)
-    ON_MESSAGE(WM_ImageMessageRecvChannel, onMediaRecvMsgfromChannel)
+    ON_MESSAGE(WM_ImageMessageRecvFromPeer, onRecvImageMsgfromPeer)
+    ON_MESSAGE(WM_ImageMessageRecvChannel, onRecvImageMsgfromChannel)
 
     
     ON_MESSAGE(WM_MediaUploadingProgress, onMediaUploadProgress)
@@ -87,6 +88,7 @@ BEGIN_MESSAGE_MAP(CDlgChatMsg, CDialogEx)
     ON_STN_CLICKED(IDC_STATIC_SHOW, &CDlgChatMsg::OnStnClickedStaticShow)
     ON_BN_CLICKED(IDC_BUTTON_CANCEL2, &CDlgChatMsg::OnBnClickedButtonCancel2)
     ON_BN_CLICKED(IDC_BUTTON_IMG_SET, &CDlgChatMsg::OnBnClickedButtonImgSet)
+    ON_BN_CLICKED(IDC_BUTTON_MEDIA_ID, &CDlgChatMsg::OnBnClickedButtonMediaId)
 END_MESSAGE_MAP()
 
 BOOL CDlgChatMsg::OnInitDialog()
@@ -98,6 +100,13 @@ BOOL CDlgChatMsg::OnInitDialog()
 	SetTimer(TIMER_IDEVENT_QUERYISONLINE, TIMER_IDEVENT_QUERYISONLINE_INTERVAL, NULL);
     m_ImageListThumb.Create(THUMBWIDTH, THUMBHEIGHT, ILC_COLOR24, 0, 1);
     m_lstImage.SetImageList(&m_ImageListThumb, LVSIL_NORMAL);
+
+    lastUploadMediaId = gConfigSignal.getLastUploadMediaId();
+    lastDownloadMediaId = gConfigSignal.getLastDownloadMediaId();
+
+    if (lastUploadMediaId.empty() && lastDownloadMediaId.empty()) {
+        m_sendImageByMediaId.EnableWindow(FALSE);
+    }
 	return TRUE;
 }
 
@@ -563,6 +572,7 @@ void CDlgChatMsg::OnBnClickedSendImage()
             return;
         }
 
+       
         Gdiplus::Graphics graphics(::GetDC(m_sta.GetSafeHwnd()));
         Rect rc;
         RECT rect;
@@ -573,7 +583,16 @@ void CDlgChatMsg::OnBnClickedSendImage()
         rc.Height = rect.bottom - rect.top;
         graphics.DrawImage(&image, rc);
 
-       
+        int thumbWidth  = rc.Width;
+        int thumbHeight = rc.Height;
+        if (size > 32 * 1024) {
+            int ratio_square   = size / (32 * 1024) + 1;
+            int ratio = sqrt(ratio_square) + 1;
+            thumbWidth  = rc.Width / (float)ratio;
+            thumbHeight = rc.Height / (float)ratio;
+        }
+
+       // image.GetThumbnailImage()
         std::string file = cs2Utf8(fileDlg.GetFileName());
        
         long long requestId = 0;
@@ -583,15 +602,17 @@ void CDlgChatMsg::OnBnClickedSendImage()
             info.fileName    = cs2Utf8(fileDlg.GetFileName());
             info.userAccount = cs2Utf8(imageUID);
             info.imageMsg    = nullptr;
+            info.fullPath    = fileDlg.GetPathName();
+            info.expectedThumbWidth  = thumbWidth;
+            info.expectedThumbHeight = thumbHeight;
             m_mapImageMsg.insert(std::make_pair(requestId, info));
             m_btnSendImage.EnableWindow(FALSE);
             currentImageMsgRequestId = requestId;
-
         }
     }
 }
 
-LRESULT CDlgChatMsg::onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam)
+LRESULT CDlgChatMsg::onRecvImageMsgfromPeer(WPARAM wParam, LPARAM lParam)
 {
     PAG_IMAGE_MESSAGE lpData = (PAG_IMAGE_MESSAGE)wParam;
 
@@ -639,7 +660,7 @@ LRESULT CDlgChatMsg::onMediaRecvMsgfromPeer(WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
-LRESULT CDlgChatMsg::onMediaRecvMsgfromChannel(WPARAM wParam, LPARAM lParam)
+LRESULT CDlgChatMsg::onRecvImageMsgfromChannel(WPARAM wParam, LPARAM lParam)
 {
     PAG_IMAGE_MESSAGE lpData = (PAG_IMAGE_MESSAGE)wParam;
 
@@ -673,11 +694,13 @@ LRESULT CDlgChatMsg::onMediaRecvMsgfromChannel(WPARAM wParam, LPARAM lParam)
         long long requestId = -1;
         if (m_pSignalInstance->downloadImage(lpData->filePath.c_str(), lpData->mediaId.c_str(), requestId)) {
             ImageMsgInfo info;
-            info.fileName = lpData->filePath;
+            info.fileName    = lpData->filePath;
             info.userAccount = lpData->peerId;
-            info.imageMsg = nullptr;
+            info.imageMsg    = nullptr;
             currentDownloadImageMsgRequestId = requestId;
             m_mapRecvImageMsg.insert(std::make_pair(requestId, info));
+            lastDownloadMediaId = lpData->mediaId;
+            m_sendImageByMediaId.EnableWindow(TRUE);
         }
 
     }
@@ -746,7 +769,8 @@ LRESULT CDlgChatMsg::onImageMediaDownloadResult(WPARAM wParam, LPARAM lParam)
 
             CString strInfo;
             strInfo.Format(_T("Recv Image from:%s"), utf82cs(info.userAccount.c_str()));
-            // m_staRecvImageinfo.SetWindowText(strInfo);
+           
+            m_sendImageByMediaId.EnableWindow(TRUE);
         }
     }
     else {
@@ -786,6 +810,69 @@ LRESULT CDlgChatMsg::onImageMediaDownloadResult(WPARAM wParam, LPARAM lParam)
     return 0;
 }
 
+int GetEncoderClsid(WCHAR *format, CLSID *pClsid)
+{
+    unsigned int num = 0, size = 0;
+    Gdiplus::GetImageEncodersSize(&num, &size);
+    if (size == 0) return -1;
+    Gdiplus::ImageCodecInfo *pImageCodecInfo = (Gdiplus::ImageCodecInfo *)(malloc(size));
+    if (pImageCodecInfo == NULL) return -1;
+    Gdiplus::GetImageEncoders(num, size, pImageCodecInfo);
+    for (unsigned int j = 0; j < num; ++j)
+    {
+        if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0) {
+            *pClsid = pImageCodecInfo[j].Clsid;
+            free(pImageCodecInfo);
+            return j;
+        }
+    }
+    free(pImageCodecInfo);
+    return -1;
+}
+
+
+bool SetThumbnail(ImageMsgInfo& info)
+{
+    Image image(info.fullPath);
+    Image* pThumbnail = image.GetThumbnailImage(info.expectedThumbWidth, info.expectedThumbHeight);
+    
+    LONG uQuality = 100L;
+    CLSID imageCLSID;
+    Gdiplus::EncoderParameters encoderParams;
+    encoderParams.Count = 1;
+    encoderParams.Parameter[0].NumberOfValues = 1;
+    encoderParams.Parameter[0].Guid = Gdiplus::EncoderQuality;
+    encoderParams.Parameter[0].Type = Gdiplus::EncoderParameterValueTypeLong;
+    encoderParams.Parameter[0].Value = &uQuality;
+    GetEncoderClsid(L"image/png", &imageCLSID);
+
+  
+    IStream* pIStream = nullptr;
+    if (CreateStreamOnHGlobal(NULL, FALSE, (LPSTREAM*)&pIStream) != S_OK){
+        AfxMessageBox(_T("create stream failed"));
+        return false;
+    }
+    pThumbnail->Save(pIStream, &imageCLSID, NULL);
+
+    STATSTG sts;
+    pIStream->Stat(&sts, STATFLAG_DEFAULT);
+    ULARGE_INTEGER uli = sts.cbSize;
+    LARGE_INTEGER zero;
+    zero.QuadPart = 0;
+    int size = (int)uli.QuadPart;
+    BYTE* imageData = new BYTE[size];
+    ULONG written;
+    pIStream->Seek(zero, STREAM_SEEK_SET, NULL);
+    pIStream->Read(imageData, size, &written);
+
+    info.imageMsg->setThumbnail(imageData, size);
+    info.imageMsg->setThumbnailWidth(info.expectedThumbWidth);
+    info.imageMsg->setThumbnailHeight(info.expectedThumbHeight);
+
+    delete[] imageData;
+    pIStream->Release();
+}
+
 LRESULT CDlgChatMsg::onImageMediaUploadResult(WPARAM wParam, LPARAM lParam)
 {
     PImageMediaUploadResult imageMsg = (PImageMediaUploadResult)wParam;
@@ -793,9 +880,13 @@ LRESULT CDlgChatMsg::onImageMediaUploadResult(WPARAM wParam, LPARAM lParam)
     if (imageMsg) {
         ImageMsgInfo info = m_mapImageMsg[imageMsg->requestId];
         if (imageMsg->err == UPLOAD_MEDIA_ERR_OK) {
-            imageMsg->imageMessage->setFileName(info.fileName.c_str());
+            imageMsg->imageMessage->setFileName(info.fileName.c_str()); 
+            info.imageMsg = imageMsg->imageMessage;
+            SetThumbnail(info);
+            
             m_pSignalInstance->SendImageMsg(info.userAccount, imageMsg->imageMessage, P2PImageMsg);
- 
+            lastUploadMediaId = imageMsg->imageMessage->getMediaId();
+            m_sendImageByMediaId.EnableWindow(TRUE);
         }
         else {
             CString strInfo;
@@ -866,5 +957,37 @@ void CDlgChatMsg::OnBnClickedButtonImgSet()
     CDlgImageSettings dlg;
     if (IDOK == dlg.DoModal()) {
         m_pSignalCallBack->SetImageInfo(dlg.width, dlg.height, dlg.thumb_width, dlg.thumb_height);
+    }
+}
+
+
+void CDlgChatMsg::OnBnClickedButtonMediaId()
+{
+    CString str = m_pDlgInput->GetInputString();
+    if (m_curOptionType == eType_Instance) {
+        if (str.IsEmpty()) {
+            AfxMessageBox(_T("Input UID by clicking Peer-to-Peer message"));
+            return;
+        }
+    }
+    else if (m_curOptionType == eType_Channel) {
+        if (str.IsEmpty()) {
+            AfxMessageBox(_T("Input UID by clicking In-Channel message"));
+            return;
+        }
+    }
+
+
+    if (!lastUploadMediaId.empty()) {
+        //  m_pSignalInstance->SendImageMsg(info.userAccount, imageMsg->imageMessage, P2PImageMsg);
+        if (m_pSignalInstance->SendImageMsg(cs2Utf8(str), lastUploadMediaId.c_str(), P2PImageMsg))
+            return;
+    }
+
+
+    if (!lastDownloadMediaId.empty()) {
+        //  m_pSignalInstance->SendImageMsg(info.userAccount, imageMsg->imageMessage, P2PImageMsg);
+        if (m_pSignalInstance->SendImageMsg(cs2Utf8(str), lastDownloadMediaId.c_str(), P2PImageMsg))
+            return;
     }
 }
