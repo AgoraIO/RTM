@@ -26,7 +26,12 @@ AppCertificatedId=
 
 ## Developer Environment Requirements
 - win7 above
-- Visual Studio 2013
+- Visual Studio 2013 above
+
+## Visual Studio Version
+
+We support vs2017 default. If you need other version vs, right click mouse on the project. 
+Property->General ->Platform Tool, select the you need.
 
 ## Operating Instructions
 - 1.Copy the corresponding files to the relevant directories in the SDK folder of the sln peer directory

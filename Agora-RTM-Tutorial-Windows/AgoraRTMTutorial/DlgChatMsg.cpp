@@ -464,6 +464,8 @@ void CDlgChatMsg::chooseInstance(const std::string &userAccount)
 		m_pCurChat->ShowWindow(SW_SHOW);
 		m_pCurChat->Invalidate(TRUE);
 	}
+
+    
 }
 
 void CDlgChatMsg::chooseChannel(const std::string &channelName)
@@ -979,14 +981,14 @@ void CDlgChatMsg::OnBnClickedButtonMediaId()
 
 
     if (!lastUploadMediaId.empty()) {
-        //  m_pSignalInstance->SendImageMsg(info.userAccount, imageMsg->imageMessage, P2PImageMsg);
+        
         if (m_pSignalInstance->SendImageMsg(cs2Utf8(str), lastUploadMediaId.c_str(), P2PImageMsg))
             return;
     }
 
 
     if (!lastDownloadMediaId.empty()) {
-        //  m_pSignalInstance->SendImageMsg(info.userAccount, imageMsg->imageMessage, P2PImageMsg);
+       
         if (m_pSignalInstance->SendImageMsg(cs2Utf8(str), lastDownloadMediaId.c_str(), P2PImageMsg))
             return;
     }

@@ -28,7 +28,11 @@ AppCertificatedId=
 
 ## 运行环境
 - win7以上
-- Visual Studio 2013
+- Visual Studio 2013 以上
+
+## Visual Studio Version
+
+默认支持VS2017，如果想要使用其他版本。在项目上右键，属性->一般 ->平台工具集，选择要使用的vs版本。
 
 ## 运行说明
 - 1.在Sln同级目录SDK文件夹内将对应的文件拷贝到相关目录下
