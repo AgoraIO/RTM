@@ -2,6 +2,7 @@
 
 
 #include <map>
+#include <set>
 #include "AgoraRTMInstance.h"
 #include "RTMWrap.h"
 // CDlgChatMsg Dialog
@@ -12,6 +13,9 @@ class CSingleCallBack;
 class CDlgInput;
 #define THUMBWIDTH   100
 #define THUMBHEIGHT  90
+
+
+
 class CDlgChatMsg : public CDialogEx
 {
 	DECLARE_DYNAMIC(CDlgChatMsg)
@@ -85,8 +89,9 @@ private:
 	eTagMsgtype m_curOptionType;
 
     std::string recvUid;
-    std::map<long long, ImageMsgInfo> m_mapImageMsg;
-    std::map<long long, ImageMsgInfo> m_mapRecvImageMsg;
+    std::map<long long, AG_IMAGE_MESSAGE> m_mapImageMsg;
+    std::map<long long, AG_IMAGE_MESSAGE> m_mapRecvImageMsg;
+    std::set<long long> m_imageMessagIdSet;
 
     long long currentImageMsgRequestId = -1;
     long long currentDownloadImageMsgRequestId = -1;
@@ -94,8 +99,10 @@ private:
     CString imageUID;
     CString imageChannel;
 
-    std::string lastUploadMediaId;
-    std::string lastDownloadMediaId;
+    LastImageInfo lastUploadImageInfo;
+    LastImageInfo lastDownloadImageInfo;
+  
+    bool bSendImageByMedia;
 public:
     CListCtrl m_lstImage;
     afx_msg void OnBnClickedSendImage();
@@ -103,7 +110,7 @@ public:
     CImageList m_ImageListThumb;
     CStatic m_staImage;
     CStatic m_sta;
-    CStatic m_staSendImage;
+    CStatic m_staSendImageInfo;
     CStatic m_staRecvImageinfo;
     CButton m_btnSendImage;
     CButton m_btnCancel;
@@ -113,5 +120,6 @@ public:
     afx_msg void OnBnClickedButtonImgSet();
     afx_msg void OnBnClickedButtonMediaId();
     CButton m_sendImageByMediaId;
+    CButton m_btnCancelDownload;
 };
 

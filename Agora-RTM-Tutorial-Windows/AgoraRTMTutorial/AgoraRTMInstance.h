@@ -48,10 +48,12 @@ public:
   bool downloadImage(std::string filePath, std::string mediaId, long long& requestId);
   bool CancelMediaUpload(long long requestId);
   bool CancelMediaDownload(long long requestId);
-  bool SendImageMsg(const std::string &account, IImageMessage* message, bool bP2P);
-  bool SendImageMsg(const std::string &account, std::string mediaId, bool bP2P);
+  bool SendImageMsg(const std::string &account, IImageMessage* message, bool bP2P, bool bEnableOfflineMessage);
+  bool CreateImageMessageByMediaId(std::string mediaId, IImageMessage* message);
+  bool SendImageMsg(const std::string &account, LastImageInfo& imageInfo, bool bP2P, bool bEnableOfflineMessage);
   std::string getSDKVersion();
   void SetImageInfo(int w, int h, int tw, int th);
+  static bool SetThumbnail(AG_IMAGE_MESSAGE& info, IImageMessage& imageMessage);
 protected:
   CAgoraRTMInstance(const std::string appId, CRTMCallBack* callBack);
   void InitRTMService();

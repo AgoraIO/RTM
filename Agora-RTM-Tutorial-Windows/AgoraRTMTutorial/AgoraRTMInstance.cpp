@@ -215,10 +215,12 @@ std::string CAgoraRTMInstance::getSDKVersion() {
 }
 
 
-bool CAgoraRTMInstance::SendImageMsg(const std::string &account, IImageMessage* message, bool bP2P)
+bool CAgoraRTMInstance::SendImageMsg(const std::string &account, IImageMessage* message, bool bP2P, bool bEnableOfflineMessage)
 {
     if (m_rtmService != nullptr) {
         SendMessageOptions options;
+        if (bEnableOfflineMessage)
+            options.enableOfflineMessaging = true;
         int ret = -1;
         if (bP2P)
             ret = m_rtmService->sendMessageToPeer(account.c_str(), message, options);
@@ -229,13 +231,27 @@ bool CAgoraRTMInstance::SendImageMsg(const std::string &account, IImageMessage* 
     return false;
 }
 
-bool CAgoraRTMInstance::SendImageMsg(const std::string &account, std::string mediaId, bool bP2P)
+bool CAgoraRTMInstance::CreateImageMessageByMediaId(std::string mediaId, IImageMessage* message)
 {
     if (m_rtmService != nullptr) {
-        IImageMessage* message = m_rtmService->createImageMessageByMediaId(mediaId.c_str());
+        message = m_rtmService->createImageMessageByMediaId(mediaId.c_str());
+    }
+
+    return message == NULL ? false : true;
+}
+
+bool CAgoraRTMInstance::SendImageMsg(const std::string &account, LastImageInfo& lastImageInfo, bool bP2P, bool bEnableOfflineMessage)
+{
+    if (m_rtmService != nullptr) {
+        IImageMessage* message = m_rtmService->createImageMessageByMediaId(lastImageInfo.mediaId.c_str());
+        message->setFileName(lastImageInfo.imageMessage.fileName.c_str());
+       SetThumbnail(lastImageInfo.imageMessage, *message);
+
         if (!message)
             return false;
         SendMessageOptions options;
+        if (bEnableOfflineMessage)
+            options.enableOfflineMessaging = true;
         int ret = -1;
         if (bP2P)
             ret = m_rtmService->sendMessageToPeer(account.c_str(), message, options);
@@ -287,4 +303,71 @@ bool CAgoraRTMInstance::CancelMediaDownload(long long requestId)
 void CAgoraRTMInstance::SetImageInfo(int w, int h, int tw, int th)
 {
     m_RtmCallback->SetImageInfo(w, h, tw, th);
+}
+
+
+int GetEncoderClsid(WCHAR *format, CLSID *pClsid)
+{
+    unsigned int num = 0, size = 0;
+    Gdiplus::GetImageEncodersSize(&num, &size);
+    if (size == 0) return -1;
+    Gdiplus::ImageCodecInfo *pImageCodecInfo = (Gdiplus::ImageCodecInfo *)(malloc(size));
+    if (pImageCodecInfo == NULL) return -1;
+    Gdiplus::GetImageEncoders(num, size, pImageCodecInfo);
+    for (unsigned int j = 0; j < num; ++j)
+    {
+        if (wcscmp(pImageCodecInfo[j].MimeType, format) == 0) {
+            *pClsid = pImageCodecInfo[j].Clsid;
+            free(pImageCodecInfo);
+            return j;
+        }
+    }
+    free(pImageCodecInfo);
+    return -1;
+}
+
+
+bool CAgoraRTMInstance::SetThumbnail(AG_IMAGE_MESSAGE& info, IImageMessage& imageMessage)
+{
+    CString path = utf82cs(info.filePath);
+    Image image(path);
+    Image* pThumbnail = image.GetThumbnailImage(info.thumbnailWidth, info.thumbnailHeight);
+
+    LONG uQuality = 100L;
+    CLSID imageCLSID;
+    Gdiplus::EncoderParameters encoderParams;
+    encoderParams.Count = 1;
+    encoderParams.Parameter[0].NumberOfValues = 1;
+    encoderParams.Parameter[0].Guid = Gdiplus::EncoderQuality;
+    encoderParams.Parameter[0].Type = Gdiplus::EncoderParameterValueTypeLong;
+    encoderParams.Parameter[0].Value = &uQuality;
+    // GetEncoderClsid(L"image/jpg", &imageCLSID);
+
+    int pos = path.ReverseFind(_T('.'));
+    GetEncoderClsid(path.Mid(pos + 1).GetBuffer(0), &imageCLSID);
+    IStream* pIStream = nullptr;
+    if (CreateStreamOnHGlobal(NULL, FALSE, (LPSTREAM*)&pIStream) != S_OK) {
+        AfxMessageBox(_T("create stream failed"));
+        return false;
+    }
+    pThumbnail->Save(pIStream, &imageCLSID, NULL);
+
+    STATSTG sts;
+    pIStream->Stat(&sts, STATFLAG_DEFAULT);
+    ULARGE_INTEGER uli = sts.cbSize;
+    LARGE_INTEGER zero;
+    zero.QuadPart = 0;
+    int size = (int)uli.QuadPart;
+    BYTE* imageData = new BYTE[size];
+    ULONG written;
+    pIStream->Seek(zero, STREAM_SEEK_SET, NULL);
+    pIStream->Read(imageData, size, &written);
+
+    imageMessage.setThumbnail(imageData, size);
+    imageMessage.setThumbnailWidth(info.thumbnailWidth);
+    imageMessage.setThumbnailHeight(info.thumbnailHeight);
+
+    delete[] imageData;
+    pIStream->Release();
+    return true;
 }

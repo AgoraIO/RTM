@@ -18,8 +18,7 @@
 ## 运行示例程序
 - 首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。
 然后选择测试项目里的编辑，如果该 AppID 对应的 Certificate 已经启用，根据操作拿到 App Certificate。
-将 AppID 和 App Certificate 填写进 "AgoraRTM.ini" 中
-
+将 AppID 和 App Certificate 填写进 "AgoraRTM.ini" 中。如果第一次运行，会在运行目录下生成该文件，并且打开文件。
 ```
 [BaseInfo]
 AppID=
@@ -36,7 +35,6 @@ AppCertificatedId=
 
 ## 运行说明
 - 1.在Sln同级目录SDK文件夹内将对应的文件拷贝到相关目录下
-- 2.将agora_rtm_sdk.dll 文件拷贝到编译执行目录（debug / release）
 
 ## 联系我们
 - 完整的 API 文档见 [文档中心](https://docs.agora.io/cn/)

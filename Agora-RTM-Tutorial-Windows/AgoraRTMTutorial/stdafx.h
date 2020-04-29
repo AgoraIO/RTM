@@ -282,6 +282,7 @@ namespace SingleDesc
   typedef struct AGTagMessageSendSuccess
   {
     std::string messageID;
+    std::string mediaId;
   }AG_SIGNAL_MESSAGESENDSUCCESS, *PAG_SIGNAL_MESSAGESENDSUCCESS, *LPAG_SIGNAL_MESSAGESENDSUCCESS;
 
   typedef struct AGTagMessageInstantReceive
@@ -324,6 +325,7 @@ namespace SingleDesc
 
   typedef struct AgTagImageMessage{
       std::string filePath;
+      std::string fileName;
       std::string thumbFile;
       std::string peerId;
       std::string mediaId;
@@ -334,18 +336,6 @@ namespace SingleDesc
       int thumbnailHeight;
       int size;
       long long thumbmailSize;
-     
-      /*
-      std::string mediaId;
-      std::string messageId;
-      int width;
-      int height;
-      int thumbnailWidth;
-      int thumbnailHeight;
-      int size;
-      long long thumbmailSize;
-      char* thumbnailData;
-      char* data;*/
   }AG_IMAGE_MESSAGE, *PAG_IMAGE_MESSAGE, *LPAG_IMAGE_MESSAGE;
 
   typedef struct _UploadMediaProgress {

@@ -4,14 +4,20 @@
 #include "IAgoraRtmService.h"
 using namespace agora::rtm;
 
-typedef struct _ImageMsgInfo {
+/*typedef struct _ImageMsgInfo {
     IImageMessage* imageMsg;
     std::string fileName;
     std::string userAccount;
-    CString fullPath;
     int expectedThumbWidth;
     int expectedThumbHeight;
-}ImageMsgInfo;
+    CString fullPath;
+    CString imageFormat;
+}ImageMsgInfo;*/
+
+typedef struct _LastImageInfo {
+    std::string mediaId;
+    AG_IMAGE_MESSAGE imageMessage;
+}LastImageInfo, *PLastImageInfo, *LPLastImageInfo;
 
 class CRTMCallBack :public agora::rtm::IRtmServiceEventHandler,
   public agora::rtm::IChannelEventHandler {
