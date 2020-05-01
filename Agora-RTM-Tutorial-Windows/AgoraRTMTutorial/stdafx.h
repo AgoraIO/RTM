@@ -95,8 +95,8 @@ namespace SingleDesc
         WM_ImageMessageRecvFromPeer = 255,
         WM_ImageMessageRecvChannel,
         WM_ImageMessageDownloadResult,
-        WM_MediaUploadingProgress,
-        WM_MediaDownloadingProgress=260,
+        WM_MediaUploadingProgress=270,
+        WM_MediaDownloadingProgress,
     WM_UNKWOWN = WM_USER + 0xfff
   };
 

@@ -785,15 +785,15 @@ LRESULT CDlgChatMsg::onRecvImageMsgfromChannel(WPARAM wParam, LPARAM lParam)
 LRESULT CDlgChatMsg::onMediaUploadProgress(WPARAM wParam, LPARAM lParam)
 {
     PMediaProgress uploadProgress = (PMediaProgress)wParam;
-
-    if (uploadProgress->totalSize != 0) {
-        CString strInfo;
-        strInfo.Format(_T("Upload %.2f"), 100 * ((float)uploadProgress->currentSize / (float)uploadProgress->totalSize));
-        strInfo += "%";
-        m_staSendImageInfo.SetWindowText(strInfo);
-    }
-    
     if (uploadProgress) {
+        if (uploadProgress->totalSize != 0) {
+            CString strInfo;
+            strInfo.Format(_T("Upload %.2f"), 100 * ((float)uploadProgress->currentSize / (float)uploadProgress->totalSize));
+            strInfo += "%";
+            m_staSendImageInfo.SetWindowText(strInfo);
+        }
+
+
         delete uploadProgress;
         uploadProgress = nullptr;
     }
@@ -803,16 +803,17 @@ LRESULT CDlgChatMsg::onMediaDownloadloadProgress(WPARAM wParam, LPARAM lParam)
 {
     CString userAccount = m_pDlgInput->GetInputString();
     PMediaProgress downloadProgress = (PMediaProgress)wParam;
-    if (currentDownloadImageMsgRequestId == -1)
-        return 0;
-    AG_IMAGE_MESSAGE info = m_mapRecvImageMsg[currentDownloadImageMsgRequestId];
-    if (downloadProgress->totalSize != 0) {
-        CString strInfo;
-        strInfo.Format(_T("Recv Image from %s:download %.2f"), userAccount.GetBuffer(0), 100 * ((float)downloadProgress->currentSize / (float)downloadProgress->totalSize));
-        strInfo += "%";
-        m_staRecvImageinfo.SetWindowText(strInfo);
-    }
     if (downloadProgress) {
+        if (currentDownloadImageMsgRequestId == -1)
+            return 0;
+        AG_IMAGE_MESSAGE info = m_mapRecvImageMsg[currentDownloadImageMsgRequestId];
+        if (downloadProgress->totalSize != 0) {
+            CString strInfo;
+            strInfo.Format(_T("Recv Image from %s:download %.2f"), userAccount.GetBuffer(0), 100 * ((float)downloadProgress->currentSize / (float)downloadProgress->totalSize));
+            strInfo += "%";
+            m_staRecvImageinfo.SetWindowText(strInfo);
+        }
+
         delete downloadProgress;
         downloadProgress = nullptr;
     }
@@ -827,7 +828,7 @@ LRESULT CDlgChatMsg::onImageMediaDownloadResult(WPARAM wParam, LPARAM lParam)
     CString userAccount = m_pDlgInput->GetInputString();
     if (code == DOWNLOAD_MEDIA_ERR_OK) {
        
-        recevImageFullPath = s2cs(info.filePath);
+        recevImageFullPath = utf82cs(info.filePath);
         if (PathFileExists(recevImageFullPath)) {
             Image image(recevImageFullPath);
             Graphics graphics(m_hRecvDC);
@@ -1005,7 +1006,7 @@ void CDlgChatMsg::OnBnClickedButtonMediaId()
 
     int bEnableOfflineMessage = ((CButton*)(GetDlgItem(IDC_CHECK_EnableOffLineMsg)))->GetCheck();
     if (!lastUploadImageInfo.mediaId.empty()) {
-      
+        
         if (m_pSignalInstance->SendImageMsg(cs2Utf8(str), lastUploadImageInfo, P2PImageMsg, bEnableOfflineMessage)) {
             bSendImageByMedia = true;
             m_sendImageByMediaId.EnableWindow(FALSE);

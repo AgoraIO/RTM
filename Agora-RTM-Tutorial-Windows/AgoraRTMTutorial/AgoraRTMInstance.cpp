@@ -344,7 +344,8 @@ bool CAgoraRTMInstance::SetThumbnail(AG_IMAGE_MESSAGE& info, IImageMessage& imag
     // GetEncoderClsid(L"image/jpg", &imageCLSID);
 
     int pos = path.ReverseFind(_T('.'));
-    GetEncoderClsid(path.Mid(pos + 1).GetBuffer(0), &imageCLSID);
+    CString imageType = _T("image/") + path.Mid(pos + 1);
+    GetEncoderClsid(imageType.GetBuffer(0), &imageCLSID);
     IStream* pIStream = nullptr;
     if (CreateStreamOnHGlobal(NULL, FALSE, (LPSTREAM*)&pIStream) != S_OK) {
         AfxMessageBox(_T("create stream failed"));

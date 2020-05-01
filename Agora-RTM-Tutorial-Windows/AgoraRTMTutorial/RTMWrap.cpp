@@ -155,7 +155,7 @@ void CRTMCallBack::onMediaUploadingProgress(long long requestId, const MediaOper
     uploadProgress->requestId   = requestId;
     uploadProgress->currentSize = progress.currentSize;
     uploadProgress->totalSize   = progress.totalSize;
-    postMsg(WM_MediaUploadingProgress, (WPARAM)uploadProgress, 0);
+    ::PostMessage(m_MsgWnd, WM_MediaUploadingProgress, (WPARAM)uploadProgress, 0);
    
 }
 
