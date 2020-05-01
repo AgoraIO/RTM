@@ -105,6 +105,20 @@ BOOL CDlgChatMsg::OnInitDialog()
     if (lastUploadImageInfo.mediaId.empty() && lastDownloadImageInfo.mediaId.empty()) {
         m_sendImageByMediaId.EnableWindow(FALSE);
     }
+    m_hSendDC = ::GetDC(m_sta.GetSafeHwnd());
+    m_hRecvDC = ::GetDC(m_staImage.GetSafeHwnd());
+    RECT rect;
+    m_sta.GetWindowRect(&rect);
+    rcSendImage.X = 0;
+    rcSendImage.Y = 0;
+    rcSendImage.Width  = rect.right - rect.left;
+    rcSendImage.Height = rect.bottom - rect.top;
+
+    m_staImage.GetWindowRect(&rect);
+    rcRecvImage.X = 0;
+    rcRecvImage.Y = 0;
+    rcRecvImage.Width  = rect.right - rect.left;
+    rcRecvImage.Height = rect.bottom - rect.top;
 	return TRUE;
 }
 
@@ -123,6 +137,19 @@ void CDlgChatMsg::OnPaint()
 	RECT rt;
 	pTempWnd->GetWindowRect(&rt);
 	ScreenToClient(&rt);
+
+    Graphics graphics(m_hSendDC);
+    Image imageSend(sendImageFullPath);
+    graphics.DrawImage(&imageSend, rcSendImage);
+
+    Image image(recevImageFullPath);
+    Graphics graphicsRecv(m_hRecvDC);
+    graphicsRecv.DrawImage(&image, rcRecvImage);
+
+    TCHAR szLog[MAX_PATH] = { 0 };
+    _stprintf_s(szLog, MAX_PATH, L"OnPaint, sendImageFullPath:%s, recevImageFullPath:%s"
+        , sendImageFullPath.GetBuffer(0), recevImageFullPath.GetBuffer(0));
+
 }
 
 void CDlgChatMsg::OnClose()
@@ -493,6 +520,9 @@ void CDlgChatMsg::uninitCtrl()
 		delete m_pDlgInput;
 		m_pDlgInput = nullptr;
 	}
+
+    m_mapRecvImageMsg.clear();
+    m_mapImageMsg.clear();  
 }
 
 void CDlgChatMsg::initResource()
@@ -620,30 +650,28 @@ void CDlgChatMsg::OnBnClickedSendImage()
 
     if (fileDlg.DoModal() == IDOK)
     {
-        m_sta.SetWindowText(_T("")); 
+   
         m_staSendImageInfo.SetWindowText(_T(""));
         //Change the window's title to the opened file's title.
-        CString fullPath = fileDlg.GetPathName();
-        Image image(fullPath);
+        sendImageFullPath = fileDlg.GetPathName();
+
+        TCHAR szLog[MAX_PATH] = { 0 };
+        _stprintf_s(szLog, MAX_PATH, L"OnBnClickedSendImage, sendImageFullPath:%s, recevImageFullPath:%s"
+            , sendImageFullPath.GetBuffer(0), recevImageFullPath.GetBuffer(0));
+
+
+        Image image(sendImageFullPath);
         FILE* fp = NULL;
-        fopen_s(&fp, cs2s(fullPath).c_str(), "rb");
+        fopen_s(&fp, cs2s(sendImageFullPath).c_str(), "rb");
         fseek(fp, 0, SEEK_END);
         long size = ftell(fp);
         if (size > 30 * 1024 * 1024) {
             AfxMessageBox(_T("Image size larger than 30MB"));
             return;
         }
-        Gdiplus::Graphics graphics(::GetDC(m_sta.GetSafeHwnd()));
-        Rect rc;
-        RECT rect;
-        m_sta.GetWindowRect(&rect);
-        rc.X = 0;
-        rc.Y = 0;
-        rc.Width  = rect.right - rect.left;
-        rc.Height = rect.bottom - rect.top;
-        graphics.DrawImage(&image, rc);
+        Gdiplus::Graphics graphics(m_hSendDC);
+        graphics.DrawImage(&image, rcSendImage);
 
-       // image.GetThumbnailImage()
         int imageWidth  = image.GetWidth();
         int imageHeight = image.GetHeight();
         int thumbWidth  = imageWidth;
@@ -658,10 +686,10 @@ void CDlgChatMsg::OnBnClickedSendImage()
         m_pSignalCallBack->SetImageInfo(imageWidth, imageHeight, thumbWidth, thumbHeight);
 
         long long requestId = 0;
-        if (m_pSignalInstance->uploadImage(cs2Utf8(fullPath), requestId)) {
+        if (m_pSignalInstance->uploadImage(cs2Utf8(sendImageFullPath), requestId)) {
             AG_IMAGE_MESSAGE info;
             info.fileName    = cs2Utf8(fileDlg.GetFileName());
-            info.filePath    = cs2Utf8(fullPath);
+            info.filePath    = cs2Utf8(sendImageFullPath);
             info.thumbnailWidth  = thumbWidth;
             info.thumbnailHeight = thumbHeight;
             m_mapImageMsg.insert(std::make_pair(requestId, info));
@@ -675,25 +703,22 @@ void CDlgChatMsg::OnBnClickedSendImage()
 LRESULT CDlgChatMsg::onRecvImageMsgfromPeer(WPARAM wParam, LPARAM lParam)
 {
     PAG_IMAGE_MESSAGE lpData = (PAG_IMAGE_MESSAGE)wParam;
-
+   
     if (!lpData)
         return 0;
-  
-    CString strFile = s2cs(lpData->thumbFile);
-    if (PathFileExists(strFile)) {
-        Image image(strFile);
 
-        Graphics graphics(::GetDC(m_staImage.GetSafeHwnd()));
-        Rect rc;
-        RECT rect;
-        m_staImage.GetWindowRect(&rect);
+    char szLog[MAX_PATH] = { 0 };
+    sprintf_s(szLog, MAX_PATH, "onRecvImageMsgfromPeer, thumbFile:%s", lpData->thumbFile);
+    LOG_MSG(szLog);
+    recevImageFullPath = s2cs(lpData->thumbFile);
+    if (PathFileExists(recevImageFullPath)) {
+        Image image(recevImageFullPath);
+        Graphics graphics(m_hRecvDC);
+        graphics.DrawImage(&image, rcRecvImage);
 
-        rc.X = 0;
-        rc.Y = 0;
-        rc.Width = rect.right - rect.left;
-        rc.Height = rect.bottom - rect.top;
-
-        graphics.DrawImage(&image, rc);
+        TCHAR szLog[MAX_PATH] = { 0 };
+        _stprintf_s(szLog, MAX_PATH, L"onRecvImageMsgfromPeer, sendImageFullPath:%s, recevImageFullPath:%s"
+            , sendImageFullPath.GetBuffer(0), recevImageFullPath.GetBuffer(0));
     }
     CString strInfo;
     strInfo.Format(_T("Recv Image from:%s"), utf82cs(lpData->peerId));
@@ -702,13 +727,13 @@ LRESULT CDlgChatMsg::onRecvImageMsgfromPeer(WPARAM wParam, LPARAM lParam)
     CString fileName = utf82cs(lpData->filePath);
     {
         long long requestId = -1;
+        sprintf_s(szLog, MAX_PATH, "onRecvImageMsgfromPeer, filePath:%s", cs2s(fileName));
+        LOG_MSG(szLog);
         if (m_pSignalInstance->downloadImage(lpData->filePath.c_str(), lpData->mediaId.c_str(), requestId)) {
             lastDownloadImageInfo.mediaId      = lpData->mediaId;
             lastDownloadImageInfo.imageMessage = *lpData;
             currentDownloadImageMsgRequestId   = requestId;
             m_mapRecvImageMsg.insert(std::make_pair(requestId, *lpData));
-            
-            
         }
 
     }
@@ -725,28 +750,21 @@ LRESULT CDlgChatMsg::onRecvImageMsgfromChannel(WPARAM wParam, LPARAM lParam)
     if (!lpData)
         return 0;
   
-    CString strFile = s2cs(lpData->thumbFile);
-    if (PathFileExists(strFile)) {
-        Image image(strFile);
-
-        Graphics graphics(::GetDC(m_staImage.GetSafeHwnd()));
-        Rect rc;
-        RECT rect;
-        m_staImage.GetWindowRect(&rect);
-
-        rc.X = 0;
-        rc.Y = 0;
-        rc.Width = rect.right - rect.left;
-        rc.Height = rect.bottom - rect.top;
-
-        graphics.DrawImage(&image, rc);
-
+    recevImageFullPath = s2cs(lpData->thumbFile);
+    if (PathFileExists(recevImageFullPath)) {
+        Image image(recevImageFullPath);
+        Graphics graphics(m_hRecvDC);
+        graphics.DrawImage(&image, rcRecvImage);
     }
     CString strInfo;
     strInfo.Format(_T("Recv Image from:%s"), utf82cs(lpData->peerId));
     m_staRecvImageinfo.SetWindowText(strInfo);
 
-    CString fileName = utf82cs(lpData->filePath);
+    recevImageFullPath = utf82cs(lpData->filePath);
+
+    TCHAR szLog[MAX_PATH] = { 0 };
+    _stprintf_s(szLog, MAX_PATH, L"onRecvImageMsgfromChannel, sendImageFullPath:%s, recevImageFullPath:%s"
+        , sendImageFullPath.GetBuffer(0), recevImageFullPath.GetBuffer(0));
     {
         long long requestId = -1;
         if (m_pSignalInstance->downloadImage(lpData->filePath.c_str(), lpData->mediaId.c_str(), requestId)) {
@@ -785,6 +803,8 @@ LRESULT CDlgChatMsg::onMediaDownloadloadProgress(WPARAM wParam, LPARAM lParam)
 {
     CString userAccount = m_pDlgInput->GetInputString();
     PMediaProgress downloadProgress = (PMediaProgress)wParam;
+    if (currentDownloadImageMsgRequestId == -1)
+        return 0;
     AG_IMAGE_MESSAGE info = m_mapRecvImageMsg[currentDownloadImageMsgRequestId];
     if (downloadProgress->totalSize != 0) {
         CString strInfo;
@@ -807,21 +827,15 @@ LRESULT CDlgChatMsg::onImageMediaDownloadResult(WPARAM wParam, LPARAM lParam)
     CString userAccount = m_pDlgInput->GetInputString();
     if (code == DOWNLOAD_MEDIA_ERR_OK) {
        
-        CString fullPath = s2cs(info.filePath);
-        if (PathFileExists(fullPath)) {
-            Image image(fullPath);
+        recevImageFullPath = s2cs(info.filePath);
+        if (PathFileExists(recevImageFullPath)) {
+            Image image(recevImageFullPath);
+            Graphics graphics(m_hRecvDC);
+            graphics.DrawImage(&image, rcRecvImage);
 
-            Graphics graphics(::GetDC(m_staImage.GetSafeHwnd()));
-            Rect rc;
-            RECT rect;
-            m_staImage.GetWindowRect(&rect);
-
-            rc.X = 0;
-            rc.Y = 0;
-            rc.Width = rect.right - rect.left;
-            rc.Height = rect.bottom - rect.top;
-
-            graphics.DrawImage(&image, rc);
+            TCHAR szLog[MAX_PATH] = { 0 };
+            _stprintf_s(szLog, MAX_PATH, L"onImageMediaDownloadResult, sendImageFullPath:%s, recevImageFullPath:%s"
+                , sendImageFullPath.GetBuffer(0), recevImageFullPath.GetBuffer(0));
 
             CString strInfo;
             strInfo.Format(_T("Recv Image from:%s"), userAccount);
@@ -883,8 +897,9 @@ LRESULT CDlgChatMsg::onImageMediaUploadResult(WPARAM wParam, LPARAM lParam)
                 m_imageMessagIdSet.insert(imageUploadResult->imageMessage->getMessageId());
                 int bEnableOfflineMessage = ((CButton*)(GetDlgItem(IDC_CHECK_EnableOffLineMsg)))->GetCheck();
                 if (m_pSignalInstance->SendImageMsg(cs2Utf8(userAccount), imageUploadResult->imageMessage, P2PImageMsg, bEnableOfflineMessage)) {
-                       lastUploadImageInfo.mediaId     = imageUploadResult->imageMessage->getMediaId();
+                    lastUploadImageInfo.mediaId = imageUploadResult->imageMessage->getMediaId();
                     m_sendImageByMediaId.EnableWindow(TRUE);
+                    lastUploadImageInfo.imageMessage = info;
                 }
                 else
                     m_staSendImageInfo.SetWindowText(_T("send image message failed"));

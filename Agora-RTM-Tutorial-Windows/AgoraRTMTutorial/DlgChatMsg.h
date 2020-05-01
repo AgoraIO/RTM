@@ -103,6 +103,14 @@ private:
     LastImageInfo lastDownloadImageInfo;
   
     bool bSendImageByMedia;
+
+    HDC m_hSendDC;
+    Rect rcSendImage;
+    CString sendImageFullPath;
+    
+    HDC m_hRecvDC;
+    Rect rcRecvImage;
+    CString recevImageFullPath;
 public:
     CListCtrl m_lstImage;
     afx_msg void OnBnClickedSendImage();
