@@ -225,7 +225,7 @@ bool CAgoraRTMInstance::SendImageMsg(const std::string &account, IImageMessage* 
         if (bP2P)
             ret = m_rtmService->sendMessageToPeer(account.c_str(), message, options);
         else
-            ret = m_Channel->sendMessage(message);
+            ret = m_Channel->sendMessage(message, options);
         return ret == 0 ? true : false;
     }
     return false;
@@ -256,7 +256,7 @@ bool CAgoraRTMInstance::SendImageMsg(const std::string &account, LastImageInfo& 
         if (bP2P)
             ret = m_rtmService->sendMessageToPeer(account.c_str(), message, options);
         else
-            ret = m_Channel->sendMessage(message);
+            ret = m_Channel->sendMessage(message, options);
         return ret == 0 ? true : false;
     }
     return false;

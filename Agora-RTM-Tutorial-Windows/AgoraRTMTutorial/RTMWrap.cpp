@@ -227,6 +227,7 @@ void CRTMCallBack::onImageMessageReceived(const char *userId, const IImageMessag
         }
 
         imageMsg->filePath = imageMessagepath + message->getFileName();
+        imageMsg->fileName = message->getFileName();
         postMsg(WM_ImageMessageRecvChannel, (WPARAM)imageMsg, 0);
     }
 }
