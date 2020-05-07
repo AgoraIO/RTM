@@ -8,6 +8,9 @@ import java.util.Scanner;
 import io.agora.rtm.RtmClient;
 import io.agora.rtm.RtmClientListener;
 import io.agora.rtm.RtmMessage;
+import io.agora.rtm.RtmFileMessage;
+import io.agora.rtm.RtmImageMessage;
+import io.agora.rtm.RtmMediaOperationProgress;
 
 import io.agora.rtm.ErrorInfo;
 import io.agora.rtm.ResultCallback;
@@ -66,7 +69,7 @@ class ChannelListener implements RtmChannelListener {
 
     @Override
     public void onFileMessageReceived(RtmFileMessage message, RtmChannelMember fromMember){
-        
+
     }
 }
 
