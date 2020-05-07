@@ -63,7 +63,7 @@ public class ChatManager {
                         mMessagePool.insertOfflineMessage(rtmImageMessage, peerId);
                     } else {
                         for (RtmClientListener listener : mListenerList) {
-                            listener.onMessageReceived(rtmImageMessage, peerId);
+                            listener.onImageMessageReceivedFromPeer(rtmImageMessage, peerId);
                         }
                     }
                 }
