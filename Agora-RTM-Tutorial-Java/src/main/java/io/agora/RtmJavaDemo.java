@@ -58,6 +58,16 @@ class ChannelListener implements RtmChannelListener {
         System.out.println("member " + account + " lefted the channel "
                          + channel_);
     }
+
+    @Override
+    void onImageMessageReceived(RtmImageMessage message, RtmChannelMember fromMember){
+
+    }
+
+    @Override
+    void onFileMessageReceived(RtmFileMessage message, RtmChannelMember fromMember){
+        
+    }
 }
 
 public class RtmJavaDemo {
@@ -87,9 +97,29 @@ public class RtmJavaDemo {
                 public void onTokenExpired() {
                 }
 
-		@Override
-		public void onPeersOnlineStatusChanged(Map<String, Integer> peersStatus) {
-		}
+        		@Override
+        		public void onPeersOnlineStatusChanged(Map<String, Integer> peersStatus) {
+        		}
+
+                @Override
+                void onImageMessageReceivedFromPeer(RtmImageMessage message, String peerId){
+
+                }
+
+                @Override
+                void onFileMessageReceivedFromPeer(RtmFileMessage message, String peerId){
+
+                }
+
+                @Override
+                void onMediaUploadingProgress(RtmMediaOperationProgress progress, long requestId){
+
+                }
+
+                @Override
+                void onMediaDownloadingProgress(RtmMediaOperationProgress progress, long requestId){
+                    
+                }
             });
         } catch (Exception e) {
             System.out.println("Rtm sdk init fatal error!");
