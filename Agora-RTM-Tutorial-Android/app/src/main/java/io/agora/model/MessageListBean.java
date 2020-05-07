@@ -17,7 +17,8 @@ public class MessageListBean {
 
     /**
      * Create message list bean from offline messages
-     * @param account peer user id to find offline messages from
+     *
+     * @param account     peer user id to find offline messages from
      * @param chatManager chat manager that managers offline message pool
      */
     public MessageListBean(String account, ChatManager chatManager) {
@@ -27,7 +28,7 @@ public class MessageListBean {
         List<RtmMessage> messageList = chatManager.getAllOfflineMessages(account);
         for (RtmMessage m : messageList) {
             // All offline messages are from peer users
-            MessageBean bean = new MessageBean(account, m.getText(), false);
+            MessageBean bean = new MessageBean(account, m, false);
             messageBeanList.add(bean);
         }
     }

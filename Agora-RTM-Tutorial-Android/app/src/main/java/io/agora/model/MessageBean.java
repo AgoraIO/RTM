@@ -1,12 +1,14 @@
 package io.agora.model;
 
+import io.agora.rtm.RtmMessage;
+
 public class MessageBean {
     private String account;
-    private String message;
+    private RtmMessage message;
     private int background;
     private boolean beSelf;
 
-    public MessageBean(String account, String message, boolean beSelf) {
+    public MessageBean(String account, RtmMessage message, boolean beSelf) {
         this.account = account;
         this.message = message;
         this.beSelf = beSelf;
@@ -20,11 +22,11 @@ public class MessageBean {
         this.account = account;
     }
 
-    public String getMessage() {
+    public RtmMessage getMessage() {
         return message;
     }
 
-    public void setMessage(String message) {
+    public void setMessage(RtmMessage message) {
         this.message = message;
     }
 

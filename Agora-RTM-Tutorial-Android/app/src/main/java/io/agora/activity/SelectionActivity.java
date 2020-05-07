@@ -3,7 +3,6 @@ package io.agora.activity;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.v7.widget.AppCompatCheckBox;
 import android.view.View;
 import android.widget.CompoundButton;
 import android.widget.EditText;
@@ -12,10 +11,12 @@ import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.widget.AppCompatCheckBox;
+
 import io.agora.rtm.RtmClient;
 import io.agora.rtmtutorial.AGApplication;
-import io.agora.rtmtutorial.R;
 import io.agora.rtmtutorial.ChatManager;
+import io.agora.rtmtutorial.R;
 import io.agora.utils.MessageUtil;
 
 

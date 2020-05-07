@@ -22,10 +22,13 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="io.agora.activity.SelectionActivity"
-            android:screenOrientation="portrait"/>
-        <activity android:name="io.agora.activity.MessageActivity"
+        <activity
+            android:name="io.agora.activity.SelectionActivity"
             android:screenOrientation="portrait" />
+        <activity
+            android:name="io.agora.activity.MessageActivity"
+            android:screenOrientation="portrait" />
+        <activity android:name="com.theartofdev.edmodo.cropper.CropImageActivity" />
     </application>
 
 </manifest>
