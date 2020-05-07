@@ -60,12 +60,12 @@ class ChannelListener implements RtmChannelListener {
     }
 
     @Override
-    void onImageMessageReceived(RtmImageMessage message, RtmChannelMember fromMember){
+    public void onImageMessageReceived(RtmImageMessage message, RtmChannelMember fromMember){
 
     }
 
     @Override
-    void onFileMessageReceived(RtmFileMessage message, RtmChannelMember fromMember){
+    public void onFileMessageReceived(RtmFileMessage message, RtmChannelMember fromMember){
         
     }
 }
@@ -102,22 +102,22 @@ public class RtmJavaDemo {
         		}
 
                 @Override
-                void onImageMessageReceivedFromPeer(RtmImageMessage message, String peerId){
+                public void onImageMessageReceivedFromPeer(RtmImageMessage message, String peerId){
 
                 }
 
                 @Override
-                void onFileMessageReceivedFromPeer(RtmFileMessage message, String peerId){
+                public void onFileMessageReceivedFromPeer(RtmFileMessage message, String peerId){
 
                 }
 
                 @Override
-                void onMediaUploadingProgress(RtmMediaOperationProgress progress, long requestId){
+                public void onMediaUploadingProgress(RtmMediaOperationProgress progress, long requestId){
 
                 }
 
                 @Override
-                void onMediaDownloadingProgress(RtmMediaOperationProgress progress, long requestId){
+                public void onMediaDownloadingProgress(RtmMediaOperationProgress progress, long requestId){
                     
                 }
             });
