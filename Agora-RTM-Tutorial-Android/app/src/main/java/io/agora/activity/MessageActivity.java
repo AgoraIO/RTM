@@ -397,7 +397,7 @@ public class MessageActivity extends Activity {
 
                 @Override
                 public void onFailure(ErrorInfo errorInfo) {
-
+                    showToast(errorInfo.getErrorDescription());
                 }
             });
         }
@@ -479,7 +479,7 @@ public class MessageActivity extends Activity {
 
                 @Override
                 public void onFailure(ErrorInfo errorInfo) {
-
+                    showToast(errorInfo.getErrorDescription());
                 }
             });
         }
@@ -528,6 +528,11 @@ public class MessageActivity extends Activity {
     }
 
     private void showToast(final String text) {
-        Toast.makeText(MessageActivity.this, text, Toast.LENGTH_SHORT).show();
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(MessageActivity.this, text, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
