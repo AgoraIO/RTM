@@ -8,6 +8,9 @@ import java.util.Scanner;
 import io.agora.rtm.RtmClient;
 import io.agora.rtm.RtmClientListener;
 import io.agora.rtm.RtmMessage;
+import io.agora.rtm.RtmFileMessage;
+import io.agora.rtm.RtmImageMessage;
+import io.agora.rtm.RtmMediaOperationProgress;
 
 import io.agora.rtm.ErrorInfo;
 import io.agora.rtm.ResultCallback;
@@ -58,6 +61,16 @@ class ChannelListener implements RtmChannelListener {
         System.out.println("member " + account + " lefted the channel "
                          + channel_);
     }
+
+    @Override
+    public void onImageMessageReceived(RtmImageMessage message, RtmChannelMember fromMember){
+
+    }
+
+    @Override
+    public void onFileMessageReceived(RtmFileMessage message, RtmChannelMember fromMember){
+
+    }
 }
 
 public class RtmJavaDemo {
@@ -87,9 +100,29 @@ public class RtmJavaDemo {
                 public void onTokenExpired() {
                 }
 
-		@Override
-		public void onPeersOnlineStatusChanged(Map<String, Integer> peersStatus) {
-		}
+        		@Override
+        		public void onPeersOnlineStatusChanged(Map<String, Integer> peersStatus) {
+        		}
+
+                @Override
+                public void onImageMessageReceivedFromPeer(RtmImageMessage message, String peerId){
+
+                }
+
+                @Override
+                public void onFileMessageReceivedFromPeer(RtmFileMessage message, String peerId){
+
+                }
+
+                @Override
+                public void onMediaUploadingProgress(RtmMediaOperationProgress progress, long requestId){
+
+                }
+
+                @Override
+                public void onMediaDownloadingProgress(RtmMediaOperationProgress progress, long requestId){
+                    
+                }
             });
         } catch (Exception e) {
             System.out.println("Rtm sdk init fatal error!");
