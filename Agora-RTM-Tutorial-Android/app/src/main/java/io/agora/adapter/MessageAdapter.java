@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -28,21 +29,23 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
     private List<MessageBean> messageBeanList;
     private LayoutInflater inflater;
+    private OnItemClickListener listener;
 
-    public MessageAdapter(Context context, List<MessageBean> messageBeanList) {
-        inflater = ((Activity) context).getLayoutInflater();
+    public MessageAdapter(Context context, List<MessageBean> messageBeanList, @NonNull OnItemClickListener listener) {
+        this.inflater = ((Activity) context).getLayoutInflater();
         this.messageBeanList = messageBeanList;
+        this.listener = listener;
     }
 
+    @NonNull
     @Override
-    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = inflater.inflate(R.layout.msg_item_layout, parent, false);
-        MyViewHolder holder = new MyViewHolder(view);
-        return holder;
+        return new MyViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull MyViewHolder holder, int position) {
         setupView(holder, position);
     }
 
@@ -62,6 +65,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             }
         }
 
+        holder.itemView.setOnClickListener(v -> {
+            if (listener != null) listener.onItemClick(bean);
+        });
+
         RtmMessage rtmMessage = bean.getMessage();
         switch (rtmMessage.getMessageType()) {
             case RtmMessageType.TEXT:
@@ -79,8 +86,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
             case RtmMessageType.IMAGE:
                 RtmImageMessage rtmImageMessage = (RtmImageMessage) rtmMessage;
                 RequestBuilder<Drawable> builder = Glide.with(holder.itemView)
-                        .load(rtmImageMessage.getFileName())
-                        .override(rtmImageMessage.getWidth() / 5, rtmImageMessage.getHeight() / 5);
+                        .load(rtmImageMessage.getThumbnail())
+                        .override(rtmImageMessage.getThumbnailWidth(), rtmImageMessage.getThumbnailHeight());
                 if (bean.isBeSelf()) {
                     holder.imageViewSelfImg.setVisibility(View.VISIBLE);
                     builder.into(holder.imageViewSelfImg);
@@ -96,6 +103,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
 
         holder.layoutRight.setVisibility(bean.isBeSelf() ? View.VISIBLE : View.GONE);
         holder.layoutLeft.setVisibility(bean.isBeSelf() ? View.GONE : View.VISIBLE);
+    }
+
+    public interface OnItemClickListener {
+        void onItemClick(MessageBean message);
     }
 
     static class MyViewHolder extends RecyclerView.ViewHolder {

@@ -5,6 +5,7 @@ import io.agora.rtm.RtmMessage;
 public class MessageBean {
     private String account;
     private RtmMessage message;
+    private String cacheFile;
     private int background;
     private boolean beSelf;
 
@@ -30,12 +31,12 @@ public class MessageBean {
         this.message = message;
     }
 
-    public boolean isBeSelf() {
-        return beSelf;
+    public String getCacheFile() {
+        return cacheFile;
     }
 
-    public void setBeSelf(boolean beSelf) {
-        this.beSelf = beSelf;
+    public void setCacheFile(String cacheFile) {
+        this.cacheFile = cacheFile;
     }
 
     public int getBackground() {
@@ -44,5 +45,13 @@ public class MessageBean {
 
     public void setBackground(int background) {
         this.background = background;
+    }
+
+    public boolean isBeSelf() {
+        return beSelf;
+    }
+
+    public void setBeSelf(boolean beSelf) {
+        this.beSelf = beSelf;
     }
 }

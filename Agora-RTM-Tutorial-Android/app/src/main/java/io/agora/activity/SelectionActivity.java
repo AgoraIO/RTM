@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
@@ -13,29 +12,23 @@ import android.widget.Toast;
 
 import androidx.appcompat.widget.AppCompatCheckBox;
 
-import io.agora.rtm.RtmClient;
 import io.agora.rtmtutorial.AGApplication;
 import io.agora.rtmtutorial.ChatManager;
 import io.agora.rtmtutorial.R;
 import io.agora.utils.MessageUtil;
 
-
 public class SelectionActivity extends Activity {
-    private final String TAG = SelectionActivity.class.getSimpleName();
-
     private static final int CHAT_REQUEST_CODE = 1;
 
     private TextView mTitleTextView;
     private TextView mChatButton;
     private EditText mNameEditText;
-    private AppCompatCheckBox mOfflineMsgCheck;
 
     private boolean mIsPeerToPeerMode = true; // whether peer to peer mode or channel mode\
     private String mTargetName;
     private String mUserId;
 
     private ChatManager mChatManager;
-    private RtmClient mRtmClient;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +36,6 @@ public class SelectionActivity extends Activity {
         setContentView(R.layout.activity_selection);
 
         mChatManager = AGApplication.the().getChatManager();
-        mRtmClient = mChatManager.getRtmClient();
 
         initUIAndData();
     }
@@ -55,36 +47,28 @@ public class SelectionActivity extends Activity {
         mNameEditText = findViewById(R.id.selection_name);
         mChatButton = findViewById(R.id.selection_chat_btn);
         RadioGroup modeGroup = findViewById(R.id.mode_radio_group);
-        modeGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                switch (checkedId) {
-                    case R.id.peer_radio_button:
-                        mIsPeerToPeerMode = true;
-                        mTitleTextView.setText(getString(R.string.title_peer_msg));
-                        mChatButton.setText(getString(R.string.btn_chat));
-                        mNameEditText.setHint(getString(R.string.hint_friend));
-                        break;
-                    case R.id.selection_tab_channel:
-                        mIsPeerToPeerMode = false;
-                        mTitleTextView.setText(getString(R.string.title_channel_message));
-                        mChatButton.setText(getString(R.string.btn_join));
-                        mNameEditText.setHint(getString(R.string.hint_channel));
-                        break;
-                }
+        modeGroup.setOnCheckedChangeListener((group, checkedId) -> {
+            switch (checkedId) {
+                case R.id.peer_radio_button:
+                    mIsPeerToPeerMode = true;
+                    mTitleTextView.setText(getString(R.string.title_peer_msg));
+                    mChatButton.setText(getString(R.string.btn_chat));
+                    mNameEditText.setHint(getString(R.string.hint_friend));
+                    break;
+                case R.id.selection_tab_channel:
+                    mIsPeerToPeerMode = false;
+                    mTitleTextView.setText(getString(R.string.title_channel_message));
+                    mChatButton.setText(getString(R.string.btn_join));
+                    mNameEditText.setHint(getString(R.string.hint_channel));
+                    break;
             }
         });
         RadioButton peerMode = findViewById(R.id.peer_radio_button);
         peerMode.setChecked(true);
 
-        mOfflineMsgCheck = findViewById(R.id.offline_msg_check);
+        AppCompatCheckBox mOfflineMsgCheck = findViewById(R.id.offline_msg_check);
         mOfflineMsgCheck.setChecked(mChatManager.isOfflineMessageEnabled());
-        mOfflineMsgCheck.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                mChatManager.enableOfflineMessage(isChecked);
-            }
-        });
+        mOfflineMsgCheck.setOnCheckedChangeListener((buttonView, isChecked) -> mChatManager.enableOfflineMessage(isChecked));
     }
 
     public void onClickChat(View v) {

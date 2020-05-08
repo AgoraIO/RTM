@@ -2,9 +2,7 @@ package io.agora.rtmtutorial;
 
 import android.app.Application;
 
-
 public class AGApplication extends Application {
-
     private static AGApplication sInstance;
     private ChatManager mChatManager;
 

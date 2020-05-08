@@ -31,7 +31,7 @@
         android:background="@color/blue"
         android:clickable="true"
         android:gravity="center"
-        android:onClick="onClickSend"
+        android:onClick="onClick"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:text="@string/str_send"
@@ -46,7 +46,7 @@
         android:layout_margin="20dp"
         android:clickable="true"
         android:gravity="center"
-        android:onClick="onClickSend"
+        android:onClick="onClick"
         android:src="@drawable/ic_image_black_24dp"
         android:textColor="@color/white" />
 
@@ -68,5 +68,13 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/message_edittiext"
         android:layout_below="@+id/message_title" />
+
+    <ImageView
+        android:id="@+id/big_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black"
+        android:onClick="onClick"
+        android:visibility="gone" />
 
 </RelativeLayout>

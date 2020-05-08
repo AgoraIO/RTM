@@ -7,8 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import io.agora.rtm.ErrorInfo;
-import io.agora.rtm.ResultCallback;
 import io.agora.rtm.RtmClient;
 import io.agora.rtm.RtmClientListener;
 import io.agora.rtm.RtmFileMessage;
@@ -16,7 +14,6 @@ import io.agora.rtm.RtmImageMessage;
 import io.agora.rtm.RtmMediaOperationProgress;
 import io.agora.rtm.RtmMessage;
 import io.agora.rtm.SendMessageOptions;
-import io.agora.utils.CacheUtil;
 
 public class ChatManager {
     private static final String TAG = ChatManager.class.getSimpleName();
@@ -63,17 +60,7 @@ public class ChatManager {
                         // If currently there is no callback to handle this
                         // message, this message is unread yet. Here we also
                         // take it as an offline message.
-                        CacheUtil.cacheImage(mContext, mRtmClient, rtmImageMessage, new ResultCallback<Void>() {
-                            @Override
-                            public void onSuccess(Void aVoid) {
-                                mMessagePool.insertOfflineMessage(rtmImageMessage, peerId);
-                            }
-
-                            @Override
-                            public void onFailure(ErrorInfo errorInfo) {
-
-                            }
-                        });
+                        mMessagePool.insertOfflineMessage(rtmImageMessage, peerId);
                     } else {
                         for (RtmClientListener listener : mListenerList) {
                             listener.onImageMessageReceivedFromPeer(rtmImageMessage, peerId);

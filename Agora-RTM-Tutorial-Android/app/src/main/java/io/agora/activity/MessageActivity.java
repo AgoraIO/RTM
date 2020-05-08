@@ -4,17 +4,21 @@ import android.app.Activity;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.theartofdev.edmodo.cropper.CropImage;
 
+import java.text.MessageFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -34,20 +38,20 @@ import io.agora.rtm.RtmFileMessage;
 import io.agora.rtm.RtmImageMessage;
 import io.agora.rtm.RtmMediaOperationProgress;
 import io.agora.rtm.RtmMessage;
-import io.agora.rtm.RtmRequestId;
+import io.agora.rtm.RtmMessageType;
 import io.agora.rtm.RtmStatusCode;
 import io.agora.rtmtutorial.AGApplication;
 import io.agora.rtmtutorial.ChatManager;
 import io.agora.rtmtutorial.R;
-import io.agora.utils.CacheUtil;
+import io.agora.utils.ImageUtil;
 import io.agora.utils.MessageUtil;
-
 
 public class MessageActivity extends Activity {
     private final String TAG = MessageActivity.class.getSimpleName();
 
     private TextView mTitleTextView;
     private EditText mMsgEditText;
+    private ImageView mBigImage;
     private RecyclerView mRecyclerView;
     private List<MessageBean> mMessageBeanList = new ArrayList<>();
     private MessageAdapter mMessageAdapter;
@@ -101,18 +105,42 @@ public class MessageActivity extends Activity {
         } else {
             mChannelName = targetName;
             mChannelMemberCount = 1;
-            mTitleTextView.setText(mChannelName + "(" + mChannelMemberCount + ")");
+            mTitleTextView.setText(MessageFormat.format("{0}({1})", mChannelName, mChannelMemberCount));
             createAndJoinChannel();
         }
 
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         layoutManager.setOrientation(RecyclerView.VERTICAL);
-        mMessageAdapter = new MessageAdapter(this, mMessageBeanList);
+        mMessageAdapter = new MessageAdapter(this, mMessageBeanList, message -> {
+            if (message.getMessage().getMessageType() == RtmMessageType.IMAGE) {
+                if (!TextUtils.isEmpty(message.getCacheFile())) {
+                    Glide.with(this).load(message.getCacheFile()).into(mBigImage);
+                    mBigImage.setVisibility(View.VISIBLE);
+                } else {
+                    ImageUtil.cacheImage(this, mRtmClient, (RtmImageMessage) message.getMessage(), new ResultCallback<String>() {
+                        @Override
+                        public void onSuccess(String file) {
+                            message.setCacheFile(file);
+                            runOnUiThread(() -> {
+                                Glide.with(MessageActivity.this).load(file).into(mBigImage);
+                                mBigImage.setVisibility(View.VISIBLE);
+                            });
+                        }
+
+                        @Override
+                        public void onFailure(ErrorInfo errorInfo) {
+
+                        }
+                    });
+                }
+            }
+        });
         mRecyclerView = findViewById(R.id.message_list);
         mRecyclerView.setLayoutManager(layoutManager);
         mRecyclerView.setAdapter(mMessageAdapter);
 
         mMsgEditText = findViewById(R.id.message_edittiext);
+        mBigImage = findViewById(R.id.big_image);
     }
 
     @Override
@@ -133,25 +161,21 @@ public class MessageActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 Uri resultUri = result.getUri();
 
-                final String fileName = resultUri.getPath();
-                mRtmClient.createImageMessageByUploading(fileName, new RtmRequestId(), new ResultCallback<RtmImageMessage>() {
+                final String file = resultUri.getPath();
+                ImageUtil.uploadImage(this, mRtmClient, file, new ResultCallback<RtmImageMessage>() {
                     @Override
                     public void onSuccess(final RtmImageMessage rtmImageMessage) {
-                        rtmImageMessage.setFileName(fileName);
+                        runOnUiThread(() -> {
+                            MessageBean messageBean = new MessageBean(mUserId, rtmImageMessage, true);
+                            messageBean.setCacheFile(file);
+                            mMessageBeanList.add(messageBean);
+                            mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                            mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
 
-                        runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                MessageBean messageBean = new MessageBean(mUserId, rtmImageMessage, true);
-                                mMessageBeanList.add(messageBean);
-                                mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
-                                mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
-
-                                if (mIsPeerToPeerMode) {
-                                    sendPeerMessage(rtmImageMessage);
-                                } else {
-                                    sendChannelMessage(rtmImageMessage);
-                                }
+                            if (mIsPeerToPeerMode) {
+                                sendPeerMessage(rtmImageMessage);
+                            } else {
+                                sendChannelMessage(rtmImageMessage);
                             }
                         });
                     }
@@ -167,7 +191,7 @@ public class MessageActivity extends Activity {
         }
     }
 
-    public void onClickSend(View v) {
+    public void onClick(View v) {
         switch (v.getId()) {
             case R.id.selection_chat_btn:
                 String msg = mMsgEditText.getText().toString();
@@ -191,6 +215,9 @@ public class MessageActivity extends Activity {
             case R.id.selection_img_btn:
                 CropImage.activity().start(this);
                 break;
+            case R.id.big_image:
+                mBigImage.setVisibility(View.GONE);
+                break;
         }
     }
 
@@ -201,7 +228,7 @@ public class MessageActivity extends Activity {
     /**
      * API CALL: send message to peer
      */
-    private void sendPeerMessage(RtmMessage message) {
+    private void sendPeerMessage(final RtmMessage message) {
         mRtmClient.sendMessageToPeer(mPeerId, message, mChatManager.getSendMessageOptions(), new ResultCallback<Void>() {
             @Override
             public void onSuccess(Void aVoid) {
@@ -212,21 +239,18 @@ public class MessageActivity extends Activity {
             public void onFailure(ErrorInfo errorInfo) {
                 // refer to RtmStatusCode.PeerMessageState for the message state
                 final int errorCode = errorInfo.getErrorCode();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        switch (errorCode) {
-                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_TIMEOUT:
-                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_FAILURE:
-                                showToast(getString(R.string.send_msg_failed));
-                                break;
-                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_PEER_UNREACHABLE:
-                                showToast(getString(R.string.peer_offline));
-                                break;
-                            case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_CACHED_BY_SERVER:
-                                showToast(getString(R.string.message_cached));
-                                break;
-                        }
+                runOnUiThread(() -> {
+                    switch (errorCode) {
+                        case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_TIMEOUT:
+                        case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_FAILURE:
+                            showToast(getString(R.string.send_msg_failed));
+                            break;
+                        case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_PEER_UNREACHABLE:
+                            showToast(getString(R.string.peer_offline));
+                            break;
+                        case RtmStatusCode.PeerMessageError.PEER_MESSAGE_ERR_CACHED_BY_SERVER:
+                            showToast(getString(R.string.message_cached));
+                            break;
                     }
                 });
             }
@@ -258,12 +282,9 @@ public class MessageActivity extends Activity {
             @Override
             public void onFailure(ErrorInfo errorInfo) {
                 Log.e(TAG, "join channel failed");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        showToast(getString(R.string.join_channel_failed));
-                        finish();
-                    }
+                runOnUiThread(() -> {
+                    showToast(getString(R.string.join_channel_failed));
+                    finish();
                 });
             }
         });
@@ -276,12 +297,9 @@ public class MessageActivity extends Activity {
         mRtmChannel.getMembers(new ResultCallback<List<RtmChannelMember>>() {
             @Override
             public void onSuccess(final List<RtmChannelMember> responseInfo) {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mChannelMemberCount = responseInfo.size();
-                        refreshChannelTitle();
-                    }
+                runOnUiThread(() -> {
+                    mChannelMemberCount = responseInfo.size();
+                    refreshChannelTitle();
                 });
             }
 
@@ -306,15 +324,12 @@ public class MessageActivity extends Activity {
             public void onFailure(ErrorInfo errorInfo) {
                 // refer to RtmStatusCode.ChannelMessageState for the message state
                 final int errorCode = errorInfo.getErrorCode();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        switch (errorCode) {
-                            case RtmStatusCode.ChannelMessageError.CHANNEL_MESSAGE_ERR_TIMEOUT:
-                            case RtmStatusCode.ChannelMessageError.CHANNEL_MESSAGE_ERR_FAILURE:
-                                showToast(getString(R.string.send_msg_failed));
-                                break;
-                        }
+                runOnUiThread(() -> {
+                    switch (errorCode) {
+                        case RtmStatusCode.ChannelMessageError.CHANNEL_MESSAGE_ERR_TIMEOUT:
+                        case RtmStatusCode.ChannelMessageError.CHANNEL_MESSAGE_ERR_FAILURE:
+                            showToast(getString(R.string.send_msg_failed));
+                            break;
                     }
                 });
             }
@@ -339,65 +354,46 @@ public class MessageActivity extends Activity {
 
         @Override
         public void onConnectionStateChanged(final int state, int reason) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    switch (state) {
-                        case RtmStatusCode.ConnectionState.CONNECTION_STATE_RECONNECTING:
-                            showToast(getString(R.string.reconnecting));
-                            break;
-                        case RtmStatusCode.ConnectionState.CONNECTION_STATE_ABORTED:
-                            showToast(getString(R.string.account_offline));
-                            setResult(MessageUtil.ACTIVITY_RESULT_CONN_ABORTED);
-                            finish();
-                            break;
-                    }
+            runOnUiThread(() -> {
+                switch (state) {
+                    case RtmStatusCode.ConnectionState.CONNECTION_STATE_RECONNECTING:
+                        showToast(getString(R.string.reconnecting));
+                        break;
+                    case RtmStatusCode.ConnectionState.CONNECTION_STATE_ABORTED:
+                        showToast(getString(R.string.account_offline));
+                        setResult(MessageUtil.ACTIVITY_RESULT_CONN_ABORTED);
+                        finish();
+                        break;
                 }
             });
         }
 
         @Override
         public void onMessageReceived(final RtmMessage message, final String peerId) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    if (peerId.equals(mPeerId)) {
-                        MessageBean messageBean = new MessageBean(peerId, message, false);
-                        messageBean.setBackground(getMessageColor(peerId));
-                        mMessageBeanList.add(messageBean);
-                        mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
-                        mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
-                    } else {
-                        MessageUtil.addMessageBean(peerId, message);
-                    }
+            runOnUiThread(() -> {
+                if (peerId.equals(mPeerId)) {
+                    MessageBean messageBean = new MessageBean(peerId, message, false);
+                    messageBean.setBackground(getMessageColor(peerId));
+                    mMessageBeanList.add(messageBean);
+                    mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                    mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
+                } else {
+                    MessageUtil.addMessageBean(peerId, message);
                 }
             });
         }
 
         @Override
         public void onImageMessageReceivedFromPeer(final RtmImageMessage rtmImageMessage, final String peerId) {
-            CacheUtil.cacheImage(MessageActivity.this, mRtmClient, rtmImageMessage, new ResultCallback<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (peerId.equals(mPeerId)) {
-                                MessageBean messageBean = new MessageBean(peerId, rtmImageMessage, false);
-                                messageBean.setBackground(getMessageColor(peerId));
-                                mMessageBeanList.add(messageBean);
-                                mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
-                                mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
-                            } else {
-                                MessageUtil.addMessageBean(peerId, rtmImageMessage);
-                            }
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(ErrorInfo errorInfo) {
-                    showToast(errorInfo.getErrorDescription());
+            runOnUiThread(() -> {
+                if (peerId.equals(mPeerId)) {
+                    MessageBean messageBean = new MessageBean(peerId, rtmImageMessage, false);
+                    messageBean.setBackground(getMessageColor(peerId));
+                    mMessageBeanList.add(messageBean);
+                    mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                    mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
+                } else {
+                    MessageUtil.addMessageBean(peerId, rtmImageMessage);
                 }
             });
         }
@@ -444,43 +440,27 @@ public class MessageActivity extends Activity {
 
         @Override
         public void onMessageReceived(final RtmMessage message, final RtmChannelMember fromMember) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    String account = fromMember.getUserId();
-                    Log.i(TAG, "onMessageReceived account = " + account + " msg = " + message);
-                    MessageBean messageBean = new MessageBean(account, message, false);
-                    messageBean.setBackground(getMessageColor(account));
-                    mMessageBeanList.add(messageBean);
-                    mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
-                    mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
-                }
+            runOnUiThread(() -> {
+                String account = fromMember.getUserId();
+                Log.i(TAG, "onMessageReceived account = " + account + " msg = " + message);
+                MessageBean messageBean = new MessageBean(account, message, false);
+                messageBean.setBackground(getMessageColor(account));
+                mMessageBeanList.add(messageBean);
+                mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
             });
         }
 
         @Override
         public void onImageMessageReceived(final RtmImageMessage rtmImageMessage, final RtmChannelMember rtmChannelMember) {
-            CacheUtil.cacheImage(MessageActivity.this, mRtmClient, rtmImageMessage, new ResultCallback<Void>() {
-                @Override
-                public void onSuccess(Void aVoid) {
-                    runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            String account = rtmChannelMember.getUserId();
-                            Log.i(TAG, "onMessageReceived account = " + account + " msg = " + rtmImageMessage);
-                            MessageBean messageBean = new MessageBean(account, rtmImageMessage, false);
-                            messageBean.setBackground(getMessageColor(account));
-                            mMessageBeanList.add(messageBean);
-                            mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
-                            mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
-                        }
-                    });
-                }
-
-                @Override
-                public void onFailure(ErrorInfo errorInfo) {
-                    showToast(errorInfo.getErrorDescription());
-                }
+            runOnUiThread(() -> {
+                String account = rtmChannelMember.getUserId();
+                Log.i(TAG, "onMessageReceived account = " + account + " msg = " + rtmImageMessage);
+                MessageBean messageBean = new MessageBean(account, rtmImageMessage, false);
+                messageBean.setBackground(getMessageColor(account));
+                mMessageBeanList.add(messageBean);
+                mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
             });
         }
 
@@ -491,23 +471,17 @@ public class MessageActivity extends Activity {
 
         @Override
         public void onMemberJoined(RtmChannelMember member) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mChannelMemberCount++;
-                    refreshChannelTitle();
-                }
+            runOnUiThread(() -> {
+                mChannelMemberCount++;
+                refreshChannelTitle();
             });
         }
 
         @Override
         public void onMemberLeft(RtmChannelMember member) {
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    mChannelMemberCount--;
-                    refreshChannelTitle();
-                }
+            runOnUiThread(() -> {
+                mChannelMemberCount--;
+                refreshChannelTitle();
             });
         }
     }
@@ -528,11 +502,6 @@ public class MessageActivity extends Activity {
     }
 
     private void showToast(final String text) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                Toast.makeText(MessageActivity.this, text, Toast.LENGTH_SHORT).show();
-            }
-        });
+        runOnUiThread(() -> Toast.makeText(MessageActivity.this, text, Toast.LENGTH_SHORT).show());
     }
 }
