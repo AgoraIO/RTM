@@ -376,36 +376,30 @@ public class MessageActivity extends Activity {
 
         @Override
         public void onImageMessageReceivedFromPeer(final RtmImageMessage rtmImageMessage, final String peerId) {
-            rtmImageMessage.setFileName(CacheUtil.getCacheFile(MessageActivity.this, rtmImageMessage.getMediaId()));
-            mRtmClient.downloadMediaToFile(
-                    rtmImageMessage.getMediaId(),
-                    rtmImageMessage.getFileName(),
-                    new RtmRequestId(),
-                    new ResultCallback<Void>() {
+            CacheUtil.cacheImage(MessageActivity.this, mRtmClient, rtmImageMessage, new ResultCallback<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    runOnUiThread(new Runnable() {
                         @Override
-                        public void onSuccess(Void aVoid) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (peerId.equals(mPeerId)) {
-                                        MessageBean messageBean = new MessageBean(peerId, rtmImageMessage, false);
-                                        messageBean.setBackground(getMessageColor(peerId));
-                                        mMessageBeanList.add(messageBean);
-                                        mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
-                                        mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
-                                    } else {
-                                        MessageUtil.addMessageBean(peerId, rtmImageMessage);
-                                    }
-                                }
-                            });
+                        public void run() {
+                            if (peerId.equals(mPeerId)) {
+                                MessageBean messageBean = new MessageBean(peerId, rtmImageMessage, false);
+                                messageBean.setBackground(getMessageColor(peerId));
+                                mMessageBeanList.add(messageBean);
+                                mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                                mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
+                            } else {
+                                MessageUtil.addMessageBean(peerId, rtmImageMessage);
+                            }
                         }
+                    });
+                }
 
-                        @Override
-                        public void onFailure(ErrorInfo errorInfo) {
+                @Override
+                public void onFailure(ErrorInfo errorInfo) {
 
-                        }
-                    }
-            );
+                }
+            });
         }
 
         @Override
@@ -466,34 +460,28 @@ public class MessageActivity extends Activity {
 
         @Override
         public void onImageMessageReceived(final RtmImageMessage rtmImageMessage, final RtmChannelMember rtmChannelMember) {
-            rtmImageMessage.setFileName(CacheUtil.getCacheFile(MessageActivity.this, rtmImageMessage.getMediaId()));
-            mRtmClient.downloadMediaToFile(
-                    rtmImageMessage.getMediaId(),
-                    rtmImageMessage.getFileName(),
-                    new RtmRequestId(),
-                    new ResultCallback<Void>() {
+            CacheUtil.cacheImage(MessageActivity.this, mRtmClient, rtmImageMessage, new ResultCallback<Void>() {
+                @Override
+                public void onSuccess(Void aVoid) {
+                    runOnUiThread(new Runnable() {
                         @Override
-                        public void onSuccess(Void aVoid) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String account = rtmChannelMember.getUserId();
-                                    Log.i(TAG, "onMessageReceived account = " + account + " msg = " + rtmImageMessage);
-                                    MessageBean messageBean = new MessageBean(account, rtmImageMessage, false);
-                                    messageBean.setBackground(getMessageColor(account));
-                                    mMessageBeanList.add(messageBean);
-                                    mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
-                                    mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
-                                }
-                            });
+                        public void run() {
+                            String account = rtmChannelMember.getUserId();
+                            Log.i(TAG, "onMessageReceived account = " + account + " msg = " + rtmImageMessage);
+                            MessageBean messageBean = new MessageBean(account, rtmImageMessage, false);
+                            messageBean.setBackground(getMessageColor(account));
+                            mMessageBeanList.add(messageBean);
+                            mMessageAdapter.notifyItemRangeChanged(mMessageBeanList.size(), 1);
+                            mRecyclerView.scrollToPosition(mMessageBeanList.size() - 1);
                         }
+                    });
+                }
 
-                        @Override
-                        public void onFailure(ErrorInfo errorInfo) {
+                @Override
+                public void onFailure(ErrorInfo errorInfo) {
 
-                        }
-                    }
-            );
+                }
+            });
         }
 
         @Override
