@@ -1,66 +1,67 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_video_chat_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
+
     <TextView
         android:id="@+id/selection_title"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/blue"
         android:gravity="center"
+        android:padding="15dp"
         android:text="@string/title_peer_msg"
-        android:textColor="@color/white"
-        android:padding="15dp"/>
+        android:textColor="@color/white" />
+
     <ImageView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
-        android:padding="15dp"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
+        android:background="@drawable/logout"
         android:onClick="onClickFinish"
-        android:background="@drawable/logout"/>
+        android:padding="15dp" />
 
     <TextView
         android:id="@+id/selection_chat_btn"
         android:layout_width="wrap_content"
         android:layout_height="40dp"
-        android:layout_margin="40dp"
         android:layout_below="@+id/selection_title"
         android:layout_alignParentRight="true"
+        android:layout_margin="40dp"
+        android:background="@color/blue"
         android:clickable="true"
         android:gravity="center"
         android:onClick="onClickChat"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
-        android:textColor="@color/white"
-        android:background="@color/blue"
-        android:text="@string/btn_chat" />
+        android:text="@string/btn_chat"
+        android:textColor="@color/white" />
 
     <EditText
         android:id="@+id/selection_name"
         android:layout_width="match_parent"
         android:layout_height="40dp"
         android:layout_below="@+id/selection_title"
-        android:layout_toLeftOf="@+id/selection_chat_btn"
-        android:hint="@string/hint_friend"
         android:layout_marginLeft="40dp"
-        android:layout_marginBottom="25dp"
         android:layout_marginTop="40dp"
+        android:layout_marginBottom="25dp"
+        android:layout_toLeftOf="@+id/selection_chat_btn"
         android:background="@color/white"
+        android:hint="@string/hint_friend"
         android:lines="1"
         android:padding="5dp" />
 
-    <android.support.v7.widget.AppCompatCheckBox
+    <androidx.appcompat.widget.AppCompatCheckBox
         android:id="@+id/offline_msg_check"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/selection_name"
-        android:layout_alignLeft="@id/selection_name"
         android:layout_alignStart="@id/selection_name"
-        android:text="@string/hint_enable_offline_message"/>
+        android:layout_alignLeft="@id/selection_name"
+        android:text="@string/hint_enable_offline_message" />
 
     <RadioGroup
         android:id="@+id/mode_radio_group"
@@ -68,27 +69,29 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:background="@color/blue"
+        android:orientation="horizontal"
         android:paddingLeft="120dp"
         android:paddingTop="10dp"
-        android:paddingBottom="10dp"
-        android:orientation="horizontal">
+        android:paddingBottom="10dp">
+
         <RadioButton
             android:id="@+id/peer_radio_button"
             android:layout_width="35dp"
             android:layout_height="35dp"
-            android:padding="15dp"
-            android:clickable="true"
+            android:background="@drawable/selector_single_btn"
             android:button="@null"
-            android:background="@drawable/selector_single_btn"/>
+            android:clickable="true"
+            android:padding="15dp" />
+
         <RadioButton
             android:id="@+id/selection_tab_channel"
             android:layout_width="35dp"
             android:layout_height="35dp"
             android:layout_marginLeft="60dp"
-            android:padding="15dp"
-            android:clickable="true"
+            android:background="@drawable/selector_channel_btn"
             android:button="@null"
-            android:background="@drawable/selector_channel_btn"/>
+            android:clickable="true"
+            android:padding="15dp" />
 
     </RadioGroup>
 

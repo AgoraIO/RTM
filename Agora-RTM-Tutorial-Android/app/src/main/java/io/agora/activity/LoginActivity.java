@@ -1,6 +1,5 @@
 package io.agora.activity;
 
-
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -14,10 +13,9 @@ import io.agora.rtm.ErrorInfo;
 import io.agora.rtm.ResultCallback;
 import io.agora.rtm.RtmClient;
 import io.agora.rtmtutorial.AGApplication;
-import io.agora.rtmtutorial.R;
 import io.agora.rtmtutorial.ChatManager;
+import io.agora.rtmtutorial.R;
 import io.agora.utils.MessageUtil;
-
 
 public class LoginActivity extends Activity {
     private final String TAG = LoginActivity.class.getSimpleName();
@@ -26,7 +24,6 @@ public class LoginActivity extends Activity {
     private EditText mUserIdEditText;
     private String mUserId;
 
-    private ChatManager mChatManager;
     private RtmClient mRtmClient;
     private boolean mIsInChat = false;
 
@@ -38,7 +35,7 @@ public class LoginActivity extends Activity {
         mUserIdEditText = findViewById(R.id.user_id);
         mLoginBtn = findViewById(R.id.button_login);
 
-        mChatManager = AGApplication.the().getChatManager();
+        ChatManager mChatManager = AGApplication.the().getChatManager();
         mRtmClient = mChatManager.getRtmClient();
     }
 
@@ -76,26 +73,20 @@ public class LoginActivity extends Activity {
             @Override
             public void onSuccess(Void responseInfo) {
                 Log.i(TAG, "login success");
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        Intent intent = new Intent(LoginActivity.this, SelectionActivity.class);
-                        intent.putExtra(MessageUtil.INTENT_EXTRA_USER_ID, mUserId);
-                        startActivity(intent);
-                    }
+                runOnUiThread(() -> {
+                    Intent intent = new Intent(LoginActivity.this, SelectionActivity.class);
+                    intent.putExtra(MessageUtil.INTENT_EXTRA_USER_ID, mUserId);
+                    startActivity(intent);
                 });
             }
 
             @Override
             public void onFailure(ErrorInfo errorInfo) {
                 Log.i(TAG, "login failed: " + errorInfo.getErrorCode());
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mLoginBtn.setEnabled(true);
-                        mIsInChat = false;
-                        showToast(getString(R.string.login_failed));
-                    }
+                runOnUiThread(() -> {
+                    mLoginBtn.setEnabled(true);
+                    mIsInChat = false;
+                    showToast(getString(R.string.login_failed));
                 });
             }
         });

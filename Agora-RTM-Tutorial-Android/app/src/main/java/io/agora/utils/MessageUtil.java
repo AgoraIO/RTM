@@ -7,6 +7,7 @@ import java.util.Random;
 
 import io.agora.model.MessageBean;
 import io.agora.model.MessageListBean;
+import io.agora.rtm.RtmMessage;
 import io.agora.rtmtutorial.R;
 
 public class MessageUtil {
@@ -20,7 +21,7 @@ public class MessageUtil {
 
     public static Random RANDOM = new Random();
 
-    public static final int[] COLOR_ARRAY = new int[] {
+    public static final int[] COLOR_ARRAY = new int[]{
             R.drawable.shape_circle_black,
             R.drawable.shape_circle_blue,
             R.drawable.shape_circle_pink,
@@ -59,7 +60,7 @@ public class MessageUtil {
         return -1;
     }
 
-    public static void addMessageBean(String account, String msg) {
+    public static void addMessageBean(String account, RtmMessage msg) {
         MessageBean messageBean = new MessageBean(account, msg, false);
         int ret = existMessageListBean(account);
         if (ret == -1) {

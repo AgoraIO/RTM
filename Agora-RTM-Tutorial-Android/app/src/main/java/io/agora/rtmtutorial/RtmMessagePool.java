@@ -15,7 +15,7 @@ public class RtmMessagePool {
 
     void insertOfflineMessage(RtmMessage rtmMessage, String peerId) {
         boolean contains = mOfflineMessageMap.containsKey(peerId);
-        List<RtmMessage> list = contains ? mOfflineMessageMap.get(peerId) : new ArrayList<RtmMessage>();
+        List<RtmMessage> list = contains ? mOfflineMessageMap.get(peerId) : new ArrayList<>();
 
         if (list != null) {
             list.add(rtmMessage);
@@ -28,7 +28,7 @@ public class RtmMessagePool {
 
     List<RtmMessage> getAllOfflineMessages(String peerId) {
         return mOfflineMessageMap.containsKey(peerId) ?
-                mOfflineMessageMap.get(peerId) : new ArrayList<RtmMessage>();
+                mOfflineMessageMap.get(peerId) : new ArrayList<>();
     }
 
     void removeAllOfflineMessages(String peerId) {
