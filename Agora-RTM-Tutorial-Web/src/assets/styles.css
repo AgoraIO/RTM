@@ -99,6 +99,12 @@ html, body {
   padding-right: 110px;
 }
 
+.image-box {
+  width: 400px;
+  height: 100px;
+
+}
+
 .custom-btn-pin {
   position: absolute;
   right: 0;
@@ -289,6 +295,9 @@ textarea.materialize-textarea {
   -webkit-box-reflect: below 2px -webkit-linear-gradient(90deg, rgba(0, 0, 0, 0) 15%, rgba(0, 0, 0, 0.5));
 }
 
+.agora-image {
+  
+}
 .aperture {
   /* display: inline-block; */
   width: 58px !important;

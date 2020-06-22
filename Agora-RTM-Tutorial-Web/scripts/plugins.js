@@ -2,8 +2,13 @@ const HtmlWebpackPlugin = require("html-webpack-plugin");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const FriendlyErrorsPlugin = require("friendly-errors-webpack-plugin");
 const MiniCssExtractPlugin = require("mini-css-extract-plugin");
+
+const CopyPlugin = require('copy-webpack-plugin');
 const path = require("path");
+const resolve = path.resolve;
 const webpack = require('webpack');
+const NODE_ENV = process.env.NODE_ENV;
+const copyPath = NODE_ENV == 'development' ? '../dist' : '../build';
 
 const plugins = [
   new HtmlWebpackPlugin({
@@ -25,6 +30,9 @@ const plugins = [
     filename: "[name].[hash].css",
     chunkFilename: "[id].css"
   }),
+  new CopyPlugin([
+    { from: resolve(__dirname, '../static'), to: resolve(__dirname, copyPath) },
+  ]),
   new webpack.ProvidePlugin({
     $: "jquery",
     jQuery: "jquery",
