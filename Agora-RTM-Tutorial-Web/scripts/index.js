@@ -7,6 +7,9 @@ const NODE_ENV = process.env.NODE_ENV;
 const distPath = NODE_ENV == 'development' ? '../dist' : '../build';
 
 module.exports = {
+  externals: {
+    'agora-rtm-sdk': 'AgoraRTM'
+  },
   entry: {
     index: "./src/index.js",
   },
@@ -25,8 +28,8 @@ module.exports = {
   },
   devServer: {
     overlay: {
-      warnings: true,
-      errors: true,
+      warnings: false,
+      errors: false,
     },
     hot: true,
     contentBase: path.join(__dirname, "./"),

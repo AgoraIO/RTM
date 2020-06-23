@@ -6,7 +6,9 @@ import RtmClient from './rtm-client'
 import {
   Toast,
   validator,
-  serializeFormData
+  serializeFormData,
+  imageToBlob,
+  blobToImage
 } from './common'
 
 $(() => {
@@ -32,12 +34,24 @@ $(() => {
     }
   })
 
-  rtm.on('MessageFromPeer', (message, peerId) => {
-    console.log('message ' + message.text + ' peerId' + peerId)
-    const view = $('<div/>', {
-      text: ['message.text: ' + message.text, ', peer: ', peerId].join('')
-    })
-    $('#log').append(view)
+  rtm.on('MessageFromPeer', async (message, peerId) => {
+    if (message.messageType === 'IMAGE') {
+      const blob = await rtm.client.downloadMedia(message.mediaId)
+      blobToImage(blob, (image) => {
+        const view = $('<div/>', {
+          text: [' peer: ', peerId].join('')
+        })
+        $('#log').append(view)
+        $('#log').append(`<img src= '${image.src}'/>`)
+      })
+    } else {
+      console.log('message ' + message.text + ' peerId' + peerId)
+      const view = $('<div/>', {
+        text: ['message.text: ' + message.text, ', peer: ', peerId].join('')
+      })
+      $('#log').append(view)
+    } 
+
   })
 
   rtm.on('MemberJoined', ({ channelName, args }) => {
@@ -254,5 +268,19 @@ $(() => {
       Toast.error('query peer online status failed, please open console see more details.')
       console.error(err)
     })
+  })
+
+  $('#send-image').on('click', async function (e) {
+    e.preventDefault()
+    const params = serializeFormData('loginForm')
+
+    if (!validator(params, ['appId', 'accountName', 'peerId'])) {
+      return
+    }
+    const src = $('img').attr('src')
+    imageToBlob(src, (blob) => {
+      rtm.uploadImage(blob, params.peerId)
+    })
+    
   })
 })

@@ -86,4 +86,31 @@ export default class RTMClient extends EventEmitter {
     console.log('queryPeersOnlineStatus', memberId)
     return this.client.queryPeersOnlineStatus([memberId])
   }
+
+  //send image
+  async uploadImage (blob, peerId) {
+    const mediaMessage = await this.client.createMediaMessageByUploading(blob, {
+      messageType: 'IMAGE',
+      fileName: 'agora.jpg',
+      description: 'send image',
+      thumbnail: blob, 
+      // width: 100,
+      // height: 200,
+      // thumbnailWidth: 50,
+      // thumbnailHeight: 200, 
+    }) 
+    await this.client.sendMessageToPeer(mediaMessage, peerId)
+  }
+
+  async cancelImage (message) {
+    const controller = new AbortController()
+    setTimeout(() => controller.abort(), 1000)
+    await this.client.downloadMedia(message.mediaId, {
+      cancelSignal: controller.signal,
+      onOperationProgress: ({currentSize, totalSize}) => {
+        console.log(currentSize, totalSize)
+      },
+    })
+  }
+
 }
