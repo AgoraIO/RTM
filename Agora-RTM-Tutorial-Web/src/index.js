@@ -27,7 +27,6 @@ $(() => {
         Toast.error('You have already been kicked off!')
         $('#accountName').text('Agora Chatroom')
 
-        rtm.clearState()
         $('#dialogue-list')[0].innerHTML = ''
         $('#chat-message')[0].innerHTML = ''
       }
