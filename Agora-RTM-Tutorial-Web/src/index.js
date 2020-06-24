@@ -71,13 +71,24 @@ $(() => {
     $('#log').append(view)
   })
 
-  rtm.on('ChannelMessage', ({ channelName, args }) => {
+  rtm.on('ChannelMessage', async ({ channelName, args }) => {
     const [message, memberId] = args
-    console.log('channel ', channelName, ', messsage: ', message.text, ', memberId: ', memberId)
-    const view = $('<div/>', {
-      text: ['event: ChannelMessage ', 'channel: ', channelName, ', message: ', message.text, ', memberId: ', memberId].join('')
-    })
-    $('#log').append(view)
+    if (message.messageType === 'IMAGE') {
+      const blob = await rtm.client.downloadMedia(message.mediaId)
+      blobToImage(blob, (image) => {
+        const view = $('<div/>', {
+          text: ['event: ChannelMessage ', 'channel: ', channelName, ' memberId: ', memberId].join('')
+        })
+        $('#log').append(view)
+        $('#log').append(`<img src= '${image.src}'/>`)
+      })
+    } else {
+      console.log('channel ', channelName, ', messsage: ', message.text, ', memberId: ', memberId)
+      const view = $('<div/>', {
+        text: ['event: ChannelMessage ', 'channel: ', channelName, ', message: ', message.text, ', memberId: ', memberId].join('')
+      })
+      $('#log').append(view)
+    }  
   })
 
   $('#login').on('click', function (e) {
@@ -281,5 +292,18 @@ $(() => {
       rtm.uploadImage(blob, params.peerId)
     })
     
+  })
+
+  $('#send-channel-image').on('click', async function (e) {
+    e.preventDefault()
+    const params = serializeFormData('loginForm')
+
+    if (!validator(params, ['appId', 'accountName', 'channelName'])) {
+      return
+    }
+    const src = $('img').attr('src')
+    imageToBlob(src, (blob) => {
+      rtm.sendChannelMediaMessage(blob, params.channelName)
+    })  
   })
 })

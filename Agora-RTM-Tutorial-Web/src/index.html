@@ -72,13 +72,19 @@
                 <input type="text" placeholder="query member online status" name="memberId">
                 <button class="btn btn-raised btn-primary waves-effect waves-light custom-btn-pin" id="query_peer">QUERY</button>
               </div>
-              <div>
-                <span style="font-size: 20px; margin-right: 10px;">IMAGE</span>
-                <div class="agora-image">
-                  <img src="./agora.jpg" width="200px" height="100px" id="agora-send"/>
+              <div style="display: flex; justify-content: space-between;">
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 20px; margin-right: 10px;">IMAGE</span>
+                  <div class="agora-image">
+                    <img src="./agora.jpg" width="200px" height="100px" id="agora-send"/>
+                  </div>
                 </div>
-                
+                <div style="display: flex; flex-direction: column;">
+                  <span style="font-size: 16px; margin-top: 7px;">channel </span>
+                <button class="btn btn-raised btn-primary waves-effect waves-light" id="send-channel-image">SEND</button>
+                <span style="font-size: 16px;">peer </span>
                 <button class="btn btn-raised btn-primary waves-effect waves-light" id="send-image">SEND</button>
+                </div>
               </div>
           </div>
         </div>
