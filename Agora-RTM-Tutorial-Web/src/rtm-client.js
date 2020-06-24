@@ -99,7 +99,23 @@ export default class RTMClient extends EventEmitter {
       // thumbnailWidth: 50,
       // thumbnailHeight: 200, 
     }) 
-    await this.client.sendMessageToPeer(mediaMessage, peerId)
+    return this.client.sendMessageToPeer(mediaMessage, peerId)
+  }
+
+  async sendChannelMediaMessage (blob, channelName) {
+    console.log('sendChannelMessage', blob, channelName)
+    if (!this.channels[channelName] || !this.channels[channelName].joined) return
+    const mediaMessage = await this.client.createMediaMessageByUploading(blob, {
+      messageType: 'IMAGE',
+      fileName: 'agora.jpg',
+      description: 'send image',
+      thumbnail: blob, 
+      // width: 100,
+      // height: 200,
+      // thumbnailWidth: 50,
+      // thumbnailHeight: 200, 
+    }) 
+    return this.channels[channelName].channel.sendMessage(mediaMessage)
   }
 
   async cancelImage (message) {
