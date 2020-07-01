@@ -72,7 +72,6 @@ export default class RTMClient extends EventEmitter {
   }
 
   async sendChannelMessage (text, channelName) {
-    console.log('sendChannelMessage', text, channelName)
     if (!this.channels[channelName] || !this.channels[channelName].joined) return
     return this.channels[channelName].channel.sendMessage({ text })
   }

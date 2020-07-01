@@ -303,7 +303,16 @@ $(() => {
     }
     const src = $('img').attr('src')
     imageToBlob(src, (blob) => {
-      rtm.sendChannelMediaMessage(blob, params.channelName)
+      rtm.sendChannelMediaMessage(blob, params.channelName).then(() => {
+        const view = $('<div/>', {
+          text: 'account: ' + rtm.accountName  + ' channel: ' + params.channelName
+        })
+        $('#log').append(view)
+        $('#log').append(`<img src= '${src}'/>`)
+      }).catch((err) => {
+        Toast.error('Send message to channel ' + params.channelName + ' failed, please open console see more details.')
+        console.error(err)
+      })
     })  
   })
 })
