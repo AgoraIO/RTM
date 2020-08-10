@@ -7,9 +7,6 @@ const NODE_ENV = process.env.NODE_ENV;
 const distPath = NODE_ENV == 'development' ? '../dist' : '../build';
 
 module.exports = {
-  externals: {
-    'agora-rtm-sdk': 'AgoraRTM'
-  },
   entry: {
     index: "./src/index.js",
   },
