@@ -1,0 +1,25 @@
+<!--index.wxml-->
+<view class=" agora-bg">
+  <view class="content flex-center-column">
+    <view class="logo-section flex-center-column">
+      <image class="logo" style="width: 300rpx; height: 200rpx;" mode="aspectFit" src="../../images/logo.png"></image>
+      <text class="h1">声网小程序实时消息</text>
+    </view>
+    <view class="form-section flex-center-column">
+      <view class="inputWrapper">
+        <input placeholder-style='color:#A3D1E0' class="channelInput" placeholder='account Name' 
+          bindinput="onInputAccount" value="{{accountName}}" >
+        </input>
+      </view>
+      <view class="inputWrapper">
+        <input placeholder-style='color:#A3D1E0' class="channelInput" placeholder='optional token' 
+          bindinput="onInputToken" value="{{token}}">
+        </input>
+      </view>
+      <button plain="true" bindtap="login" class="loginBtn">Login</button>
+    </view>
+    <view class="footer flex-center-column">
+      <text>Powered by Agora. Build v1.0.0</text>
+    </view>
+  </view>
+</view>
