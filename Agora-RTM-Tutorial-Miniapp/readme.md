@@ -10,7 +10,7 @@ This program demonstrates the following contents:
 
 * integrate Agora Miniapp RTM SDK
 * Login account
-* Join / leave channel, send channel message, query channel member
+* Join / leave channel, send / receive channel message, query channel member
 * Send / receive peer-to-peer online messages, peer-to-peer offline messages
 * Log out of account
 

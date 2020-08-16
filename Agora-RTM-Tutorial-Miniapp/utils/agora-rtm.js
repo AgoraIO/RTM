@@ -7,7 +7,7 @@ class RTMClient {
     this._client = AgoraRTM.createInstance(APPID)
     this._accountName = ''
     this._channel = null
-    this._login = false 
+    this.isLogin = false 
     this.isOff = false
     this.messageCache = []
     this._eventBus = eventBus
@@ -88,6 +88,10 @@ class RTMClient {
 
   leaveChannel() {
     return this._channel.leave()
+  }
+
+  on(event, callback) {
+    this._eventBus.on(event, callback)
   }
 
 }

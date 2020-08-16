@@ -5,15 +5,13 @@ Page({
     channelMessage: '',
     peerId: '',
     peerMessage: '',
-    accountName: '', 
-    accountNameState: 0,
+    accountName: '',    
     channelMessageArray: [],
     peerMessageArray: [],
     joinStatus: false,
     bottom: '',
     currentTab: 0,
     channelMembers: [],
-    channelMsgReceived: '',
     queryMembers: false,
     showMsg: false,
     msgDetails: '',
@@ -154,7 +152,7 @@ Page({
     let object = {
       peerId: this.data.peerId,
       message: this.data.peerMessage, 
-      accountNameState: 0
+      isLocal: true
     }
     this.data.peerMessageArray.push(object)
     this.setData({
@@ -184,6 +182,7 @@ Page({
     })
   },
 
+  // 弹窗消息
   msgBounced: function(details) {
     this.setData({
       showMsg: true,
@@ -196,25 +195,25 @@ Page({
     }, 2000)
   },
 
-  onLoad: function() {
-    // 页面创建时执行
-    this.rtm = getApp().globalData.agoraRtm
-    this.setData({
-      accountName: this.rtm._accountName
-    })
-    // 点对点消息
+  // 点对点离线消息
+  // 从 rtm messageCache 数组中获取缓存的离线消息
+  peerOffMsg: function() {
     this.rtm.messageCache.forEach((item) => {
-      item.accountNameState = 1
+      item.isLocal = false
       this.data.peerMessageArray.push(item)
     })
     this.setData({
       peerMessageArray: this.data.peerMessageArray 
     })
-    this.rtm._eventBus.on('MessageFromPeer', (message, peerId, isOfflineMessage) => {
+  },
+
+  // 监听点对点消息
+  onPeerMsgEvent: function() {
+    this.rtm.on('MessageFromPeer', (message, peerId, isOfflineMessage) => {
       let object = {
         message: message.text,
         peerId: peerId,
-        accountNameState: 1,
+        isLocal: false,
         isOfflineMessage: isOfflineMessage
       }
       this.data.peerMessageArray.push(object)
@@ -222,9 +221,11 @@ Page({
         peerMessageArray: this.data.peerMessageArray 
       })
     })
-    
+  },
+
+  onChannelEvent: function() {
     // 频道消息
-    this.rtm._eventBus.on('ChannelMessage', (message, memberId) => {
+    this.rtm.on('ChannelMessage', (message, memberId) => {
       let object = {
         uid: memberId,
         message: message.text
@@ -235,18 +236,31 @@ Page({
       })
     })
     //频道成员进出通知
-    this.rtm._eventBus.on('MemberJoined', (memberId) => {
+    this.rtm.on('MemberJoined', (memberId) => {
       console.log('memberId: ', memberId)
       this.msgBounced(`${memberId} join channel`)
     })
-    this.rtm._eventBus.on('MemberLeft', (memberId) => {
+    this.rtm.on('MemberLeft', (memberId) => {
       console.log('memberId: ', memberId)
       this.msgBounced(`${memberId} already left`)
     })
+  },
+
+   // 页面创建时执行
+  onLoad: function() {
+    // 获取全局赋值的 rtm
+    this.rtm = getApp().globalData.agoraRtm
+    // 拿到登陆的账户名
+    this.setData({
+      accountName: this.rtm._accountName
+    })
+    this.peerOffMsg()
+    this.onPeerMsgEvent()
+    this.onChannelEvent()
     // sdk连接状态
-    this.connectEventId = this.rtm._eventBus.on('ConnectionStateChanged', (newState, reason) => {
-      console.log('The Connection Status', newState, reason)
-      console.log('The Connection Reason', newState, reason)
+    this.rtm.on('ConnectionStateChanged', (newState, reason) => {
+      console.log('The connection status', newState)
+      console.log('The reason for the state change', reason)
     })
   },
   onShow: function() {
@@ -260,13 +274,11 @@ Page({
   },
   onUnload: function() {
     // 页面销毁时执行
-    if(this.rtm._login) {
+    if(this.rtm.isLogin) {
       this.rtm.logout().then(() => {
-        this.rtm._login = false
-        this.msgBounced(`${this.rtm._accountName} logout success`)
+        this.rtm.isLogin = false
         console.log('logout success')
       }).catch((err) => {
-        this.msgBounced(`${this.rtm._accountName} logout failed`)
         console.log('logout failed', err)
       })
     } 

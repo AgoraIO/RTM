@@ -22,10 +22,10 @@
     </view>
     <view wx:if="{{currentTab === 1}}">
       <view wx:for="{{peerMessageArray}}" wx:key="index" wx:for-item="peerItem">
-        <view wx:if="{{peerItem.accountNameState === 0}}">
+        <view wx:if="{{peerItem.isLocal}}">
           accountName: {{accountName}}
         </view>
-        <view wx:if="{{peerItem.accountNameState === 1}}">
+        <view wx:else>
           peerId: {{peerItem.peerId}}
         </view>
         <view class="mes mesPeer">

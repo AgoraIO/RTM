@@ -15,7 +15,7 @@ Page({
   bindLogin: function () {
     if(!this.data.accountName) {
       console.log('accountName is null')
-      if(this.rtm._login) {
+      if(this.rtm.isLogin) {
         console.log('already login')
         return
       }
@@ -24,7 +24,7 @@ Page({
     
     this.rtm.login(this.data.token, this.data.accountName).then(() => {
       console.log('login success')
-      this.rtm._login = true
+      this.rtm.isLogin = true
       wx.navigateTo({
         url: `../message/message`
       });
@@ -47,9 +47,10 @@ Page({
 
   onLoad: function () {
     this.rtm = new RTMClient()
-    this.connectEventId = this.rtm._eventBus.on('ConnectionStateChanged', (newState, reason) => {
-      console.log('The Connection Status', newState, reason)
-      console.log('The Connection Reason', newState, reason)
+    // sdk连接状态
+    this.rtm.on('ConnectionStateChanged', (newState, reason) => {
+      console.log('The connection status', newState)
+      console.log('The reason for the state change', reason)
     })
     //rtm 赋值给全局
     app.globalData.agoraRtm = this.rtm
