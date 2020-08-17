@@ -1,0 +1,93 @@
+<view class="agora-box">
+  <view class="swiper-tab">
+    <view class="swiper-tab-list {{currentTab===0 ? 'on' : ''}}" data-current="0" bindtap="swichNav">Channel</view>
+    <view class="swiper-tab-list {{currentTab===1 ? 'on' : ''}}" data-current="1" bindtap="swichNav">Peer</view>
+  </view>
+  <scroll-view class="message-box" scroll-y scroll-into-view="{{bottom}}">
+    <view wx:if="{{showMsg}}" class="msg-box">
+      {{msgDetails}}
+    </view>
+    <view wx:if="{{currentTab === 0}}" >
+      <view wx:if="{{queryMembers}}">
+        当前频道用户: {{channelMembers}}
+      </view> 
+      <view wx:for="{{channelMessageArray}}" wx:key="index" wx:for-item="channelItem">
+        <view>
+          uid: {{channelItem.uid}} 
+          <view class="mes">
+            {{channelItem.message}}
+          </view>
+        </view>
+      </view>
+    </view>
+    <view wx:if="{{currentTab === 1}}">
+      <view wx:for="{{peerMessageArray}}" wx:key="index" wx:for-item="peerItem">
+        <view wx:if="{{peerItem.isLocal}}">
+          accountName: {{accountName}}
+        </view>
+        <view wx:else>
+          peerId: {{peerItem.peerId}}
+        </view>
+        <view class="mes mesPeer">
+          {{peerItem.message}}
+        </view>
+      </view>
+    </view>
+    <view id="scrollBottom">
+      
+    </view>
+  </scroll-view>
+  <swiper current="{{currentTab}}" class="swiper-box" duration="300" bindchange="bindChange">
+    <swiper-item>
+      <view class="operate-box">
+        <view class="information-box">
+          <view class="input-message">
+            <input placeholder-style='color:#A3D1E0' class="shortInput" placeholder='channel name' 
+              bindinput="onChannelName" value="{{channelName}}">
+            </input>
+          </view>
+          <view class="button-box">
+            <button wx:if="{{!joinStatus}}" class="mini-btn" bindtap="bindJoin" type="default" size="mini">Join</button>
+            <button wx:else class="mini-btn" bindtap="bindLeave" type="default" size="mini">Leave</button>
+            <button class="mini-btn query" bindtap="bindQuery" type="default" size="mini">Query</button>
+          </view>
+        </view>
+        <view class="information-box">
+          <view class="input-message">
+            <input placeholder-style='color:#A3D1E0' class="channelInput" placeholder='channel message' 
+              maxlength="-1" bindinput="onChannelMessage" cursor="1" value="{{channelMessage}}">
+            </input>
+          </view>
+          <view class="button-box">
+            <button class="mini-btn" bindtap="bindChannelSend" type="default" size="mini">Send</button>
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+    <swiper-item>
+      <view class="operate-box">
+        <view class="information-box">
+          <view class="input-message">
+            <input placeholder-style='color:#A3D1E0' class="shortInput" placeholder='peer id' 
+              bindinput="onPeerId" value="{{peerId}}">
+            </input>
+          </view>
+          <view class="body-view">Open offline
+            <switch style='zoom:.75;' bindchange="openOffMsg"/>
+          </view>
+        </view>
+        <view class="information-box">
+          <view class="input-message">
+            <input placeholder-style='color:#A3D1E0' class="channelInput" placeholder='peer message' 
+              maxlength="-1" bindinput="onPeerMessage" value="{{peerMessage}}">
+            </input>
+          </view>
+          <view class="button-box">
+            <button class="mini-btn" bindtap="bindPeerSend" type="default" size="mini">Send</button>
+          </view>
+        </view>
+      </view>
+    </swiper-item>
+  </swiper>
+</view>
+
