@@ -1,6 +1,6 @@
 # Agora Miniapp RTM Tutorial
 
-*Read this in other languages [English](readme.md)*
+*Read this in other languages [English](README.md)*
 
 ## 简介
 

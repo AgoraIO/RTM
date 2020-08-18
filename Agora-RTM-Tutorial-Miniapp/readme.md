@@ -1,6 +1,6 @@
 # Agora Miniapp RTM Tutorial
 
-*English [中文](readme.cn.md)*
+*English [中文](README.CN.md)*
 
 ## Introduction
 
