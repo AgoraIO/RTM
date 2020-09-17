@@ -11,6 +11,13 @@
 - 加入频道和离开频道；
 - 发送和接收频道消息；
 
+## 问题描述
+iOS 系统版本升级至 14.0 版本后，用户使用集成了声网 RTM SDK 的 app 时会看到查找本地网络设备的弹窗提示。默认弹窗界面如下图所示：
+
+![](../pictures/ios_14_privacy_zh.png)
+
+[解决方案](https://docs.agora.io/cn/faq/local_network_privacy_rtm)
+
 ## 运行示例程序
 首先在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID。将 AppID 填写进 AppId.swift
 
