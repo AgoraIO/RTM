@@ -27,7 +27,7 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSString *channel = (NSString *)sender;
+    NSString *channel = [NSString stringWithString:[self.channelTextField.text stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     if ([segue.identifier isEqualToString:@"channelToChat"]) {
         ChatMode mode;
