@@ -18,6 +18,7 @@
 ## 集成方式&运行示例程序
 - 首先：在 [Agora.io 注册](https://dashboard.agora.io/cn/signup/) 注册账号，并创建自己的测试项目，获取到 AppID.
 - 其次：在 Agora.io SDK 下载RTM SDK，解压后将libs中libagora_rtm_sdk.so文件复制到本项目的lib下，也将include中AgoraBase.h，IAgoraRtmService.h，IAgoraService.h 头文件也复制到本项目的include文件夹下
+> 对于RTM 1.4.0和1.4.1两个版本,请将libagora_rtm_sdk.so改名成libagora-rtm-sdk-jni.so
 - 然后：打开rtm_demo.cpp 文件填写AppId，
 - 最后：运行./clean_build.sh，根据提示进行编译，编译完后进入bulid目录 执行 ./rtmDemo。
 
