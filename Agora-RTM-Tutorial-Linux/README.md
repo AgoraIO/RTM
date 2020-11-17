@@ -18,6 +18,7 @@ With this sample app, you can:
 ## Running the App
 - step 1:create a developer account at [Agora.io](https://dashboard.agora.io/signin/), and obtain an App ID.
 - step 2:download the RTM sdk, extract the packet and copy 'libagora_rtm_sdk.so' to our project's 'lib' folder,and also copy 'AgoraBase.h','IAgoraRtmService.h','IAgoraService.h' to our project's 'include' folder.
+> For RTM 1.4.0 and 1.4.1, you need to rename 'libagora_rtm_sdk.so' to 'libagora-rtm-sdk-jni.so' to make it work.
 - step 3:open rtm_demo.cpp write yourself AppId,
 - step 4:open our project run clean_build.sh, and according to the prompt to compile,then cd build floder run ./rtmDemo according to the prompt please.
 
