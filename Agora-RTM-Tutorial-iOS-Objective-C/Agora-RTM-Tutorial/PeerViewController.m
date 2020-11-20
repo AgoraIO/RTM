@@ -27,7 +27,7 @@
 }
 
 - (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSString *peer = (NSString *)sender;
+    NSString *peer = [NSString stringWithString:[sender stringByReplacingPercentEscapesUsingEncoding:NSUTF8StringEncoding]];
     
     if ([segue.identifier isEqualToString:@"peerToChat"]) {
         ChatMode mode;
