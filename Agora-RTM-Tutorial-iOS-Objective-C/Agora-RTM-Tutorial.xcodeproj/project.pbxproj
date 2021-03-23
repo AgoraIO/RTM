@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		8BA718AE260A73C600C9E64B /* AgoraCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718AC260A73BB00C9E64B /* AgoraCore.framework */; };
+		8BA718AF260A73C600C9E64B /* AgoraCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718AC260A73BB00C9E64B /* AgoraCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8BA718B0260A73C800C9E64B /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718AA260A73AF00C9E64B /* AgoraRtmKit.framework */; };
+		8BA718B1260A73C800C9E64B /* AgoraRtmKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718AA260A73AF00C9E64B /* AgoraRtmKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A76F388A228D68EA00B91466 /* BasicViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A76F3889228D68EA00B91466 /* BasicViewController.m */; };
 		A7EE1BE0221BFF8F007B835A /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7EE1BDF221BFF8F007B835A /* Main.storyboard */; };
 		A7EE1D95221E58AE007B835A /* MessageCell.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1D94221E58AE007B835A /* MessageCell.m */; };
@@ -16,7 +20,6 @@
 		A7F23CB3221BD728003C46FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7F23CB1221BD728003C46FB /* LaunchScreen.storyboard */; };
 		A7F23CB6221BD728003C46FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CB5221BD728003C46FB /* main.m */; };
 		A7F23CC0221BD826003C46FB /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CBF221BD826003C46FB /* AgoraRtm.m */; };
-		A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */; };
 		A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */; };
 		A7F23CC9221BDB11003C46FB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */; };
 		A7F23CCB221BDB1B003C46FB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CCA221BDB1B003C46FB /* libresolv.tbd */; };
@@ -28,7 +31,24 @@
 		A7F23D0C221BFBE0003C46FB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D0B221BFBE0003C46FB /* ChatViewController.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		8BBEC4302609FC5C00FD566D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8BA718B1260A73C800C9E64B /* AgoraRtmKit.framework in Embed Frameworks */,
+				8BA718AF260A73C600C9E64B /* AgoraCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
+		8BA718AA260A73AF00C9E64B /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.framework; path = AgoraRtmKit.all.framework/for_iphone/AgoraRtmKit.framework; sourceTree = "<group>"; };
+		8BA718AC260A73BB00C9E64B /* AgoraCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraCore.framework; path = AgoraCore.all.framework/iphone/AgoraCore.framework; sourceTree = "<group>"; };
 		A76C2717238BD0CE0047E150 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		A76F3888228D68EA00B91466 /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
 		A76F3889228D68EA00B91466 /* BasicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicViewController.m; sourceTree = "<group>"; };
@@ -46,7 +66,6 @@
 		A7F23CB5221BD728003C46FB /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		A7F23CBE221BD826003C46FB /* AgoraRtm.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = AgoraRtm.h; sourceTree = "<group>"; };
 		A7F23CBF221BD826003C46FB /* AgoraRtm.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = AgoraRtm.m; sourceTree = "<group>"; };
-		A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtmKit.framework; sourceTree = "<group>"; };
 		A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		A7F23CCA221BDB1B003C46FB /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
@@ -68,10 +87,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */,
+				8BA718B0260A73C800C9E64B /* AgoraRtmKit.framework in Frameworks */,
 				A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */,
 				A7F23CD7221BE087003C46FB /* libc++.tbd in Frameworks */,
 				A7F23CCB221BDB1B003C46FB /* libresolv.tbd in Frameworks */,
+				8BA718AE260A73C600C9E64B /* AgoraCore.framework in Frameworks */,
 				A7F23CC9221BDB11003C46FB /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -99,6 +119,8 @@
 		A7F23CA5221BD726003C46FB /* Agora-RTM-Tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				8BA718AC260A73BB00C9E64B /* AgoraCore.framework */,
+				8BA718AA260A73AF00C9E64B /* AgoraRtmKit.framework */,
 				A7F23CBE221BD826003C46FB /* AgoraRtm.h */,
 				A7F23CBF221BD826003C46FB /* AgoraRtm.m */,
 				A7F23CD3221BDE3F003C46FB /* AppId.h */,
@@ -119,7 +141,6 @@
 				A7EE1D97221E914F007B835A /* Message.m */,
 				A7EE1BDF221BFF8F007B835A /* Main.storyboard */,
 				A7F23CC2221BD834003C46FB /* Support Files */,
-				A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */,
 			);
 			path = "Agora-RTM-Tutorial";
 			sourceTree = "<group>";
@@ -159,6 +180,7 @@
 				A7F23C9F221BD726003C46FB /* Sources */,
 				A7F23CA0221BD726003C46FB /* Frameworks */,
 				A7F23CA1221BD726003C46FB /* Resources */,
+				8BBEC4302609FC5C00FD566D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -364,11 +386,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial/AgoraRtmKit.all.framework/for_iphone",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial/AgoraCore.all.framework/iphone",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -376,9 +401,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-RTM-Tutorial";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ning.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = AgoraLab2020;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Debug;
@@ -388,11 +413,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial/AgoraRtmKit.all.framework/for_iphone",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial/AgoraCore.all.framework/iphone",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -400,9 +428,9 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-RTM-Tutorial";
+				PRODUCT_BUNDLE_IDENTIFIER = com.ning.example;
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = AgoraLab2020;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
 			name = Release;

@@ -10,6 +10,10 @@
 		38DF955B224249EC00A958D6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955A224249EC00A958D6 /* libc++.tbd */; };
 		38DF955D224249F800A958D6 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955C224249F800A958D6 /* libresolv.tbd */; };
 		38DF955F224249FC00A958D6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955E224249FB00A958D6 /* SystemConfiguration.framework */; };
+		8BA718A6260A733900C9E64B /* AgoraCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A4260A733000C9E64B /* AgoraCore.framework */; };
+		8BA718A7260A733900C9E64B /* AgoraCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A4260A733000C9E64B /* AgoraCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8BA718A8260A733B00C9E64B /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */; };
+		8BA718A9260A733B00C9E64B /* AgoraRtmKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340F21F02E0F00D6217B /* CoreTelephony.framework */; };
 		A706342121F047A600D6217B /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342021F047A600D6217B /* AgoraRtm.swift */; };
 		A706342421F04E3B00D6217B /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342321F04E3B00D6217B /* PeerViewController.swift */; };
@@ -20,29 +24,43 @@
 		A7FD7DD021EF61E3005ACFD9 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */; };
 		A7FD7DD321EF61E3005ACFD9 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DD121EF61E3005ACFD9 /* LaunchScreen.storyboard */; };
 		A7FD7DDB21F025EB005ACFD9 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */; };
-		A7FD7DDE21F0262F005ACFD9 /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */; };
 		A7FD7DE021F02651005ACFD9 /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */; };
 		A7FD7DE221F02709005ACFD9 /* AppId.swift in Sources */ = {isa = PBXBuildFile; fileRef = A7FD7DE121F02709005ACFD9 /* AppId.swift */; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		8BBEC4242609F95E00FD566D /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				8BA718A9260A733B00C9E64B /* AgoraRtmKit.framework in Embed Frameworks */,
+				8BA718A7260A733900C9E64B /* AgoraCore.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		38DF955A224249EC00A958D6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		38DF955C224249F800A958D6 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		38DF955E224249FB00A958D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
+		8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtmKit.framework; sourceTree = "<group>"; };
+		8BA718A4260A733000C9E64B /* AgoraCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraCore.framework; path = AgoraCore.all.framework/iphone/AgoraCore.framework; sourceTree = "<group>"; };
 		A706340F21F02E0F00D6217B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		A706342021F047A600D6217B /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
 		A706342321F04E3B00D6217B /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
 		A706342521F04E4A00D6217B /* ChannelViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChannelViewController.swift; sourceTree = "<group>"; };
 		A706342721F050EC00D6217B /* ChatViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ChatViewController.swift; sourceTree = "<group>"; };
 		A706343921F0818100D6217B /* MessageCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MessageCell.swift; sourceTree = "<group>"; };
-		A7F23AC42202BD99003C46FB /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreTelephony.framework; sourceTree = DEVELOPER_DIR; };
 		A7FD7DC521EF61E1005ACFD9 /* Agora-RTM-Tutorial.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Agora-RTM-Tutorial.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A7FD7DC821EF61E1005ACFD9 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		A7FD7DCF21EF61E3005ACFD9 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A7FD7DD221EF61E3005ACFD9 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		A7FD7DD421EF61E3005ACFD9 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtmKit.framework; sourceTree = "<group>"; };
 		A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		A7FD7DE121F02709005ACFD9 /* AppId.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppId.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -52,10 +70,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7FD7DDE21F0262F005ACFD9 /* AgoraRtmKit.framework in Frameworks */,
+				8BA718A8260A733B00C9E64B /* AgoraRtmKit.framework in Frameworks */,
 				A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */,
 				38DF955D224249F800A958D6 /* libresolv.tbd in Frameworks */,
 				38DF955B224249EC00A958D6 /* libc++.tbd in Frameworks */,
+				8BA718A6260A733900C9E64B /* AgoraCore.framework in Frameworks */,
 				38DF955F224249FC00A958D6 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -94,6 +113,8 @@
 		A7FD7DC721EF61E1005ACFD9 /* Agora-RTM-Tutorial */ = {
 			isa = PBXGroup;
 			children = (
+				8BA718A4260A733000C9E64B /* AgoraCore.framework */,
+				8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */,
 				A706342021F047A600D6217B /* AgoraRtm.swift */,
 				A7FD7DE121F02709005ACFD9 /* AppId.swift */,
 				A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */,
@@ -103,7 +124,6 @@
 				A706343921F0818100D6217B /* MessageCell.swift */,
 				A7FD7DDA21F025EB005ACFD9 /* Main.storyboard */,
 				A706344B21F6EC2000D6217B /* Support Files */,
-				A7FD7DDD21F0262F005ACFD9 /* AgoraRtmKit.framework */,
 			);
 			path = "Agora-RTM-Tutorial";
 			sourceTree = "<group>";
@@ -114,7 +134,6 @@
 				38DF955E224249FB00A958D6 /* SystemConfiguration.framework */,
 				38DF955C224249F800A958D6 /* libresolv.tbd */,
 				38DF955A224249EC00A958D6 /* libc++.tbd */,
-				A7F23AC42202BD99003C46FB /* CoreTelephony.framework */,
 				A706340F21F02E0F00D6217B /* CoreTelephony.framework */,
 			);
 			name = Frameworks;
@@ -130,6 +149,7 @@
 				A7FD7DC121EF61E1005ACFD9 /* Sources */,
 				A7FD7DC221EF61E1005ACFD9 /* Frameworks */,
 				A7FD7DC321EF61E1005ACFD9 /* Resources */,
+				8BBEC4242609F95E00FD566D /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -337,11 +357,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial/AgoraCore.all.framework/iphone",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -351,7 +374,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-RTM-Tutorial";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = AgoraLab2020;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
@@ -362,11 +385,14 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
-				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				CODE_SIGN_STYLE = Manual;
+				DEVELOPMENT_TEAM = JDPG69R49Z;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial",
+					"$(PROJECT_DIR)",
+					"$(PROJECT_DIR)/Agora-RTM-Tutorial/AgoraCore.all.framework/iphone",
 				);
 				INFOPLIST_FILE = "Agora-Rtm-Tutorial/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
@@ -376,7 +402,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "io.agora.Agora-RTM-Tutorial";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
+				PROVISIONING_PROFILE_SPECIFIER = AgoraLab2020;
 				SWIFT_VERSION = 4.2;
 				TARGETED_DEVICE_FAMILY = "1,2";
 			};
