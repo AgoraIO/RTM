@@ -18,8 +18,9 @@ First, create a developer account at [Agora.io](https://dashboard.agora.io/signi
 static let id = <#YOUR APPID#>
 ```
 
-Next, download the **Agora RTM SDK** from [Agora.io SDK](https://www.agora.io/en/download/). Unzip the downloaded SDK package and copy the "libs/AgoraRtmKit.framework" file to the project folder's sub path "Agora-Rtm-Tutorial/AgoraRtmKit.framework".
-> For version 1.4.4 or newer，please use libs/AgoraRtmKit.all.framework/for_iphone/AgoraRtmKit.framework for physical device， and libs/AgoraRtmKit.all.framework/for_simulator/AgoraRtmKit.framework for iOS simulator
+
+Next, download the **Agora RTM SDK** from [Agora.io SDK](https://www.agora.io/en/download/). Unzip the downloaded SDK package and copy the "AgoraRtmKit.framework, AgoraCore.framework" file to the project folder's sub path "Agora-Rtm-Tutorial/".
+> For version 1.4.4 or newer，please use .all.framework/for_iphone/ for physical device， and .all.framework/for_simulator/ for iOS simulator
 
 Finally, Open Agora-RTM-Tutorial.xcodeproj, connect your iPhone／iPad device, setup your development signing and run.
 
