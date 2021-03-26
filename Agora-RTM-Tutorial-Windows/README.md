@@ -30,7 +30,7 @@ AppCertificatedId=
 
 ## Operating Instructions
 - 1.Copy the corresponding files to the relevant directories in the SDK folder of the sln peer directory
-- 2.Copy the agora_rtm_sdk.dll file to the compile execution directory (debug/release)
+- 2.Copy the agora_rtm_sdk.dll, libagora-core.dll file to the compile execution directory (debug/release)
 
 ## Connect Us
 - You can find full API document at [Document Center](https://docs.agora.io/en/)

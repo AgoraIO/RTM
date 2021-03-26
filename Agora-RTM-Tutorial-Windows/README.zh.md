@@ -32,7 +32,7 @@ AppCertificatedId=
 
 ## 运行说明
 - 1.在Sln同级目录SDK文件夹内将对应的文件拷贝到相关目录下
-- 2.将agora_rtm_sdk.dll 文件拷贝到编译执行目录（debug / release）
+- 2.将agora_rtm_sdk.dll, libagora-core.dll 文件拷贝到编译执行目录（debug / release）
 
 ## 联系我们
 - 完整的 API 文档见 [文档中心](https://docs.agora.io/cn/)
