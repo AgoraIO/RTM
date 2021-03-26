@@ -10,10 +10,10 @@
 		38DF955B224249EC00A958D6 /* libc++.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955A224249EC00A958D6 /* libc++.tbd */; };
 		38DF955D224249F800A958D6 /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955C224249F800A958D6 /* libresolv.tbd */; };
 		38DF955F224249FC00A958D6 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 38DF955E224249FB00A958D6 /* SystemConfiguration.framework */; };
-		8BA718A6260A733900C9E64B /* AgoraCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A4260A733000C9E64B /* AgoraCore.framework */; };
-		8BA718A7260A733900C9E64B /* AgoraCore.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A4260A733000C9E64B /* AgoraCore.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
-		8BA718A8260A733B00C9E64B /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */; };
-		8BA718A9260A733B00C9E64B /* AgoraRtmKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8BA41333260CC1D40037AAC5 /* AgoraCore.all.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA4132F260CC1CA0037AAC5 /* AgoraCore.all.framework */; };
+		8BA41334260CC1D40037AAC5 /* AgoraCore.all.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA4132F260CC1CA0037AAC5 /* AgoraCore.all.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		8BA41335260CC1D60037AAC5 /* AgoraRtmKit.all.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA41330260CC1CA0037AAC5 /* AgoraRtmKit.all.framework */; };
+		8BA41336260CC1D60037AAC5 /* AgoraRtmKit.all.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 8BA41330260CC1CA0037AAC5 /* AgoraRtmKit.all.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A706340F21F02E0F00D6217B /* CoreTelephony.framework */; };
 		A706342121F047A600D6217B /* AgoraRtm.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342021F047A600D6217B /* AgoraRtm.swift */; };
 		A706342421F04E3B00D6217B /* PeerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A706342321F04E3B00D6217B /* PeerViewController.swift */; };
@@ -35,8 +35,8 @@
 			dstPath = "";
 			dstSubfolderSpec = 10;
 			files = (
-				8BA718A9260A733B00C9E64B /* AgoraRtmKit.framework in Embed Frameworks */,
-				8BA718A7260A733900C9E64B /* AgoraCore.framework in Embed Frameworks */,
+				8BA41334260CC1D40037AAC5 /* AgoraCore.all.framework in Embed Frameworks */,
+				8BA41336260CC1D60037AAC5 /* AgoraRtmKit.all.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -47,8 +47,8 @@
 		38DF955A224249EC00A958D6 /* libc++.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = "libc++.tbd"; path = "usr/lib/libc++.tbd"; sourceTree = SDKROOT; };
 		38DF955C224249F800A958D6 /* libresolv.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libresolv.tbd; path = usr/lib/libresolv.tbd; sourceTree = SDKROOT; };
 		38DF955E224249FB00A958D6 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
-		8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = AgoraRtmKit.framework; sourceTree = "<group>"; };
-		8BA718A4260A733000C9E64B /* AgoraCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraCore.framework; path = AgoraCore.all.framework/iphone/AgoraCore.framework; sourceTree = "<group>"; };
+		8BA4132F260CC1CA0037AAC5 /* AgoraCore.all.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraCore.all.framework; path = ../../../../../Downloads/Agora_RTM_SDK_for_iOS/libs/AgoraCore.all.framework; sourceTree = "<group>"; };
+		8BA41330260CC1CA0037AAC5 /* AgoraRtmKit.all.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AgoraRtmKit.all.framework; path = ../../../../../Downloads/Agora_RTM_SDK_for_iOS/libs/AgoraRtmKit.all.framework; sourceTree = "<group>"; };
 		A706340F21F02E0F00D6217B /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
 		A706342021F047A600D6217B /* AgoraRtm.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AgoraRtm.swift; sourceTree = "<group>"; };
 		A706342321F04E3B00D6217B /* PeerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PeerViewController.swift; sourceTree = "<group>"; };
@@ -70,11 +70,11 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				8BA718A8260A733B00C9E64B /* AgoraRtmKit.framework in Frameworks */,
+				8BA41333260CC1D40037AAC5 /* AgoraCore.all.framework in Frameworks */,
+				8BA41335260CC1D60037AAC5 /* AgoraRtmKit.all.framework in Frameworks */,
 				A706341021F02E1000D6217B /* CoreTelephony.framework in Frameworks */,
 				38DF955D224249F800A958D6 /* libresolv.tbd in Frameworks */,
 				38DF955B224249EC00A958D6 /* libc++.tbd in Frameworks */,
-				8BA718A6260A733900C9E64B /* AgoraCore.framework in Frameworks */,
 				38DF955F224249FC00A958D6 /* SystemConfiguration.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -113,8 +113,8 @@
 		A7FD7DC721EF61E1005ACFD9 /* Agora-RTM-Tutorial */ = {
 			isa = PBXGroup;
 			children = (
-				8BA718A4260A733000C9E64B /* AgoraCore.framework */,
-				8BA718A0260A72FE00C9E64B /* AgoraRtmKit.framework */,
+				8BA4132F260CC1CA0037AAC5 /* AgoraCore.all.framework */,
+				8BA41330260CC1CA0037AAC5 /* AgoraRtmKit.all.framework */,
 				A706342021F047A600D6217B /* AgoraRtm.swift */,
 				A7FD7DE121F02709005ACFD9 /* AppId.swift */,
 				A7FD7DDF21F02651005ACFD9 /* MainViewController.swift */,

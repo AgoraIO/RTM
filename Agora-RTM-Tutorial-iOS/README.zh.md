@@ -26,6 +26,7 @@ static let id = <#YOUR APPID#>
 ```
 
 然后在 [Agora.io SDK](https://www.agora.io/cn/download/) 下载 **RTM SDK**，解压后将其中的 **libs/AgoraRtmKit.framework** 文件复制到本项目文件夹下的子路径 **Agora-Rtm-Tutorial/AgoraRtmKit.framework**。
+> 对于 RTM 1.4.4或更新版本，对于真机请使用libs/AgoraRtmKit.all.framework/for_iphone/AgoraRtmKit.framework， 对于模拟器请使用libs/AgoraRtmKit.all.framework/for_simulator/AgoraRtmKit.framework
 
 最后使用 XCode 打开 Agora-RTM-Tutorial.xcodeproj，连接 iPhone／iPad 测试设备，设置有效的开发者签名后即可运行。
 
