@@ -30,7 +30,7 @@ protocol ChatVCDelegate: NSObjectProtocol {
     func chatVCBackToRootVC(_ vc: ChatViewController)
 }
 
-class ChatViewController: NSViewController, ShowAlertProtocol {
+class ChatViewController: ShowAlertProtocol {
     @IBOutlet weak var inputTextField: NSTextField!
     @IBOutlet weak var tableView: NSTableView!
     

@@ -9,12 +9,7 @@
 import Cocoa
 import AgoraRtmKit
 
-protocol ShowAlertProtocol: NSViewController {
-    func showAlert(_ message: String, handler: ((NSApplication.ModalResponse) -> Void)?)
-    func showAlert(_ message: String)
-}
-
-extension ShowAlertProtocol {
+class ShowAlertProtocol: NSViewController {
     func showAlert(_ message: String, handler: ((NSApplication.ModalResponse) -> Void)?) {
         let alert = NSAlert()
         alert.messageText = message
@@ -31,7 +26,7 @@ extension ShowAlertProtocol {
     }
 }
 
-class MainViewController: NSViewController, ShowAlertProtocol {
+class MainViewController: ShowAlertProtocol {
     @IBOutlet weak var accountTextField: NSTextField!
     @IBOutlet weak var enableOneToOneBox: NSButton!
     
