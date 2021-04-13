@@ -9,12 +9,7 @@
 import UIKit
 import AgoraRtmKit
 
-protocol ShowAlertProtocol: UIViewController {
-    func showAlert(_ message: String, handler: ((UIAlertAction) -> Void)?)
-    func showAlert(_ message: String)
-}
-
-extension ShowAlertProtocol {
+class ShowAlertProtocol: UIViewController {
     func showAlert(_ message: String, handler: ((UIAlertAction) -> Void)?) {
         view.endEditing(true)
         let alert = UIAlertController(title: nil, message: message, preferredStyle: .alert)
@@ -27,7 +22,7 @@ extension ShowAlertProtocol {
     }
 }
 
-class MainViewController: UIViewController, ShowAlertProtocol {
+class MainViewController: ShowAlertProtocol {
     @IBOutlet weak var accountTextField: UITextField!
     @IBOutlet weak var enableOneToOneSwitch: UISwitch!
     

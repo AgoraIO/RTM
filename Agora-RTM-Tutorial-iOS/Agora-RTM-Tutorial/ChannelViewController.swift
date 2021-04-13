@@ -9,7 +9,7 @@
 import UIKit
 import AgoraRtmKit
 
-class ChannelViewController: UIViewController, ShowAlertProtocol {
+class ChannelViewController: ShowAlertProtocol {
     @IBOutlet weak var channelTextField: UITextField!
     
     override func viewWillAppear(_ animated: Bool) {

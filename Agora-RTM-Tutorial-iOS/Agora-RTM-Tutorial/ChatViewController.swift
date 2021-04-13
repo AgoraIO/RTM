@@ -25,7 +25,7 @@ struct Message {
     var text: String
 }
 
-class ChatViewController: UIViewController, ShowAlertProtocol {
+class ChatViewController: ShowAlertProtocol {
     @IBOutlet weak var inputTextField: UITextField!
     @IBOutlet weak var inputViewBottom: NSLayoutConstraint!
     @IBOutlet weak var tableView: UITableView!

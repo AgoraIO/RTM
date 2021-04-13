@@ -9,7 +9,7 @@
 import UIKit
 import AgoraRtmKit
 
-class PeerViewController: UIViewController, ShowAlertProtocol {
+class PeerViewController: ShowAlertProtocol {
     @IBOutlet weak var peerTextField: UITextField!
     
     override func viewWillAppear(_ animated: Bool) {
