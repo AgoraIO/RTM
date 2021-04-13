@@ -13,7 +13,7 @@ protocol PeerChannelVCDelegate: NSObjectProtocol {
     func peerChannelVCWillClose(_ vc: PeerChannelViewController)
 }
 
-class PeerChannelViewController: NSViewController, ShowAlertProtocol {
+class PeerChannelViewController: ShowAlertProtocol {
     @IBOutlet weak var peerTextField: NSTextField!
     @IBOutlet weak var channelTextField: NSTextField!
     
