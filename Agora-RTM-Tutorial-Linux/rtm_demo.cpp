@@ -2,6 +2,7 @@
 #include <memory>
 #include <string>
 #include <exception>
+#include <cstdarg>
 //#include <unistd.h>
 
 #include "IAgoraRtmService.h"
@@ -164,7 +165,7 @@ public:
     std::cout << RED <<"error creating rtm service!" << std::endl;
     exit(0);
   }
-  ret = rtmService_->initialize(APP_ID.c_str(), eventHandler_.get());
+  int ret = rtmService_->initialize(APP_ID.c_str(), eventHandler_.get());
   if (ret) {
     std::cout << RED <<  "error initializing rtm service: " << ret << std::endl;
     exit(0);
