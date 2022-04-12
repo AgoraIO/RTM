@@ -3,7 +3,7 @@
 	archiveVersion = 1;
 	classes = {
 	};
-	objectVersion = 50;
+	objectVersion = 51;
 	objects = {
 
 /* Begin PBXBuildFile section */
@@ -16,7 +16,6 @@
 		A7F23CB3221BD728003C46FB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = A7F23CB1221BD728003C46FB /* LaunchScreen.storyboard */; };
 		A7F23CB6221BD728003C46FB /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CB5221BD728003C46FB /* main.m */; };
 		A7F23CC0221BD826003C46FB /* AgoraRtm.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CBF221BD826003C46FB /* AgoraRtm.m */; };
-		A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */; };
 		A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */; };
 		A7F23CC9221BDB11003C46FB /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */; };
 		A7F23CCB221BDB1B003C46FB /* libresolv.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CCA221BDB1B003C46FB /* libresolv.tbd */; };
@@ -26,9 +25,12 @@
 		A7F23D04221BF405003C46FB /* PeerViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D03221BF405003C46FB /* PeerViewController.m */; };
 		A7F23D09221BF99C003C46FB /* ChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D08221BF99C003C46FB /* ChannelViewController.m */; };
 		A7F23D0C221BFBE0003C46FB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D0B221BFBE0003C46FB /* ChatViewController.m */; };
+		B92D1B60A7C972A37092B091 /* Pods_Agora_RTM_Tutorial.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 00F20FD6D4472C0384ACADC6 /* Pods_Agora_RTM_Tutorial.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		00F20FD6D4472C0384ACADC6 /* Pods_Agora_RTM_Tutorial.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Agora_RTM_Tutorial.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		8DBE22A185B2FC6C3B9223C9 /* Pods-Agora-RTM-Tutorial.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Agora-RTM-Tutorial.release.xcconfig"; path = "Target Support Files/Pods-Agora-RTM-Tutorial/Pods-Agora-RTM-Tutorial.release.xcconfig"; sourceTree = "<group>"; };
 		A76C2717238BD0CE0047E150 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		A76F3888228D68EA00B91466 /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
 		A76F3889228D68EA00B91466 /* BasicViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = BasicViewController.m; sourceTree = "<group>"; };
@@ -61,6 +63,7 @@
 		A7F23D08221BF99C003C46FB /* ChannelViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChannelViewController.m; sourceTree = "<group>"; };
 		A7F23D0A221BFBE0003C46FB /* ChatViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = ChatViewController.h; sourceTree = "<group>"; };
 		A7F23D0B221BFBE0003C46FB /* ChatViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ChatViewController.m; sourceTree = "<group>"; };
+		F9AB48ABF75511E72F23A5E3 /* Pods-Agora-RTM-Tutorial.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Agora-RTM-Tutorial.debug.xcconfig"; path = "Target Support Files/Pods-Agora-RTM-Tutorial/Pods-Agora-RTM-Tutorial.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -68,23 +71,33 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7F23CC5221BDB00003C46FB /* AgoraRtmKit.framework in Frameworks */,
 				A7F23CC7221BDB09003C46FB /* CoreTelephony.framework in Frameworks */,
 				A7F23CD7221BE087003C46FB /* libc++.tbd in Frameworks */,
 				A7F23CCB221BDB1B003C46FB /* libresolv.tbd in Frameworks */,
 				A7F23CC9221BDB11003C46FB /* SystemConfiguration.framework in Frameworks */,
+				B92D1B60A7C972A37092B091 /* Pods_Agora_RTM_Tutorial.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		3AA515AA13D3BBAEB7818F48 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				F9AB48ABF75511E72F23A5E3 /* Pods-Agora-RTM-Tutorial.debug.xcconfig */,
+				8DBE22A185B2FC6C3B9223C9 /* Pods-Agora-RTM-Tutorial.release.xcconfig */,
+			);
+			path = Pods;
+			sourceTree = "<group>";
+		};
 		A7F23C9A221BD726003C46FB = {
 			isa = PBXGroup;
 			children = (
 				A7F23CA5221BD726003C46FB /* Agora-RTM-Tutorial */,
 				A7F23CA4221BD726003C46FB /* Products */,
 				A7F23CC3221BDB00003C46FB /* Frameworks */,
+				3AA515AA13D3BBAEB7818F48 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -145,6 +158,7 @@
 				A7F23CCA221BDB1B003C46FB /* libresolv.tbd */,
 				A7F23CC8221BDB11003C46FB /* SystemConfiguration.framework */,
 				A7F23CC6221BDB09003C46FB /* CoreTelephony.framework */,
+				00F20FD6D4472C0384ACADC6 /* Pods_Agora_RTM_Tutorial.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -156,9 +170,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = A7F23CB9221BD728003C46FB /* Build configuration list for PBXNativeTarget "Agora-RTM-Tutorial" */;
 			buildPhases = (
+				16C17595DB47726B3A0D2996 /* [CP] Check Pods Manifest.lock */,
 				A7F23C9F221BD726003C46FB /* Sources */,
 				A7F23CA0221BD726003C46FB /* Frameworks */,
 				A7F23CA1221BD726003C46FB /* Resources */,
+				CE60049FDE5163E3F35C260D /* [CP] Embed Pods Frameworks */,
 			);
 			buildRules = (
 			);
@@ -213,6 +229,48 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		16C17595DB47726B3A0D2996 /* [CP] Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-Agora-RTM-Tutorial-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		CE60049FDE5163E3F35C260D /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Agora-RTM-Tutorial/Pods-Agora-RTM-Tutorial-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-Agora-RTM-Tutorial/Pods-Agora-RTM-Tutorial-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-Agora-RTM-Tutorial/Pods-Agora-RTM-Tutorial-frameworks.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		A7F23C9F221BD726003C46FB /* Sources */ = {
@@ -361,11 +419,12 @@
 		};
 		A7F23CBA221BD728003C46FB /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F9AB48ABF75511E72F23A5E3 /* Pods-Agora-RTM-Tutorial.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
@@ -385,11 +444,12 @@
 		};
 		A7F23CBB221BD728003C46FB /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 8DBE22A185B2FC6C3B9223C9 /* Pods-Agora-RTM-Tutorial.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				CODE_SIGN_STYLE = Automatic;
-				DEVELOPMENT_TEAM = "";
+				DEVELOPMENT_TEAM = YS397FG5PA;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
 					"$(PROJECT_DIR)/Agora-Rtm-Tutorial",
