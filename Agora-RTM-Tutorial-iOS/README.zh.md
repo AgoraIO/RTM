@@ -25,9 +25,12 @@ iOS 系统版本升级至 14.0 版本后，用户使用集成了声网 RTM SDK �
 static let id = <#YOUR APPID#>
 ```
 
-然后在 [Agora.io SDK](https://www.agora.io/cn/download/) 下载 **RTM SDK**，解压后将其中的 **libs/AgoraRtmKit.framework** 文件复制到本项目文件夹下的子路径 **Agora-Rtm-Tutorial/AgoraRtmKit.framework**。
+然后在终端运行
+```
+pod install
+```
 
-最后使用 XCode 打开 Agora-RTM-Tutorial.xcodeproj，连接 iPhone／iPad 测试设备，设置有效的开发者签名后即可运行。
+最后使用 XCode 打开 Agora-RTM-Tutorial.xcworkspace，连接 iPhone／iPad 测试设备，设置有效的开发者签名后即可运行。
 
 ## 运行环境
 * XCode 8.0 +
