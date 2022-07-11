@@ -419,6 +419,11 @@ public class MessageActivity extends Activity {
         }
 
         @Override
+        public void onTokenPrivilegeWillExpire() {
+
+        }
+
+        @Override
         public void onPeersOnlineStatusChanged(Map<String, Integer> map) {
 
         }
