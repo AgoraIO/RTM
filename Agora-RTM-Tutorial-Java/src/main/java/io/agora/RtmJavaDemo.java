@@ -100,6 +100,10 @@ public class RtmJavaDemo {
                 public void onTokenExpired() {
                 }
 
+                @Override
+                public void onTokenPrivilegeWillExpire() {
+                }
+
         		@Override
         		public void onPeersOnlineStatusChanged(Map<String, Integer> peersStatus) {
         		}
