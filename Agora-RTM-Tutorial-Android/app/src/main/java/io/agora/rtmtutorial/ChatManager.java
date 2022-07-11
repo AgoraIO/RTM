@@ -89,6 +89,11 @@ public class ChatManager {
                 }
 
                 @Override
+                public void onTokenPrivilegeWillExpire() {
+
+                }
+
+                @Override
                 public void onPeersOnlineStatusChanged(Map<String, Integer> status) {
 
                 }
