@@ -28,6 +28,19 @@
 		A7F23D0C221BFBE0003C46FB /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D0B221BFBE0003C46FB /* ChatViewController.m */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		C5D29EA928AD1A9A006E6AB7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		A76C2717238BD0CE0047E150 /* Metal.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Metal.framework; path = System/Library/Frameworks/Metal.framework; sourceTree = SDKROOT; };
 		A76F3888228D68EA00B91466 /* BasicViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = BasicViewController.h; sourceTree = "<group>"; };
@@ -159,6 +172,7 @@
 				A7F23C9F221BD726003C46FB /* Sources */,
 				A7F23CA0221BD726003C46FB /* Frameworks */,
 				A7F23CA1221BD726003C46FB /* Resources */,
+				C5D29EA928AD1A9A006E6AB7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

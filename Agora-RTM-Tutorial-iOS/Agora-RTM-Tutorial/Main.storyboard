@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VFW-8k-r4w">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="VFW-8k-r4w">
     <device id="retina4_7" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="17703"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
@@ -25,7 +25,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4tu-lH-B8y">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="4tu-lH-B8y">
                                 <rect key="frame" x="166.5" y="350.5" width="42" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="Login">
@@ -35,34 +35,20 @@
                                     <action selector="doLoginPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="pFc-iO-TSr"/>
                                 </connections>
                             </button>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Enable Offline 1To1 Message" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="zYe-2c-7EX">
-                                <rect key="frame" x="75" y="284.5" width="172.5" height="16"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="13"/>
-                                <color key="textColor" red="0.19948619604110718" green="0.65434294939041138" blue="0.93417203426361084" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <switch opaque="NO" contentMode="scaleToFill" horizontalHuggingPriority="750" verticalHuggingPriority="750" contentHorizontalAlignment="center" contentVerticalAlignment="center" translatesAutoresizingMaskIntoConstraints="NO" id="PNn-bt-lsL">
-                                <rect key="frame" x="251" y="277" width="51" height="31"/>
-                            </switch>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="G9g-wE-UJE"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
                             <constraint firstItem="4tu-lH-B8y" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="1.1" id="0pR-kJ-cbv"/>
                             <constraint firstItem="3BQ-6F-6IS" firstAttribute="centerX" secondItem="G9g-wE-UJE" secondAttribute="centerX" id="9Rc-2H-ZLw"/>
-                            <constraint firstItem="zYe-2c-7EX" firstAttribute="leading" secondItem="3BQ-6F-6IS" secondAttribute="leading" id="B3c-fa-10D"/>
-                            <constraint firstItem="zYe-2c-7EX" firstAttribute="top" secondItem="3BQ-6F-6IS" secondAttribute="bottom" constant="36" id="FHJ-Ae-fcX"/>
                             <constraint firstItem="3BQ-6F-6IS" firstAttribute="centerY" secondItem="8bC-Xf-vdC" secondAttribute="centerY" multiplier="0.7" id="IoV-aU-mNQ"/>
-                            <constraint firstItem="PNn-bt-lsL" firstAttribute="centerY" secondItem="zYe-2c-7EX" secondAttribute="centerY" id="R1V-Dh-e06"/>
                             <constraint firstItem="3BQ-6F-6IS" firstAttribute="width" secondItem="8bC-Xf-vdC" secondAttribute="width" multiplier="0.6" id="a1z-up-NrB"/>
-                            <constraint firstItem="PNn-bt-lsL" firstAttribute="trailing" secondItem="3BQ-6F-6IS" secondAttribute="trailing" id="rmt-4z-AaA"/>
                             <constraint firstItem="4tu-lH-B8y" firstAttribute="centerX" secondItem="G9g-wE-UJE" secondAttribute="centerX" id="wLn-tI-Jme"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="G9g-wE-UJE"/>
                     </view>
                     <navigationItem key="navigationItem" title="Tutorial" id="7fP-NG-3l1"/>
                     <connections>
                         <outlet property="accountTextField" destination="3BQ-6F-6IS" id="sZI-my-0nS"/>
-                        <outlet property="enableOneToOneSwitch" destination="PNn-bt-lsL" id="xni-9E-KMa"/>
                         <segue destination="2qm-jp-vnF" kind="show" identifier="mainToTab" id="aHd-el-ekb"/>
                     </connections>
                 </viewController>
@@ -78,7 +64,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iW3-RK-cER">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="iW3-RK-cER">
                                 <rect key="frame" x="265" y="134.5" width="70" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="join">
@@ -95,6 +81,7 @@
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="a6W-cm-fhJ"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="aMd-LT-x4x" firstAttribute="top" secondItem="a6W-cm-fhJ" secondAttribute="top" constant="90" id="BEQ-eg-Zzb"/>
@@ -104,7 +91,6 @@
                             <constraint firstItem="iW3-RK-cER" firstAttribute="centerY" secondItem="aMd-LT-x4x" secondAttribute="centerY" id="rjd-WM-7pU"/>
                             <constraint firstItem="aMd-LT-x4x" firstAttribute="width" secondItem="V4U-yD-OHs" secondAttribute="width" multiplier="0.56" id="xd6-83-ezE"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="a6W-cm-fhJ"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Channel" id="Ig7-Qk-Qfl"/>
                     <navigationItem key="navigationItem" title="Channel Message" id="KGe-sV-dST"/>
@@ -131,7 +117,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <textInputTraits key="textInputTraits"/>
                             </textField>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOh-8l-ah4">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="system" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="lOh-8l-ah4">
                                 <rect key="frame" x="265" y="134.5" width="70" height="33"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <state key="normal" title="chat">
@@ -142,6 +128,7 @@
                                 </connections>
                             </button>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="z4x-kQ-gM8"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
                             <constraint firstItem="lOh-8l-ah4" firstAttribute="leading" secondItem="3yl-M1-HpL" secondAttribute="trailing" constant="15" id="Bua-B5-aZj"/>
@@ -151,7 +138,6 @@
                             <constraint firstItem="z4x-kQ-gM8" firstAttribute="trailing" secondItem="lOh-8l-ah4" secondAttribute="trailing" constant="40" id="jp3-S4-Ybs"/>
                             <constraint firstItem="3yl-M1-HpL" firstAttribute="leading" secondItem="z4x-kQ-gM8" secondAttribute="leading" constant="40" id="mab-LD-kqk"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="z4x-kQ-gM8"/>
                     </view>
                     <tabBarItem key="tabBarItem" title="Peer" id="aQJ-64-03y"/>
                     <navigationItem key="navigationItem" title="Peer Message " id="bdw-Ae-ha0"/>
@@ -207,10 +193,10 @@
                                                     </constraints>
                                                 </view>
                                                 <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="vWj-Iv-UWv">
-                                                    <rect key="frame" x="66" y="5" width="54" height="37"/>
+                                                    <rect key="frame" x="66" y="5" width="53.5" height="37"/>
                                                     <subviews>
                                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="gcc-AR-zsH">
-                                                            <rect key="frame" x="6" y="6" width="42" height="25"/>
+                                                            <rect key="frame" x="6" y="6" width="41.5" height="25"/>
                                                             <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                                             <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                             <nil key="highlightedColor"/>
@@ -313,7 +299,7 @@
                                         <constraints>
                                             <constraint firstAttribute="height" constant="39" id="dzz-fp-PSz"/>
                                         </constraints>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" systemColor="darkTextColor"/>
                                         <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <textInputTraits key="textInputTraits" returnKeyType="send"/>
                                         <connections>
@@ -330,6 +316,7 @@
                                 </constraints>
                             </view>
                         </subviews>
+                        <viewLayoutGuide key="safeArea" id="Vqr-FW-8Ka"/>
                         <color key="backgroundColor" red="0.92146831750869751" green="0.92162626981735229" blue="0.92145836353302002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
                             <constraint firstItem="DhD-OO-LOn" firstAttribute="top" secondItem="t17-6X-TzY" secondAttribute="bottom" id="4iu-bn-Ecm"/>
@@ -340,7 +327,6 @@
                             <constraint firstItem="t17-6X-TzY" firstAttribute="top" secondItem="Vqr-FW-8Ka" secondAttribute="top" id="iHS-A6-ihz"/>
                             <constraint firstItem="t17-6X-TzY" firstAttribute="leading" secondItem="Vqr-FW-8Ka" secondAttribute="leading" id="qAk-4N-TPd"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="Vqr-FW-8Ka"/>
                     </view>
                     <connections>
                         <outlet property="inputContainView" destination="DhD-OO-LOn" id="83Y-6E-4Mq"/>
@@ -397,7 +383,12 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="wps-Zl-wBr"/>
+        <segue reference="Uvt-v8-NwZ"/>
     </inferredMetricsTieBreakers>
     <color key="tintColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+    <resources>
+        <systemColor name="darkTextColor">
+            <color white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

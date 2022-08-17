@@ -80,7 +80,6 @@ private extension ChatViewController {
         switch type {
         case .peer(let name):
             let option = AgoraRtmSendMessageOptions()
-            option.enableOfflineMessaging = (AgoraRtm.oneToOneMessageType == .offline ? true : false)
             
             AgoraRtm.kit?.send(rtmMessage, toPeer: name, sendMessageOptions: option, completion: { (error) in
                 sent(error.rawValue)
