@@ -19,7 +19,6 @@ import com.bumptech.glide.RequestBuilder;
 import java.util.List;
 
 import io.agora.model.MessageBean;
-import io.agora.rtm.RtmImageMessage;
 import io.agora.rtm.RtmMessage;
 import io.agora.rtm.RtmMessageType;
 import io.agora.rtmtutorial.R;
@@ -84,20 +83,6 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.MyViewHo
                 holder.imageViewOtherImg.setVisibility(View.GONE);
                 break;
             case RtmMessageType.IMAGE:
-                RtmImageMessage rtmImageMessage = (RtmImageMessage) rtmMessage;
-                RequestBuilder<Drawable> builder = Glide.with(holder.itemView)
-                        .load(rtmImageMessage.getThumbnail())
-                        .override(rtmImageMessage.getThumbnailWidth(), rtmImageMessage.getThumbnailHeight());
-                if (bean.isBeSelf()) {
-                    holder.imageViewSelfImg.setVisibility(View.VISIBLE);
-                    builder.into(holder.imageViewSelfImg);
-                } else {
-                    holder.imageViewOtherImg.setVisibility(View.VISIBLE);
-                    builder.into(holder.imageViewOtherImg);
-                }
-
-                holder.textViewSelfMsg.setVisibility(View.GONE);
-                holder.textViewOtherMsg.setVisibility(View.GONE);
                 break;
         }
 

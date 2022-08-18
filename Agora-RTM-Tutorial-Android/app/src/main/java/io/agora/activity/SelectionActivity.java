@@ -65,10 +65,6 @@ public class SelectionActivity extends Activity {
         });
         RadioButton peerMode = findViewById(R.id.peer_radio_button);
         peerMode.setChecked(true);
-
-        AppCompatCheckBox mOfflineMsgCheck = findViewById(R.id.offline_msg_check);
-        mOfflineMsgCheck.setChecked(mChatManager.isOfflineMessageEnabled());
-        mOfflineMsgCheck.setOnCheckedChangeListener((buttonView, isChecked) -> mChatManager.enableOfflineMessage(isChecked));
     }
 
     public void onClickChat(View v) {
