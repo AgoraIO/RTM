@@ -9,9 +9,6 @@ import java.util.Map;
 
 import io.agora.rtm.RtmClient;
 import io.agora.rtm.RtmClientListener;
-import io.agora.rtm.RtmFileMessage;
-import io.agora.rtm.RtmImageMessage;
-import io.agora.rtm.RtmMediaOperationProgress;
 import io.agora.rtm.RtmMessage;
 import io.agora.rtm.SendMessageOptions;
 
@@ -55,35 +52,6 @@ public class ChatManager {
                 }
 
                 @Override
-                public void onImageMessageReceivedFromPeer(final RtmImageMessage rtmImageMessage, final String peerId) {
-                    if (mListenerList.isEmpty()) {
-                        // If currently there is no callback to handle this
-                        // message, this message is unread yet. Here we also
-                        // take it as an offline message.
-                        mMessagePool.insertOfflineMessage(rtmImageMessage, peerId);
-                    } else {
-                        for (RtmClientListener listener : mListenerList) {
-                            listener.onImageMessageReceivedFromPeer(rtmImageMessage, peerId);
-                        }
-                    }
-                }
-
-                @Override
-                public void onFileMessageReceivedFromPeer(RtmFileMessage rtmFileMessage, String s) {
-
-                }
-
-                @Override
-                public void onMediaUploadingProgress(RtmMediaOperationProgress rtmMediaOperationProgress, long l) {
-
-                }
-
-                @Override
-                public void onMediaDownloadingProgress(RtmMediaOperationProgress rtmMediaOperationProgress, long l) {
-
-                }
-
-                @Override
                 public void onTokenExpired() {
 
                 }
@@ -122,14 +90,6 @@ public class ChatManager {
 
     public void unregisterListener(RtmClientListener listener) {
         mListenerList.remove(listener);
-    }
-
-    public void enableOfflineMessage(boolean enabled) {
-        mSendMsgOptions.enableOfflineMessaging = enabled;
-    }
-
-    public boolean isOfflineMessageEnabled() {
-        return mSendMsgOptions.enableOfflineMessaging;
     }
 
     public SendMessageOptions getSendMessageOptions() {
