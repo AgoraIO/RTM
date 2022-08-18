@@ -132,8 +132,7 @@ bool CAgoraRTMInstance::sendInstantMsg(const std::string &account, const std::st
   if (m_rtmService != nullptr){
     IMessage* rtmMessage(m_rtmService->createMessage());
     rtmMessage->setText(gbk2utf8(msg).c_str());
-	agora::rtm::SendMessageOptions smo;
-	smo.enableOfflineMessaging = bEnableOfflineMessage;
+    agora::rtm::SendMessageOptions smo;
     int nret = m_rtmService->sendMessageToPeer(account.c_str(), rtmMessage,smo);
     rtmMessage->release();
     return true;
@@ -146,8 +145,7 @@ bool CAgoraRTMInstance::sendChannelMsg(const std::string &channel, const std::st
   if (m_Channel != nullptr){
     IMessage* rtmMessage(m_rtmService->createMessage());
     rtmMessage->setText(gbk2utf8(ChannelMsg).c_str());
-	agora::rtm::SendMessageOptions smo;
-	smo.enableOfflineMessaging = bEnableOfflineMessage;
+    agora::rtm::SendMessageOptions smo;
     m_Channel->sendMessage(rtmMessage,smo);
     rtmMessage->release();
     return true;
