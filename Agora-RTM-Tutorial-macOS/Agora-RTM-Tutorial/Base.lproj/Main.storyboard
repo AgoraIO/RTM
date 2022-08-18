@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
+<document type="com.apple.InterfaceBuilder3.Cocoa.Storyboard.XIB" version="3.0" toolsVersion="17701" targetRuntime="MacOSX.Cocoa" propertyAccessControl="none" useAutolayout="YES" initialViewController="B8D-0N-5wS">
     <dependencies>
         <deployment identifier="macosx"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="15505"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.CocoaPlugin" version="17701"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -732,36 +732,16 @@
                                     <action selector="doLoginPressed:" target="XfG-lQ-9wD" id="DUE-wH-9xF"/>
                                 </connections>
                             </button>
-                            <textField horizontalHuggingPriority="251" verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="1Zq-KT-rX9">
-                                <rect key="frame" x="128" y="145" width="152" height="14"/>
-                                <textFieldCell key="cell" lineBreakMode="clipping" title="Enable Offline 1to1 Message" id="kyL-j9-4v2">
-                                    <font key="font" metaFont="system" size="11"/>
-                                    <color key="textColor" name="labelColor" catalog="System" colorSpace="catalog"/>
-                                    <color key="backgroundColor" name="textBackgroundColor" catalog="System" colorSpace="catalog"/>
-                                </textFieldCell>
-                            </textField>
-                            <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="GxL-KG-zce">
-                                <rect key="frame" x="330" y="143" width="22" height="18"/>
-                                <buttonCell key="cell" type="check" bezelStyle="regularSquare" imagePosition="left" inset="2" id="MfB-zi-Z3h">
-                                    <behavior key="behavior" changeContents="YES" doesNotDimImage="YES" lightByContents="YES"/>
-                                    <font key="font" metaFont="system"/>
-                                </buttonCell>
-                            </button>
                         </subviews>
                         <constraints>
-                            <constraint firstItem="GxL-KG-zce" firstAttribute="trailing" secondItem="oJx-5g-OhE" secondAttribute="trailing" id="50T-7U-MSk"/>
-                            <constraint firstItem="1Zq-KT-rX9" firstAttribute="leading" secondItem="oJx-5g-OhE" secondAttribute="leading" id="9Ef-mf-Vjq"/>
                             <constraint firstItem="Z0z-Ci-87c" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="AFj-xj-Q4s"/>
                             <constraint firstItem="Z0z-Ci-87c" firstAttribute="top" secondItem="oJx-5g-OhE" secondAttribute="bottom" constant="60" id="Kud-7b-P4M"/>
                             <constraint firstItem="oJx-5g-OhE" firstAttribute="top" secondItem="m2S-Jp-Qdl" secondAttribute="top" constant="65" id="Lde-UT-d4k"/>
-                            <constraint firstItem="1Zq-KT-rX9" firstAttribute="top" secondItem="oJx-5g-OhE" secondAttribute="bottom" constant="20" id="Lvd-3y-83c"/>
-                            <constraint firstItem="GxL-KG-zce" firstAttribute="centerY" secondItem="1Zq-KT-rX9" secondAttribute="centerY" id="YK2-wd-zhz"/>
                             <constraint firstItem="oJx-5g-OhE" firstAttribute="centerX" secondItem="m2S-Jp-Qdl" secondAttribute="centerX" id="fDI-N3-flf"/>
                         </constraints>
                     </view>
                     <connections>
                         <outlet property="accountTextField" destination="oJx-5g-OhE" id="7Fg-82-5Zc"/>
-                        <outlet property="enableOneToOneBox" destination="GxL-KG-zce" id="jYC-hp-E4T"/>
                         <segue destination="5Qh-9T-BRk" kind="custom" identifier="mainToTab" customClass="ReplaceSegue" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target" id="oSC-xy-Jfy"/>
                     </connections>
                 </viewController>
@@ -897,26 +877,25 @@
         <scene sceneID="40Q-hT-w8k">
             <objects>
                 <viewController title="Chat" id="GNR-Di-jax" customClass="ChatViewController" customModule="Agora_RTM_Tutorial_Mac" customModuleProvider="target" sceneMemberID="viewController">
-                    <view key="view" id="tEo-MW-PzP">
-                        <rect key="frame" x="0.0" y="0.0" width="450" height="300"/>
+                    <view key="view" misplaced="YES" id="tEo-MW-PzP">
+                        <rect key="frame" x="0.0" y="0.0" width="450" height="287"/>
                         <autoresizingMask key="autoresizingMask"/>
                         <subviews>
                             <scrollView autohidesScrollers="YES" horizontalLineScroll="43" horizontalPageScroll="10" verticalLineScroll="43" verticalPageScroll="10" usesPredominantAxisScrolling="NO" translatesAutoresizingMaskIntoConstraints="NO" id="fZh-74-XcW">
-                                <rect key="frame" x="0.0" y="49" width="450" height="207"/>
+                                <rect key="frame" x="0.0" y="49" width="450" height="181"/>
                                 <clipView key="contentView" id="Efm-6C-vt8">
-                                    <rect key="frame" x="1" y="1" width="448" height="205"/>
+                                    <rect key="frame" x="1" y="1" width="448" height="179"/>
                                     <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                     <subviews>
                                         <tableView verticalHuggingPriority="750" allowsExpansionToolTips="YES" columnAutoresizingStyle="lastColumnOnly" columnSelection="YES" multipleSelection="NO" autosaveColumns="NO" rowHeight="41" rowSizeStyle="automatic" viewBased="YES" id="b1J-o6-OZ1">
-                                            <rect key="frame" x="0.0" y="0.0" width="448" height="205"/>
-                                            <autoresizingMask key="autoresizingMask"/>
+                                            <rect key="frame" x="0.0" y="0.0" width="448" height="179"/>
+                                            <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                                             <size key="intercellSpacing" width="3" height="2"/>
                                             <color key="backgroundColor" name="controlBackgroundColor" catalog="System" colorSpace="catalog"/>
                                             <color key="gridColor" name="gridColor" catalog="System" colorSpace="catalog"/>
                                             <tableColumns>
                                                 <tableColumn width="445" minWidth="40" maxWidth="1000" id="iHe-ld-HWl">
                                                     <tableHeaderCell key="headerCell" lineBreakMode="truncatingTail" borderStyle="border">
-                                                        <font key="font" metaFont="smallSystem"/>
                                                         <color key="textColor" name="headerTextColor" catalog="System" colorSpace="catalog"/>
                                                         <color key="backgroundColor" name="headerColor" catalog="System" colorSpace="catalog"/>
                                                     </tableHeaderCell>
@@ -1022,7 +1001,7 @@
                                 </connections>
                             </textField>
                             <button verticalHuggingPriority="750" translatesAutoresizingMaskIntoConstraints="NO" id="eB0-Or-Vyj">
-                                <rect key="frame" x="2" y="260" width="70" height="32"/>
+                                <rect key="frame" x="2" y="234" width="70" height="32"/>
                                 <buttonCell key="cell" type="push" title="Back" bezelStyle="rounded" alignment="center" borderStyle="border" imageScaling="proportionallyDown" inset="2" id="j1W-Wh-DLY">
                                     <behavior key="behavior" pushIn="YES" lightByBackground="YES" lightByGray="YES"/>
                                     <font key="font" metaFont="system"/>

@@ -66,8 +66,6 @@ private extension MainViewController {
         
         AgoraRtm.updateKit(delegate: self)
         AgoraRtm.current = account
-        AgoraRtm.oneToOneMessageType = enableOneToOneBox.state == .on ? .offline : .normal
-
         AgoraRtm.kit?.login(byToken: nil, user: account) { [unowned self] (errorCode) in
             guard errorCode == .ok else {
                 self.showAlert("login error: \(errorCode.rawValue)")

@@ -22,10 +22,25 @@
 		A7EE1DC0221EA6A0007B835A /* Message.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1D97221E914F007B835A /* Message.m */; };
 		A7EE1DC1221EA6A0007B835A /* AppId.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23CD4221BDE3F003C46FB /* AppId.m */; };
 		A7EE1DC2221EA6A0007B835A /* ChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7F23D0B221BFBE0003C46FB /* ChatViewController.m */; };
-		A7EE1DCE221EA7C1007B835A /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */; };
 		A7EE1DD1221FA0CC007B835A /* ReplaceSegue.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1DD0221FA0CC007B835A /* ReplaceSegue.m */; };
 		A7EE1DD4221FA1C3007B835A /* PeerChannelViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = A7EE1DD3221FA1C3007B835A /* PeerChannelViewController.m */; };
+		C5D29EB228ADED1C006E6AB7 /* AgoraRtmKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */; };
+		C5D29EB328ADED1C006E6AB7 /* AgoraRtmKit.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = A7F23CC4221BDB00003C46FB /* AgoraRtmKit.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 /* End PBXBuildFile section */
+
+/* Begin PBXCopyFilesBuildPhase section */
+		C5D29EB428ADED1C006E6AB7 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				C5D29EB328ADED1C006E6AB7 /* AgoraRtmKit.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
 
 /* Begin PBXFileReference section */
 		38DF956922424C4900A958D6 /* CoreWLAN.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreWLAN.framework; path = Platforms/MacOSX.platform/Developer/SDKs/MacOSX10.14.sdk/System/Library/Frameworks/CoreWLAN.framework; sourceTree = DEVELOPER_DIR; };
@@ -65,8 +80,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				A7EE1DCE221EA7C1007B835A /* AgoraRtmKit.framework in Frameworks */,
 				38DF956A22424C4900A958D6 /* CoreWLAN.framework in Frameworks */,
+				C5D29EB228ADED1C006E6AB7 /* AgoraRtmKit.framework in Frameworks */,
 				38DF956E22424C5400A958D6 /* libc++.tbd in Frameworks */,
 				38DF956C22424C4D00A958D6 /* libresolv.tbd in Frameworks */,
 				38DF957022424C5A00A958D6 /* SystemConfiguration.framework in Frameworks */,
@@ -154,6 +169,7 @@
 				A7EE1DA1221EA4D8007B835A /* Sources */,
 				A7EE1DA2221EA4D8007B835A /* Frameworks */,
 				A7EE1DA3221EA4D8007B835A /* Resources */,
+				C5D29EB428ADED1C006E6AB7 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);

@@ -59,7 +59,6 @@
     switch (self.mode.type) {
         case ChatTypePeer: {
             AgoraRtmSendMessageOptions *option = [[AgoraRtmSendMessageOptions alloc] init];
-            option.enableOfflineMessaging = [AgoraRtm oneToOneMessageType] == OneToOneMessageTypeOffline ? YES : NO;
             
             [AgoraRtm.kit sendMessage:rtmMessage toPeer:self.mode.name
                    sendMessageOptions:option
