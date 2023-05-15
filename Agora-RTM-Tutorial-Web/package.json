@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "agora-rtc-sdk": "^2.8.0",
-    "agora-rtm-sdk": "1.4.1",
+    "agora-rtm-sdk": "1.5.1",
     "blueimp-md5": "^2.11.0",
     "identicon.js": "^2.3.3",
     "jquery": "^3.4.1",
