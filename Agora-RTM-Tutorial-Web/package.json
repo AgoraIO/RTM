@@ -21,7 +21,7 @@
     "agora-rtm-sdk": "1.4.5-222",
     "blueimp-md5": "^2.11.0",
     "identicon.js": "^2.3.3",
-    "jquery": "^3.4.1",
+    "jquery": "^3.5.0",
     "materialize-css": "^1.0.0"
   },
   "devDependencies": {
