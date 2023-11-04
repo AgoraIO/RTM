@@ -174,13 +174,12 @@ void CAgoraRTMDlg::OnBnClickedButtonLogin()
 	}
 
 	m_account = cs2s(strAccount);
-	std::string appId = m_pRTMInstance->getAppId();
 	std::string appCertificateId = m_pRTMInstance->getCertificateId();
 
 	time_t ltime;
 	time(&ltime);
 	int expiredSecond = ltime + 3600;
-	m_pRTMInstance->Login(m_account, appId);
+	m_pRTMInstance->Login(m_account, appCertificateId);
 }
 
 void CAgoraRTMDlg::initCtrl()
@@ -198,7 +197,7 @@ void CAgoraRTMDlg::initResource()
 		gConfigSignal.setAppID("");
 		std::string ConfigPath = gConfigSignal.getFilePath();
 		ShellExecute(NULL, _T("open"), s2cs(ConfigPath), NULL, NULL, SW_SHOW);
-		AfxMessageBox(_T("APPID can not be empty ,Please modify the AppID and AppCertificatedId in the AgoraSignal.ini configuration item"));
+		AfxMessageBox(_T("APPID can not be empty ,Please modify the AppID and AppCertificatedId in the AgoraRTM.ini configuration item"));
 		PostQuitMessage(0);
 		return;
 	}
